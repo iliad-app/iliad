@@ -120,7 +120,6 @@ public class LoginActivity extends AppCompatActivity {
             });
             queue.add(getRequest);
 
-
         }
 
 

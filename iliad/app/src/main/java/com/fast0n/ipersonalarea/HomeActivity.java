@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences.Editor editor;
     private View headerView;
     private boolean backPressedToExitOnce = false;
+    int i;
 
 
     @Override
@@ -217,7 +218,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             startActivity(mainActivity);
                         }
                     } catch (Exception ignored) {
-                        getObject(url, nav_Menu);
+                        if (i<=20) {
+                            getObject(url, nav_Menu);
+                            i++;
+                        }
+                        else{
+                            settings = getSharedPreferences("sharedPreferences", 0);
+                            editor = settings.edit();
+                            editor.putString("userid", null);
+                            editor.putString("password", null);
+                            editor.apply();
+
+                            Toasty.warning(HomeActivity.this, getString(R.string.error_login), Toast.LENGTH_LONG, true)
+                                    .show();
+                            Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
+                            startActivity(mainActivity);
+                        }
                     }
                 });
 

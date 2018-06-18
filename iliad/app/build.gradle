@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId 'com.fast0n.ipersonalarea'
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 8
-        versionName '0.1'
+        versionCode 9
+        versionName '0.2'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -62,4 +61,5 @@ android {
     apply plugin: 'com.google.gms.google-services'
 }
 
-
+dependencies {
+}
