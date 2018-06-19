@@ -29,7 +29,6 @@
                 app:layout_constraintVertical_bias="0.284" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -39,6 +38,7 @@
                 android:layout_marginTop="16dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,6 @@
 
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/textView1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -66,6 +65,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
@@ -83,7 +83,6 @@
 
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/textView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -93,6 +92,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_view1" />
@@ -177,22 +177,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:theme="@style/TextLabel">
-                        <EditText
-                            android:id="@+id/editText"
-                            android:layout_width="fill_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:autofillHints="email"
-                            android:backgroundTint="@color/colorPrimary"
-                            android:ems="10"
-                            android:hint="@string/your_email"
-                            android:inputType="textEmailAddress"
-                            android:textColor="@color/colorPrimary"
-                            card_view:layout_constraintBottom_toBottomOf="parent"
-                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/editText"
+                                android:layout_width="fill_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_marginBottom="2dp"
+                                android:autofillHints="email"
+                                android:backgroundTint="@color/colorPrimary"
+                                android:ems="10"
+                                android:hint="@string/your_email"
+                                android:inputType="textEmailAddress"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:textColor="@color/colorPrimary"
+                                card_view:layout_constraintBottom_toBottomOf="parent"
+                                card_view:layout_constraintTop_toTopOf="parent" />
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>

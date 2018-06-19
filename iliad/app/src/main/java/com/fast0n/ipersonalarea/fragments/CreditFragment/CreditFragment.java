@@ -33,6 +33,11 @@ import java.util.Objects;
 
 public class CreditFragment extends Fragment {
 
+    ProgressBar loading;
+    Context context;
+    Button button, button1;
+    PullToRefreshRecyclerView recyclerView;
+    List<DataCreditFragments> creditList = new ArrayList<>();
     public CreditFragment() {
     }
 
@@ -40,10 +45,8 @@ public class CreditFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_credit, container, false);
 
-        final ProgressBar loading;
-        final Context context;
+
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
-        final Button button, button1;
 
         // java adresses
         loading = view.findViewById(R.id.progressBar);
@@ -69,7 +72,16 @@ public class CreditFragment extends Fragment {
 
         getObject(url, context, view);
 
+        LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(llm);
 
+        recyclerView.setOnRefreshListener(() -> {
+            recyclerView.setSwipeEnable(false);
+            creditList.removeAll(creditList);
+            CustomAdapterCredit ca = new CustomAdapterCredit(context, creditList);
+            recyclerView.setAdapter(ca);
+            getObject(url, context, view);
+        });
         button1.setOnClickListener(v -> {
             Intent intent = new Intent(context, ConsumptionDetailsActivity.class);
             intent.putExtra("token", token);
@@ -88,25 +100,14 @@ public class CreditFragment extends Fragment {
 
     private void getObject(String url, final Context context, View view) {
 
-        final ProgressBar loading;
-        final PullToRefreshRecyclerView recyclerView;
-        final List<DataCreditFragments> creditList = new ArrayList<>();
-        final Button button, button1;
-
         // java adresses
         recyclerView = view.findViewById(R.id.recycler_view);
         loading = view.findViewById(R.id.progressBar);
         button1 = view.findViewById(R.id.button1);
         button = view.findViewById(R.id.button);
 
-
-        recyclerView.setSwipeEnable(true);
-        LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(llm);
-
-        recyclerView.setOnRefreshListener(() -> startActivity(new Intent(context, LoginActivity.class)));
-
         RequestQueue queue = Volley.newRequestQueue(context);
+        recyclerView.setSwipeEnable(true);
 
         CustomPriorityRequest customPriorityRequest = new CustomPriorityRequest(
                 Request.Method.GET, url, null,

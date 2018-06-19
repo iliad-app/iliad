@@ -91,7 +91,6 @@ public class Widget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.button1, pendingIntent1);
 
 
-
             if (password == null) {
                 views.setViewVisibility(R.id.login, VISIBLE);
                 views.setViewVisibility(R.id.linearLayout, INVISIBLE);
@@ -100,7 +99,7 @@ public class Widget extends AppWidgetProvider {
                 views.setViewVisibility(R.id.linearLayout, VISIBLE);
                 views.setViewVisibility(R.id.login, INVISIBLE);
 
-                loading(site_url, userid, password ,context, views, appWidgetIds, appWidgetManager, appWidgetId);
+                loading(site_url, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
 
             }
 
@@ -114,7 +113,6 @@ public class Widget extends AppWidgetProvider {
     private void loading(String site_url, String userid, String password, Context context, RemoteViews views, int[] appWidgetIds, AppWidgetManager appWidgetManager, int appWidgetId) {
         final String token = GenerateToken.randomString(20);
         String url = (site_url + "?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
-
         RequestQueue login = Volley.newRequestQueue(context);
         JsonObjectRequest getRequestLogin = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -168,17 +166,32 @@ public class Widget extends AppWidgetProvider {
                                     String gb = json_Gb.getString("0");
                                     views.setTextViewText(R.id.gb, gb);
 
-                                    String x = gb.split("/")[0].replace("GB", "0").replace("MB", "");
+                                    String x = gb.split("/")[0];
                                     String y = gb.split("/")[1];
 
-                                    String a = x.substring(0, x.length() - 2);
-                                    String b = y.substring(0, y.length() - 2) + "000";
+                                    Double f = null;
+                                    Double e;
 
-                                    Double e = Double.parseDouble(a.replace(",", "."));
-                                    Double f = Double.parseDouble(b);
 
-                                    Double ef = (e / (e + f)) * 100;
+                                    if (x.contains("GB")) {
+                                        x = x.substring(0, x.length() - 3);
+                                        e = Double.parseDouble(x.replace(",", ".")) * 1000;
+
+
+                                    } else {
+                                        x = x.substring(0, x.length() - 3);
+                                        e = Double.parseDouble(x.replace(",", "."));
+
+                                    }
+                                    if (y.contains("GB")) {
+                                        y = y.substring(0, y.length() - 2);
+                                        f = Double.parseDouble(y.replace(",", ".")) * 1000;
+
+                                    }
+
+                                    Double ef = (e / f) * 100;
                                     int result1 = ef.intValue();
+
 
                                     views.setProgressBar(R.id.progressbar, 100, result1, false);
 
@@ -186,6 +199,7 @@ public class Widget extends AppWidgetProvider {
                                     JSONObject json_Mms = new JSONObject(stringMms);
                                     String mms = json_Mms.getString("0");
                                     views.setTextViewText(R.id.mms, mms);
+                                    views.setTextViewText(R.id.percentage, String.valueOf(result1) + "%");
 
                                     appWidgetManager.updateAppWidget(appWidgetId, views);
 
@@ -200,23 +214,14 @@ public class Widget extends AppWidgetProvider {
 
                 }, error1 -> {
 
-//                    int error_code = error1.networkResponse.statusCode;
             try {
                 loading(site_url, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
                 views.setViewVisibility(R.id.linearLayout, GONE);
-            }catch (Exception ignored){
-
+            } catch (Exception ignored) {
 
 
             }
 
-
-                    /*
-                     if (error_code == 503) {
-
-                    }
-
-                     */
 
         });
 

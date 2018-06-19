@@ -51,6 +51,7 @@ import es.dmoral.toasty.Toasty;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    int i;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private ProgressBar loading;
@@ -58,8 +59,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences.Editor editor;
     private View headerView;
     private boolean backPressedToExitOnce = false;
-    int i;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,11 +217,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             startActivity(mainActivity);
                         }
                     } catch (Exception ignored) {
-                        if (i<=20) {
+                        if (i <= 20) {
                             getObject(url, nav_Menu);
                             i++;
-                        }
-                        else{
+                        } else {
                             settings = getSharedPreferences("sharedPreferences", 0);
                             editor = settings.edit();
                             editor.putString("userid", null);

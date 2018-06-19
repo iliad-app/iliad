@@ -20,8 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.02"
-        card_view:cardBackgroundColor="@color/colorPrimary"
-        >
+        card_view:cardBackgroundColor="@color/colorPrimary">
 
 
         <LinearLayout

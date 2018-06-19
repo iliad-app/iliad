@@ -97,7 +97,6 @@ public class CreditRoamingFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(llm);
 
-        recyclerView.setOnRefreshListener(() -> startActivity(new Intent(context, LoginActivity.class)));
 
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,

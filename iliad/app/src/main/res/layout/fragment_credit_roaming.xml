@@ -11,16 +11,6 @@
         android:layout_height="match_parent">
 
 
-        <com.lhh.ptrrv.library.PullToRefreshRecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:divider="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
@@ -67,6 +57,19 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <com.lhh.ptrrv.library.PullToRefreshRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:divider="@android:color/transparent"
+            android:fadeScrollbars="true"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

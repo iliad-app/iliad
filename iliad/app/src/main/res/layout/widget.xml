@@ -1,17 +1,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget_click"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_margin="@dimen/widget_margin"
     android:background="@drawable/round_rect_shape">
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,16 +35,19 @@
                 android:paddingTop="10dp"
                 android:text="100€"
                 android:textColor="@android:color/black"
-                android:textSize="10dp" />
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
 
             <TextView
                 android:id="@+id/user_numtell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:paddingBottom="15dp"
                 android:text="3290000000"
                 android:textColor="@android:color/black"
-                android:textSize="10dp" />
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SpUsage" />
         </LinearLayout>
 
 
@@ -79,7 +83,8 @@
                         android:layout_gravity="center"
                         android:text="100s"
                         android:textColor="@android:color/black"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SmallSp" />
 
 
                 </LinearLayout>
@@ -106,7 +111,8 @@
                         android:layout_gravity="center"
                         android:text="100 SMS"
                         android:textColor="@android:color/black"
-                        android:textSize="10dp" />
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SmallSp" />
 
                 </LinearLayout>
 
@@ -115,8 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp"
+                    android:paddingStart="5dp">
 
                     <ImageView
                         android:id="@+id/img3"
@@ -132,7 +138,8 @@
                         android:layout_gravity="center"
                         android:text="100 MMS"
                         android:textColor="@android:color/black"
-                        android:textSize="10dp" />
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -148,7 +155,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:id="@+id/gb"
@@ -157,28 +165,62 @@
                         android:layout_gravity="center"
                         android:text="100MB / 30GB"
                         android:textColor="@android:color/black"
-                        android:textSize="10dp" />
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SmallSp,SpUsage" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
-                        <ProgressBar
-                            android:id="@+id/progressbar"
-                            style="@android:style/Widget.ProgressBar.Horizontal"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:max="100"
-                            android:progressDrawable="@drawable/progress_bar" />
+                        <RelativeLayout
+                            android:layout_width="130dp"
+                            android:layout_height="match_parent">
 
-                        <ImageButton
+                            <ProgressBar
+
+                                android:id="@+id/progressbar"
+                                style="@android:style/Widget.ProgressBar.Horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:max="100"
+                                android:progressDrawable="@drawable/progress_bar" />
+
+                            <TextView
+                                android:id="@+id/percentage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:gravity="center"
+                                android:textColor="@android:color/black"
+                                android:textSize="10sp"
+                                tools:ignore="SmallSp" />
+                        </RelativeLayout>
+
+
+                        <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_refresh" />
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:animateFirstView="true"
+                            android:autoStart="true"
+                            android:flipInterval="10000"
+                            android:gravity="center"
+                            android:inAnimation="@android:anim/fade_in"
+                            android:outAnimation="@android:anim/fade_out">
+
+                            <ImageButton
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/ic_refresh"
+                                android:contentDescription="Aggiorna"
+                                android:gravity="center"
+                                tools:ignore="HardcodedText" />
+                        </ViewFlipper>
 
                     </LinearLayout>
 
@@ -198,27 +240,30 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingTop="10dp"
-        android:layout_gravity="center"
         android:visibility="gone">
 
         <TextView
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:paddingTop="10dp"
             android:text="Esegui l'accesso"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <ImageButton
-            android:layout_gravity="center"
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_refresh" />
+            android:layout_gravity="center"
+            android:background="@drawable/ic_refresh"
+            android:contentDescription="Aggiorna"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
