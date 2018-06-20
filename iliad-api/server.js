@@ -16,7 +16,7 @@ const ILIAD_OPTION_URL = {
     document: 'le-condizioni-della-mia-offerta',
     recover: 'forget'
 }
-const CURRENT_APP_VERSION = '7';
+const CURRENT_APP_VERSION = '13';
 
 app.get('/', function (req, res) {
     res.set('text/html; charset=utf-8');
@@ -102,8 +102,6 @@ app.get('/login', function (req, res) {
 //recupero password
 app.get('/recover', function (req, res) {
     res.set('Content-Type', 'application/json');
-
-    console.log(req.query);
 
     var email = req.query.email;
     var userid = req.query.userid;
@@ -372,7 +370,7 @@ app.get('/sim', function (req, res) {
                 }
             }
         });
-    }else if (activation_sim == 'true' && token != undefined) {
+    } else if (activation_sim == 'true' && token != undefined) {
         var options = {
             url: ILIAD_BASE_URL + 'attivazione-della-sim',
             method: 'POST',
@@ -405,22 +403,24 @@ app.get('/sim', function (req, res) {
                                 array3 = array3.concat([$(element).find('a').text()]);
                                 array2 = array2.concat([$(element).find('h4.step__text__title').text()]);
                             });
-
-                        var title = $(result).find('div.form-activation').text().replace(/^\s+|\s+$/gm, '').split('\n')[1]
                         var orderdate = $(result).find('div.step__text').first().text().split('\n')
                         var tracking = $(result).find('a.red').attr('href')
                         var activation = $(result).find('p.explain').text().replace(/^\s+|\s+$/gm, '').split('\n')[0]
                         var check = $(result).find('div.step__text').find('p.green').text();
                         var order_shipped = $(result).find('div.step__text').find('p').html()
-
+                        var title = '';
+                        $(result).find('h4.step__text__title')
+                            .each(function (index, element) {
+                                if (index == 3) {
+                                    title = $(element).text();
+                                }
+                            })
                         //var preparazione = array2[1]
 
-                        data_store["iliad"]["shipping"][0] = array2[2]; //spedizione
                         if (order_shipped != null)
                             data_store["iliad"]["shipping"][1] = order_shipped; //order shipped
                         else
                             data_store["iliad"]["shipping"][1] = 'Non disponibile';
-                        data_store["iliad"]["shipping"][2] = array3[2]; //tracking text
                         if (tracking != undefined)
                             data_store["iliad"]["shipping"][3] = tracking; //tracking
                         else
@@ -441,9 +441,13 @@ app.get('/sim', function (req, res) {
                         }
 
                         data_store["iliad"]["sim"][3] = array[0].split('\n')[1].replace(/^\s+|\s+$/gm, ''); //offert
+                        data_store["iliad"]["shipping"][2] = array3[2];
+
                         data_store["iliad"]["validation"][0] = array2[0]; //validation
                         data_store["iliad"]["validation"][1] = orderdate[2].replace(/^\s+|\s+$/gm, ''); //order date
                         data_store["iliad"]["validation"][2] = orderdate[3].replace(/^\s+|\s+$/gm, ''); //date
+                        data_store["iliad"]["shipping"][2] = array3[2]; //tracking text
+                        data_store["iliad"]["shipping"][0] = array2[2]; //spedizione
 
                         res.send(data_store)
                         return;
@@ -599,7 +603,6 @@ app.get('/credit', function (req, res) {
                             data[x] = undefined;
                         }
                     }
-                    console.log(data[3]);
                     //OK
                     if ($('div.no-conso').attr('style') == 'display:none;') {
 
@@ -1183,7 +1186,7 @@ app.get('/voicemail', function (req, res) {
                 }
             }
         });
-    }else if (voicemailoptions == 'true' && token != undefined) {
+    } else if (voicemailoptions == 'true' && token != undefined) {
         // Richiesta opzioni segreteria
         var options = {
             url: ILIAD_BASE_URL + ILIAD_OPTION_URL['voicemail'],
