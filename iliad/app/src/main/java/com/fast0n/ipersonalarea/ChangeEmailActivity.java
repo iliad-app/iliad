@@ -67,7 +67,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
         assert extras != null;
         final String password = extras.getString("password");
         final String token = extras.getString("token");
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
         // java adresses
         cardView = findViewById(R.id.cardView);

@@ -85,8 +85,8 @@ public class LoginActivity extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
 
-            String site_url = getString(R.string.site_url);
-            String url = site_url + "?alert=true";
+            String site_url = getString(R.string.site_url) +  getString(R.string.alert);
+            String url = site_url;
 
             JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {

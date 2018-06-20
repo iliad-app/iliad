@@ -51,7 +51,7 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                final String site_url = context.getString(R.string.site_url);
+                final String site_url = context.getString(R.string.site_url) + context.getString(R.string.services);
 
                 if (!isChecked) {
                     String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token

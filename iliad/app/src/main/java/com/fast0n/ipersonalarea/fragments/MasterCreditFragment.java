@@ -55,7 +55,7 @@ public class MasterCreditFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         editor.apply();
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.credit);
         String url = site_url + "?credit=true&token=" + token;
 
         RequestQueue queue = Volley.newRequestQueue(context);

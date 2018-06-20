@@ -72,7 +72,7 @@ public class SimFragments extends Fragment {
         assert extras != null;
         final String token = extras.getString("token");
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.sim);
         String url = site_url + "?activation_sim=true&token=" + token;
 
         getObject(url, context, view);

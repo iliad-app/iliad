@@ -56,7 +56,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         }
 
         holder.button.setOnClickListener(v -> {
-            final String site_url = context.getString(R.string.site_url);
+            final String site_url = context.getString(R.string.site_url) + context.getString(R.string.voicemail);
 
             String url = site_url + "?deleteaudio=true&idaudio=" + c.id + "&token=" + c.token;
 

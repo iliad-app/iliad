@@ -50,7 +50,7 @@ public class CustomAdapterOptions extends RecyclerView.Adapter<CustomAdapterOpti
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                final String site_url = context.getString(R.string.site_url);
+                final String site_url = context.getString(R.string.site_url) + context.getString(R.string.options);
                 String url = site_url + "?change_options=true&update=" + c.name + "&token=" + token
                         + "&activate=" + (isChecked ? 1 : 0);
                 request_options_services(url, holder.textView.getText() + " " + (isChecked ? "attivo" : "disattivato"));

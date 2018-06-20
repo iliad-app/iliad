@@ -52,7 +52,7 @@ public class CustomAdapterCustomization extends RecyclerView.Adapter<CustomAdapt
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                final String site_url = context.getString(R.string.site_url);
+                final String site_url = context.getString(R.string.site_url) + context.getString(R.string.voicemail);
 
                 if (!isChecked) {
                     String url = site_url + "?changevoicemailoptions=true&update=" + c.name + "&token=" + token + "&activate=0";

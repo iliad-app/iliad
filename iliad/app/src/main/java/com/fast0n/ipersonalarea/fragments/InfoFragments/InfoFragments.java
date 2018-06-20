@@ -66,7 +66,7 @@ public class InfoFragments extends Fragment {
         final String password = extras.getString("password");
         final String token = extras.getString("token");
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
         String url = site_url + "?info=true&token=" + token;
 
         getObject(site_url, url, context, view, token, password);

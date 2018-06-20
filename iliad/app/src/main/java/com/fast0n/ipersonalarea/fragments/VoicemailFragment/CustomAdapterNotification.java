@@ -45,9 +45,9 @@ public class CustomAdapterNotification extends RecyclerView.Adapter<CustomAdapte
 
 
         holder.button.setOnClickListener(v -> {
-            final String site_url = context.getString(R.string.site_url);
+            final String site_url = context.getString(R.string.site_url) + context.getString(R.string.voicemail);
 
-            String url = site_url + "?voicemailemail=true&email=" + c.textView1 + "&action=delete&token=" + token;
+            String url = site_url + "?email=" + c.textView1 + "&action=delete&token=" + token;
 
 
             RequestQueue queue = Volley.newRequestQueue(context);

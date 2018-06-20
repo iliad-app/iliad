@@ -61,7 +61,7 @@ public class OptionsFragment extends Fragment {
         assert extras != null;
         final String token = extras.getString("token");
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.options);
         String url = site_url + "?option=true&token=" + token;
 
         getObject(url, context, view);

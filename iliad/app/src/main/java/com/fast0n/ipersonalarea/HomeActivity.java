@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String checkbox = extras.getString("checkbox", null);
 
         if (isOnline()) {
-            String site_url = getString(R.string.site_url);
+            String site_url = getString(R.string.site_url) + getString(R.string.login);
             String url = site_url + "?userid=" + userid + "&password=" + password.replaceAll("\\s+", "") + "&token=" + token;
             getObject(url, nav_Menu);
             settings = getSharedPreferences("sharedPreferences", 0);
@@ -367,8 +367,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 RequestQueue queue = Volley.newRequestQueue(HomeActivity.this);
 
-                String site_url = getString(R.string.site_url);
-                String url = site_url + "?alert=true";
+                String site_url = getString(R.string.site_url) + getString(R.string.alert);
+                String url = site_url;
 
                 JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         response -> {

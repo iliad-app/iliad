@@ -75,7 +75,19 @@
     <string name="dialog_exit">Sei sicuro di voler uscire?</string>
     <string name="press_back">Premere ancora una volta per uscire</string>
 
-    <!-- <string name="site_url">https://iliad-api.glitch.me/</string>-->
+    <!-- link request -->
+    <!-- <string name="site_url">https://iliad-api-beta.glitch.me/</string> -->
+    <string name="alert">alert/</string>
+    <string name="login">login/</string>
+    <string name="recover">recover/</string>
+    <string name="infomation">information/</string>
+    <string name="sim">sim/</string>
+    <string name="credit">credit/</string>
+    <string name="document">document/</string>
+    <string name="services">services/</string>
+    <string name="options">options/</string>
+    <string name="recharge">recharge/</string>
+    <string name="voicemail">voicemail/</string>
     <string name="site_url">http://51.15.222.184:1331/</string>
 
     <string name="loading">Caricamento…</string>

@@ -32,23 +32,30 @@ import java.util.Objects;
 
 public class CreditRoamingFragment extends Fragment {
 
+    ProgressBar loading;
+    Context context;
+    Button button, button1;
+    PullToRefreshRecyclerView recyclerView;
+    List<DataCreditRoamingFragments> creditEsteroList = new ArrayList<>();
+
     public CreditRoamingFragment() {
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_credit_roaming, container, false);
-        final ProgressBar loading;
-        final Context context;
+
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
-        final Button button, button1;
 
         // java adresses
         loading = view.findViewById(R.id.progressBar);
+        CubeGrid cubeGrid = new CubeGrid();
+        loading.setIndeterminateDrawable(cubeGrid);
+        cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
         button = view.findViewById(R.id.button);
         button1 = view.findViewById(R.id.button1);
+        recyclerView = view.findViewById(R.id.recycler_view);
 
-        loading.setVisibility(View.VISIBLE);
         button.setVisibility(View.INVISIBLE);
         button1.setVisibility(View.INVISIBLE);
 
@@ -56,8 +63,8 @@ public class CreditRoamingFragment extends Fragment {
         assert extras != null;
         final String token = extras.getString("token");
 
-        final String site_url = getString(R.string.site_url);
-        String url = site_url + "?creditestero=true&token=" + token;
+        final String site_url = getString(R.string.site_url) + getString(R.string.credit);
+        String url = site_url + "?estero=true&token=" + token;
 
         getObject(url, context, view);
 
@@ -74,29 +81,26 @@ public class CreditRoamingFragment extends Fragment {
             startActivity(intent);
         });
 
+        recyclerView.setSwipeEnable(true);
+        LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(llm);
+
+        recyclerView.setOnRefreshListener(() -> {
+            recyclerView.setRefreshing(false);
+            recyclerView.setEnabled(false);
+            creditEsteroList.removeAll(creditEsteroList);
+            CustomAdapterCreditRoaming ca = new CustomAdapterCreditRoaming(context, creditEsteroList);
+            recyclerView.setAdapter(ca);
+            getObject(url, context, view);
+        });
+
         return view;
     }
 
     private void getObject(String url, final Context context, View view) {
 
-        final ProgressBar loading;
-        final PullToRefreshRecyclerView recyclerView;
-        final List<DataCreditRoamingFragments> creditEsteroList = new ArrayList<>();
-        final Button button, button1;
-
         // java adresses
-        recyclerView = view.findViewById(R.id.recycler_view);
-        loading = view.findViewById(R.id.progressBar);
-        CubeGrid cubeGrid = new CubeGrid();
-        loading.setIndeterminateDrawable(cubeGrid);
-        cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
-        button1 = view.findViewById(R.id.button1);
-        button = view.findViewById(R.id.button);
-
-        recyclerView.setSwipeEnable(true);
-        LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(llm);
-
+        loading.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,

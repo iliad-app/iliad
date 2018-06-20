@@ -72,7 +72,7 @@ public class VoicemailFragment extends Fragment {
         assert extras != null;
         final String token = extras.getString("token");
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.voicemail);
         String url = site_url + "?voicemail=true&token=" + token;
         String url1 = site_url + "?voicemailoptions=true&token=" + token;
         String url2 = site_url + "?voicemailreport=true&token=" + token;
@@ -98,6 +98,7 @@ public class VoicemailFragment extends Fragment {
         TextView textvoicemail, customization, notification;
 
         // java adresses
+        //https://www.youtube.com/watch?v=in5qEVti8EM
         button = view.findViewById(R.id.button);
         cardView1 = view.findViewById(R.id.cardView1);
         editText = view.findViewById(R.id.editText);
@@ -126,7 +127,7 @@ public class VoicemailFragment extends Fragment {
                     String montant = spinner.getSelectedItem().toString();
 
                     RequestQueue queue = Volley.newRequestQueue(context);
-                    final String site_url = getString(R.string.site_url);
+                    final String site_url = getString(R.string.site_url) + getString(R.string.voicemail);
 
                     JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + "?email=" + editText.getText().toString() + "&action=add&type=" + montant.replace("Notifica inviata via email", "report").replace("File audio inviato in allegato", "attachment") + "&token=" + token, null,
                             response -> {

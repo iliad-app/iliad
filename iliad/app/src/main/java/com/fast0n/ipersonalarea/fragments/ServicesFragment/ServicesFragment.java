@@ -54,7 +54,7 @@ public class ServicesFragment extends Fragment {
         assert extras != null;
         final String token = extras.getString("token");
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.services);
         String url = site_url + "?services=true&token=" + token;
 
         getObject(url, context, view);

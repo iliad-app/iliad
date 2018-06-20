@@ -73,7 +73,7 @@ public class ChargeActivity extends AppCompatActivity {
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
         final String token = extras.getString("token");
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.recharge);
 
 
         RequestQueue queue = Volley.newRequestQueue(ChargeActivity.this);

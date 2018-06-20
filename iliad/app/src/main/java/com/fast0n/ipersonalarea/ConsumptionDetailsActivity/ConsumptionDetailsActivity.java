@@ -56,7 +56,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
         final String token = extras.getString("token", null);
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.credit);
         TextView offer;
 
 
@@ -72,7 +72,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
 
         offer.setText(getString(R.string.consumptiondetail));
 
-        String url = site_url + "?consumptiondetails=true&token=" + token;
+        String url = site_url + "?details=true&token=" + token;
         getConsumption(url);
 
 

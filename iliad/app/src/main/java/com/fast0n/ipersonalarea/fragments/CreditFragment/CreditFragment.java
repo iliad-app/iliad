@@ -33,18 +33,18 @@ import java.util.Objects;
 
 public class CreditFragment extends Fragment {
 
-    ProgressBar loading;
-    Context context;
-    Button button, button1;
-    PullToRefreshRecyclerView recyclerView;
-    List<DataCreditFragments> creditList = new ArrayList<>();
     public CreditFragment() {
     }
+
+    PullToRefreshRecyclerView recyclerView;
+    ProgressBar loading;
+    List<DataCreditFragments> creditList = new ArrayList<>();
+    Button button, button1;
+    Context context;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_credit, container, false);
-
 
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
 
@@ -55,11 +55,11 @@ public class CreditFragment extends Fragment {
         cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
         button1 = view.findViewById(R.id.button1);
         button = view.findViewById(R.id.button);
+        recyclerView = view.findViewById(R.id.recycler_view);
 
 
         button.setVisibility(View.INVISIBLE);
         button1.setVisibility(View.INVISIBLE);
-        loading.setVisibility(View.VISIBLE);
 
 
         SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
@@ -67,21 +67,12 @@ public class CreditFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         editor.apply();
 
-        final String site_url = getString(R.string.site_url);
+        final String site_url = getString(R.string.site_url) + getString(R.string.credit);
         String url = site_url + "?credit=true&token=" + token;
 
         getObject(url, context, view);
 
-        LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(llm);
 
-        recyclerView.setOnRefreshListener(() -> {
-            recyclerView.setSwipeEnable(false);
-            creditList.removeAll(creditList);
-            CustomAdapterCredit ca = new CustomAdapterCredit(context, creditList);
-            recyclerView.setAdapter(ca);
-            getObject(url, context, view);
-        });
         button1.setOnClickListener(v -> {
             Intent intent = new Intent(context, ConsumptionDetailsActivity.class);
             intent.putExtra("token", token);
@@ -95,19 +86,28 @@ public class CreditFragment extends Fragment {
             startActivity(intent);
         });
 
+        recyclerView.setSwipeEnable(true);
+        LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(llm);
+
+        recyclerView.setOnRefreshListener(() ->{
+            recyclerView.setRefreshing(false);
+            recyclerView.setEnabled(false);
+            creditList.removeAll(creditList);
+            CustomAdapterCredit ca = new CustomAdapterCredit(context, creditList);
+            recyclerView.setAdapter(ca);
+            getObject(url, context, view);
+
+        });
+
         return view;
     }
 
     private void getObject(String url, final Context context, View view) {
 
-        // java adresses
-        recyclerView = view.findViewById(R.id.recycler_view);
-        loading = view.findViewById(R.id.progressBar);
-        button1 = view.findViewById(R.id.button1);
-        button = view.findViewById(R.id.button);
+        loading.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        recyclerView.setSwipeEnable(true);
 
         CustomPriorityRequest customPriorityRequest = new CustomPriorityRequest(
                 Request.Method.GET, url, null,
