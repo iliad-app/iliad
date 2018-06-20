@@ -57,23 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         edt_password = findViewById(R.id.edt_password);
         checkBox = findViewById(R.id.checkBox);
 
-        if (checkBox.isChecked()) {
-            checkBox.setText(getString(R.string.stay_connected) + ": Attivo");
-        } else {
-            checkBox.setText(getString(R.string.stay_connected) + ": Disattivo");
-        }
-
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-            if (checkBox.isChecked()) {
-                checkBox.setText(getString(R.string.stay_connected) + ": Attivo");
-            } else {
-                checkBox.setText(getString(R.string.stay_connected) + ": Disattivo");
-            }
-
-        });
-
-
         settings = getSharedPreferences("sharedPreferences", 0);
         String userid = settings.getString("userid", null);
         String alert = settings.getString("alert", null);

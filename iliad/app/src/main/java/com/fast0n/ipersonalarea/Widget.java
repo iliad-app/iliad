@@ -77,6 +77,7 @@ public class Widget extends AppWidgetProvider {
             SharedPreferences.Editor editor = settings.edit();
             editor.apply();
             final String site_url = context.getString(R.string.site_url);
+
             String userid = settings.getString("userid", null);
             String password = settings.getString("password", null);
 
@@ -110,9 +111,10 @@ public class Widget extends AppWidgetProvider {
 
     }
 
-    private void loading(String site_url, String userid, String password, Context context, RemoteViews views, int[] appWidgetIds, AppWidgetManager appWidgetManager, int appWidgetId) {
+    private void loading(String site, String userid, String password, Context context, RemoteViews views, int[] appWidgetIds, AppWidgetManager appWidgetManager, int appWidgetId) {
         final String token = GenerateToken.randomString(20);
-        String url = (site_url + "?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
+
+        String url = (site + "login/?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
         RequestQueue login = Volley.newRequestQueue(context);
         JsonObjectRequest getRequestLogin = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
@@ -135,8 +137,7 @@ public class Widget extends AppWidgetProvider {
                     intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
                     context.sendBroadcast(intent1);
 
-
-                    String url1 = site_url + "?credit=true&token=" + token;
+                    String url1 = site + "credit/?credit=true&token=" + token;
                     RequestQueue creditqueue = Volley.newRequestQueue(context);
                     JsonObjectRequest getRequestCredit = new JsonObjectRequest(Request.Method.GET, url1, null,
                             response1 -> {
@@ -215,7 +216,7 @@ public class Widget extends AppWidgetProvider {
                 }, error1 -> {
 
             try {
-                loading(site_url, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
+                loading(site, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
                 views.setViewVisibility(R.id.linearLayout, GONE);
             } catch (Exception ignored) {
 
