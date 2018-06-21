@@ -9,6 +9,8 @@
     <string name="iccid">ICCID</string>
     <string name="active">Attiva</string>
     <string name="error_login">ID utente o password non corretto.</string>
+    <string name="error_forget">ID utente o email non corretta.</string>
+    <string name="error_forget1">Campo vuoto o email non corretta.</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -27,7 +29,6 @@
     <string name="btn_change_email">Cambia Email</string>
     <string name="tv_email">Email</string>
     <string name="new_email">Nuova Email</string>
-
     <string name="email_wrong">Inserire una email valida</string>
     <string name="email_change_success">Il tuo indirizzo email è stato modificato con successo.</string>
 
@@ -106,6 +107,14 @@
     <string name="nav_voicemail">Segreteria telefonica</string>
     <string name="add_access">Inserisci le credenziali di accesso</string>
     <string name="your_email">La tua email</string>
+    <string name="edt_id_forget">ID Utente (8 cifre)</string>
+    <string name="edt_surname_forget">Cognome</string>
+    <string name="edt_name_forget">Nome</string>
+    <string name="tv_title_foget">Password dimenticata</string>
+    <string name="edt_email_forget">La tua email</string>
+    <string name="done_forget">Conferma</string>
+    <string name="tv_forget_id">Non conosci il tuo ID utente?</string>
+    <string name="tv_forget_password">Hai dimenticato la tua password o perso il tuo ID utente?</string>
 
 
 </resources>

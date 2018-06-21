@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Widget"
+
+        <receiver
+            android:name=".Widget"
             android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -32,19 +34,20 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
+
         <activity
-            android:hardwareAccelerated="true"
             android:name=".HomeActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:hardwareAccelerated="true"
             android:name=".ChangeEmailActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:hardwareAccelerated="true"
             android:name=".ChangePasswordActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -52,18 +55,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:hardwareAccelerated="true"
             android:name=".ConsumptionDetailsActivity.ConsumptionDetailsActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:hardwareAccelerated="true"
             android:name=".ConsumptionDetailsActivity.ConsumptionRoamingDetailActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:hardwareAccelerated="true"
             android:name=".ChargeActivity"
+            android:hardwareAccelerated="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ForgetActivity"
+            android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <!-- [START firebase_iid_service] -->

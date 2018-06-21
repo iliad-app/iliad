@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
     private CheckBox checkBox;
+    TextView textView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         edt_id = findViewById(R.id.edt_id);
         edt_password = findViewById(R.id.edt_password);
         checkBox = findViewById(R.id.checkBox);
+        textView2 = findViewById(R.id.textView2);
+
+        textView2.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgetActivity.class)));
+
 
         settings = getSharedPreferences("sharedPreferences", 0);
         String userid = settings.getString("userid", null);
@@ -69,9 +74,8 @@ public class LoginActivity extends AppCompatActivity {
             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
 
             String site_url = getString(R.string.site_url) +  getString(R.string.alert);
-            String url = site_url;
 
-            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url, null,
                     response -> {
                         try {
 
@@ -152,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        return Objects.requireNonNull(cm).getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     @Override

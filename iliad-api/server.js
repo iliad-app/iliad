@@ -17,7 +17,6 @@ const ILIAD_OPTION_URL = {
     recover: 'forget'
 }
 const CURRENT_APP_VERSION = '13';
-
 app.get('/', function (req, res) {
     res.set('text/html; charset=utf-8');
     res.send("<script>window.location.replace('https://github.com/Fast0n/iliad');</script>");
@@ -27,7 +26,9 @@ app.get('/', function (req, res) {
 app.get('/alert', function (req, res) {
     res.set('Content-Type', 'application/json');
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     data_store["iliad"][0] = "<b>Se stai utilizzando iliad UNOFFICIAL è stata rimossa dal PlayStore, scarica la nuova app Area personale, per i nuovi aggiornamenti.</b><br /> L’app è stata creata in modo <b>NON</b> ufficiale, iliad S.P.A non è responsabile. L’app prende le informazioni dal sito, se una sezione/testo/oggetto non c’è sul sito non ci sarà nell’app. Ti ricordo inoltre che prima di creare una valutazione sul PlayStore di contattarci su Telegram con <b>@Fast0n</b> o <b>@Mattvoid</b> oppure per email all’indirizzo <b>theplayergame97@gmail.com</b>.<br/>Grazie per l’attenzione."
     res.send(data_store);
@@ -38,11 +39,12 @@ app.get('/login', function (req, res) {
     res.set('Content-Type', 'application/json');
 
     var userid = req.query.userid;
-    var psw = req.query.password;
-    const password = Buffer.from(psw + '', 'base64').toString('utf8');
+    var password = req.query.password;
     var token = req.query.token;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -51,7 +53,7 @@ app.get('/login', function (req, res) {
     if (userid != undefined && password != undefined && token != undefined) {
         var formData = {
             'login-ident': userid,
-            'login-pwd': password
+            'login-pwd': Buffer.from(password + '', 'base64').toString('utf8')
         }
 
         var options = {
@@ -98,6 +100,68 @@ app.get('/login', function (req, res) {
         res.sendStatus(400);
     }
 });
+//get token
+app.get('/token', function (req, res) {
+    res.set('Content-Type', 'application/json');
+
+    var userid = req.query.userid;
+    var password = req.query.password;
+
+    var data_store = {
+        'iliad': {}
+    };
+
+    if (userid != undefined && password != undefined) {
+        var formData = {
+            'login-ident': userid,
+            'login-pwd': Buffer.from(password + '', 'base64').toString('utf8')
+        }
+
+        var options = {
+            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['login'],
+            method: 'POST',
+            formData: formData
+        };
+
+        request(options, function (error, response, body) {
+            res.send(response['headers']['set-cookie'][0].split(';')[0].split('=')[1]);
+        });
+    } else {
+        res.sendStatus(400);
+    }
+});
+//logout
+app.get('/logout', function (req, res) {
+    res.set('Content-Type', 'application/json');
+
+    var token = req.query.token;
+    var data_store = {
+        'iliad': {}
+    };
+
+    if (token != undefined) {
+        var headers = {
+            'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso  
+        }
+        var options = {
+            url: ILIAD_BASE_URL + "?logout=user",
+            method: "GET",
+            headers: headers
+        }
+        request(options, function (error, response, body) {
+            try {
+                data_store["iliad"][0] = "true";
+                res.send(data_store);
+            } catch (exeption) {
+                res.sendStatus(503)
+            }
+
+        });
+
+    } else {
+        res.sendStatus(400);
+    }
+})
 
 //recupero password
 app.get('/recover', function (req, res) {
@@ -106,37 +170,63 @@ app.get('/recover', function (req, res) {
     var email = req.query.email;
     var userid = req.query.userid;
     var token = req.query.token;
-    var data_store = { 'iliad': {} };
+    var name = req.query.name;
+    var surname = req.query.surname;
+    var data_store = {
+        'iliad': {}
+    };
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
     };
-    var formData = {
-        login: userid,
-        email: email
-    };
-    var options = {
-        url: ILIAD_BASE_URL + ILIAD_OPTION_URL['recover'],
-        method: 'POST',
-        formData: formData
-    };
 
     if (email != undefined && userid != undefined && token != undefined) {
+        var formData = {
+            login: userid,
+            email: email
+        };
+        var options = {
+            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['recover'],
+            method: 'POST',
+            formData: formData
+        };
 
         request(options, function (error, response, body) {
             try {
                 if (!error && response.statusCode == 200) {
 
-                    const $ = cheerio.load(body);
-                    var results = $('body');
-                    results.each(function (i, result) {
-                        data_store["iliad"][0] = 'true'
-                        res.send(data_store);
-                    });
+                    data_store["iliad"][0] = 'false'
+                    res.send(data_store);
                     //data_store["iliad"][0] = ''; //flash-error
 
                 } else {
                     data_store["iliad"][0] = 'true'
-                    res.send(body);
+                    res.send(data_store);
+                }
+            } catch (exeption) {
+                res.sendStatus(503);
+            }
+        })
+    } else if (email != undefined && name != undefined && surname != undefined && token != undefined) {
+        var formData = {
+            nom: surname,
+            prenom: name,
+            email: email
+        };
+        var options = {
+            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['recover'],
+            method: 'POST',
+            formData: formData
+        };
+
+        request(options, function (error, response, body) {
+            try {
+                if (!error && response.statusCode == 200) {
+                    data_store["iliad"][0] = 'false'
+                    res.send(data_store);
+
+                } else {
+                    data_store["iliad"][0] = 'true'
+                    res.send(data_store);
                 }
             } catch (exeption) {
                 res.sendStatus(503);
@@ -161,7 +251,9 @@ app.get('/information', function (req, res) {
     var email_confirm = req.query.email_confirm;
     var activation_sim = req.query.activation_sim;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
     };
@@ -329,7 +421,9 @@ app.get('/sim', function (req, res) {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
     };
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     if (iccid != undefined && token != undefined) {
         var formData = {
@@ -472,7 +566,9 @@ app.get('/credit', function (req, res) {
 
     var token = req.query.token;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -622,7 +718,7 @@ app.get('/credit', function (req, res) {
                                     for (var y = 0; y < i; y++) {
                                         if (y == t) {
                                             data_store["iliad"][z][x][y] = data[z][y + add] + ': ' + data[z][y + add + 1]
-                                        } else if (y == t + 1) { } else if (y == t + 2) {
+                                        } else if (y == t + 1) {} else if (y == t + 2) {
                                             data_store["iliad"][z][x][t + 1] = data[z][y + add]
                                         } else {
                                             data_store["iliad"][z][x][y] = data[z][y + add]
@@ -659,7 +755,9 @@ app.get('/services', function (req, res) {
     var update = req.query.update;
     var activate = req.query.activate;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -769,7 +867,9 @@ app.get('/document', function (req, res) {
     var doc = req.query.doc;
     var token = req.query.token;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -826,7 +926,9 @@ app.get('/options', function (req, res) {
     var activate = req.query.activate;
     var change_options = req.query.change_options;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -935,7 +1037,9 @@ app.get('/recharge', function (req, res) {
     var payinfocard = req.query.payinfocard;
     var token = req.query.token;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -1011,8 +1115,7 @@ app.get('/recharge', function (req, res) {
                                             if ($(element).attr('value') != '')
                                                 month = month.concat([$(element).attr('value')]);
                                         })
-                                }
-                                else if (index == 1) {
+                                } else if (index == 1) {
                                     $(element).find('option')
                                         .each(function (index, element) {
                                             if ($(element).attr('value') != '')
@@ -1086,7 +1189,9 @@ app.get('/voicemail', function (req, res) {
     var codemessagerie = req.query.codemessagerie;
     var announce = req.query.announce;
 
-    var data_store = { 'iliad': {} };
+    var data_store = {
+        'iliad': {}
+    };
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -1367,7 +1472,9 @@ app.get('/voicemail', function (req, res) {
         //richiesta per aggiungere/eliminare le mail per la notifica della segreteria  
         var url = ILIAD_BASE_URL + ILIAD_OPTION_URL['voicemail'] + '/notifiche?email=' + email + '&action=' + action;
 
-        if (type != undefined) { url += '&type=' + type; }
+        if (type != undefined) {
+            url += '&type=' + type;
+        }
 
         var options = {
             url: url,
@@ -1405,4 +1512,4 @@ app.get('/voicemail', function (req, res) {
 });
 
 
-const server = app.listen(process.env.PORT || 1331, function () { });
+const server = app.listen(process.env.PORT || 1331, function () {});
