@@ -23,6 +23,10 @@ import com.fast0n.ipersonalarea.java.GenerateToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -117,7 +121,7 @@ public class Widget extends AppWidgetProvider {
         String url = (site + "login/?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
         RequestQueue login = Volley.newRequestQueue(context);
         JsonObjectRequest getRequestLogin = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> {
+                (JSONObject response) -> {
 
 
                     try {
@@ -127,6 +131,13 @@ public class Widget extends AppWidgetProvider {
 
                         String stringUser_numtell = json.getString("user_numtell");
                         views.setTextViewText(R.id.user_numtell, stringUser_numtell.replace("Numero: ", ""));
+
+                        Date date = new Date(System.currentTimeMillis());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm",
+                                Locale.ITALIAN);
+                        String var = dateFormat.format(date);
+
+                        views.setTextViewText(R.id.update, "Aggiornato alle "+ var);
 
                     } catch (JSONException ignored) {
                     }

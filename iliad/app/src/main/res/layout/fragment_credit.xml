@@ -51,8 +51,9 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btn_credit_width"
+                android:layout_height="@dimen/btn_credit_height"
+                android:textSize="@dimen/btn_credit_dimens"
                 android:layout_marginEnd="4dp"
                 android:background="@drawable/button_round_red"
                 android:text="@string/chargeNumber"
@@ -61,8 +62,9 @@
 
             <Button
                 android:id="@+id/button1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btn_credit_width"
+                android:layout_height="@dimen/btn_credit_height"
+                android:textSize="@dimen/btn_credit_dimens"
                 android:layout_marginStart="4dp"
                 android:background="@drawable/button_round_red"
                 android:text="@string/consumptiondetail"

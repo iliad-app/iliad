@@ -27,10 +27,10 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:orientation="horizontal"
-            android:paddingBottom="16dp"
+            android:paddingBottom="@dimen/row_credit_padding"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:paddingTop="16dp">
+            android:paddingTop="@dimen/row_credit_padding">
 
 
             <LinearLayout
@@ -45,8 +45,8 @@
 
                 <ImageView
                     android:id="@+id/icon_info"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/row_credit_img"
+                    android:layout_height="@dimen/row_credit_img"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/colorAccent" />
 

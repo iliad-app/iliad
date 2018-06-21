@@ -30,7 +30,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/ll_master_height"
             android:layout_gravity="center"
             android:background="@color/colorPrimary"
             android:orientation="vertical"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="48dp"
+                android:textSize="@dimen/tv_master_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/tv1_master_size" />
 
         </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:id="@+id/viewpager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="@dimen/rv_credit_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

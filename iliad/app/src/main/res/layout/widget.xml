@@ -22,8 +22,8 @@
             android:paddingRight="10dp">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/row_info_img"
+                android:layout_height="@dimen/row_info_img"
                 android:layout_gravity="center"
                 android:src="@mipmap/ic_launcher_round" />
 
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:text="100€"
                 android:textColor="@android:color/black"
                 android:textSize="10sp"
@@ -43,8 +43,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingBottom="15dp"
                 android:text="3290000000"
+                android:textColor="@android:color/black"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <TextView
+                android:id="@+id/update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textColor="@android:color/black"
                 android:textSize="10sp"
                 tools:ignore="HardcodedText,SpUsage" />
@@ -149,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
+                android:paddingBottom="5dp"
                 android:paddingTop="10dp">
 
                 <LinearLayout
@@ -175,7 +183,7 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
-                            android:layout_width="130dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent">
 
                             <ProgressBar
@@ -200,27 +208,6 @@
                                 android:textSize="10sp"
                                 tools:ignore="SmallSp" />
                         </RelativeLayout>
-
-
-                        <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/button"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:animateFirstView="true"
-                            android:autoStart="true"
-                            android:flipInterval="10000"
-                            android:gravity="center"
-                            android:inAnimation="@android:anim/fade_in"
-                            android:outAnimation="@android:anim/fade_out">
-
-                            <ImageButton
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@drawable/ic_refresh"
-                                android:contentDescription="Aggiorna"
-                                android:gravity="center"
-                                tools:ignore="HardcodedText" />
-                        </ViewFlipper>
 
                     </LinearLayout>
 
