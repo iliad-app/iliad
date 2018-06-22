@@ -3,6 +3,7 @@ package com.fast0n.ipersonalarea;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -36,8 +38,6 @@ public class ChangeEmailActivity extends AppCompatActivity {
     private EditText edt_email;
     private EditText edt_password;
     private Button btn_change_email;
-    private ProgressBar loading;
-    private CardView cardView;
 
     private static boolean isEmail(String email) {
         String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
@@ -70,15 +70,9 @@ public class ChangeEmailActivity extends AppCompatActivity {
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
         // java adresses
-        cardView = findViewById(R.id.cardView);
         edt_email = findViewById(R.id.edt_email);
         edt_password = findViewById(R.id.edt_password);
         btn_change_email = findViewById(R.id.btn_change_email);
-        loading = findViewById(R.id.progressBar);
-        CubeGrid cubeGrid = new CubeGrid();
-        loading.setIndeterminateDrawable(cubeGrid);
-        cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
-
         btn_change_email.setOnClickListener(v -> {
 
             byte[] decodeValue1 = Base64.decode(password, Base64.DEFAULT);
@@ -89,11 +83,11 @@ public class ChangeEmailActivity extends AppCompatActivity {
                     && edt_password.getText().toString().length() != 0
                     && edt_email.getText().toString().length() != 0) {
                 if (isEmail(edt_email.getText().toString())) {
+
+                    InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     String url = site_url + "?email=" + edt_email.getText().toString() + "&email_confirm="
                             + edt_email.getText().toString() + "&password=" + password.replaceAll("\\s+", "") + "&token=" + token;
-
-                    loading.setVisibility(View.VISIBLE);
-                    cardView.setVisibility(View.INVISIBLE);
                     changeMail(url);
 
 
@@ -115,6 +109,20 @@ public class ChangeEmailActivity extends AppCompatActivity {
     }
 
     private void changeMail(String url) {
+
+        final ProgressBar loading;
+        final ConstraintLayout layout;
+
+        layout = findViewById(R.id.constraint);
+
+        loading = findViewById(R.id.progressBar);
+        CubeGrid cubeGrid = new CubeGrid();
+        loading.setIndeterminateDrawable(cubeGrid);
+        cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+
+
+        layout.setVisibility(View.INVISIBLE);
+        loading.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(ChangeEmailActivity.this);
 

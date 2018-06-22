@@ -2,14 +2,17 @@ package com.fast0n.ipersonalarea;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.java.GenerateToken;
+import com.github.ybq.android.spinkit.style.CubeGrid;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,6 +83,23 @@ public class ForgetActivity extends AppCompatActivity {
             if (id.getVisibility() == View.VISIBLE) {
 
                 if (edt_id.getText().toString().length() == 8 && isEmail(edt_email.getText().toString())) {
+
+                    InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    final ProgressBar loading;
+                    final ConstraintLayout layout;
+
+                    layout = findViewById(R.id.constraint);
+
+                    loading = findViewById(R.id.progressBar);
+                    CubeGrid cubeGrid = new CubeGrid();
+                    loading.setIndeterminateDrawable(cubeGrid);
+                    cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+
+                    layout.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.VISIBLE);
+
                     String site_url = getString(R.string.site_url) + getString(R.string.recover) + "?userid=" + edt_id.getText().toString() + "&email=" + edt_email.getText().toString() + "&token=" + token;
                     RequestQueue queue = Volley.newRequestQueue(ForgetActivity.this);
 
@@ -93,6 +114,7 @@ public class ForgetActivity extends AppCompatActivity {
 
                                     Toasty.success(ForgetActivity.this, "fatto", Toast.LENGTH_LONG,
                                             true).show();
+                                    finish();
 
                                 } catch (JSONException ignored) {
                                 }
@@ -105,6 +127,8 @@ public class ForgetActivity extends AppCompatActivity {
                             int error_code = error.networkResponse.statusCode;
 
                             if (error_code == 400) {
+                                layout.setVisibility(View.VISIBLE);
+                                loading.setVisibility(View.INVISIBLE);
                                 Toasty.warning(ForgetActivity.this, getString(R.string.email_wrong), Toast.LENGTH_LONG,
                                         true).show();
                             }
@@ -124,6 +148,23 @@ public class ForgetActivity extends AppCompatActivity {
             } else {
 
                 if (edt_surname.getText().toString().length() != 0 && edt_name.getText().toString().length() != 0 && isEmail(edt_email.getText().toString())) {
+
+                    InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    final ProgressBar loading;
+                    final ConstraintLayout layout;
+
+                    layout = findViewById(R.id.constraint);
+
+                    loading = findViewById(R.id.progressBar);
+                    CubeGrid cubeGrid = new CubeGrid();
+                    loading.setIndeterminateDrawable(cubeGrid);
+                    cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+
+                    layout.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.VISIBLE);
+
                     String site_url = getString(R.string.site_url) + getString(R.string.recover) + "?surname=" + edt_surname.getText().toString() + "&name=" + edt_name.getText().toString() + "&email=" + edt_email.getText().toString() + "&token=" + token;
 
                     RequestQueue queue = Volley.newRequestQueue(ForgetActivity.this);
@@ -139,6 +180,7 @@ public class ForgetActivity extends AppCompatActivity {
 
                                     Toasty.success(ForgetActivity.this, "fatto", Toast.LENGTH_LONG,
                                             true).show();
+                                    finish();
 
                                 } catch (JSONException ignored) {
                                 }
@@ -150,6 +192,8 @@ public class ForgetActivity extends AppCompatActivity {
                             int error_code = error.networkResponse.statusCode;
 
                             if (error_code == 400) {
+                                layout.setVisibility(View.VISIBLE);
+                                loading.setVisibility(View.INVISIBLE);
                                 Toasty.warning(ForgetActivity.this, getString(R.string.email_wrong), Toast.LENGTH_LONG,
                                         true).show();
                             }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -37,7 +38,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText edt_password;
     private Button btn_password;
     private ProgressBar loading;
-    private CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +62,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         final String token = extras.getString("token", null);
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
-        // java adresses
-        cardView = findViewById(R.id.cardView);
+        // java adresse
         edt_newpassword = findViewById(R.id.edt_newpassword);
         edt_password = findViewById(R.id.edt_oldpassword);
         btn_password = findViewById(R.id.btn_password);
-        loading = findViewById(R.id.progressBar);
-        CubeGrid cubeGrid = new CubeGrid();
-        loading.setIndeterminateDrawable(cubeGrid);
-        cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
 
         btn_password.setOnClickListener(v -> {
 
@@ -96,13 +91,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         + "&token=" + token;
 
 
-                loading.setVisibility(View.VISIBLE);
-                cardView.setVisibility(View.INVISIBLE);
                 changePassword(url, newpassword.replaceAll("\\s+", ""));
                 btn_password.setEnabled(false);
             } else {
-                loading.setVisibility(View.INVISIBLE);
-                cardView.setVisibility(View.VISIBLE);
                 btn_password.setEnabled(true);
                 Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                         true).show();
@@ -112,6 +103,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword(String url, final String password) {
+
+        final ProgressBar loading;
+        final ConstraintLayout layout;
+
+        layout = findViewById(R.id.constraint);
+
+        loading = findViewById(R.id.progressBar);
+        CubeGrid cubeGrid = new CubeGrid();
+        loading.setIndeterminateDrawable(cubeGrid);
+        cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+
+
+        layout.setVisibility(View.INVISIBLE);
+        loading.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
 
