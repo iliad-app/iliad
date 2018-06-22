@@ -112,7 +112,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         loading = findViewById(R.id.progressBar);
         CubeGrid cubeGrid = new CubeGrid();
         loading.setIndeterminateDrawable(cubeGrid);
-        cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+        cubeGrid.setColor(getResources().getColor(android.R.color.white));
 
 
         layout.setVisibility(View.INVISIBLE);

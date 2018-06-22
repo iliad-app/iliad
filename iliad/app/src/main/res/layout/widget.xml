@@ -243,15 +243,6 @@
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
-        <ImageButton
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_refresh"
-            android:contentDescription="Aggiorna"
-            tools:ignore="HardcodedText" />
-
     </LinearLayout>
 
 

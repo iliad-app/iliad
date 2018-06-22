@@ -95,55 +95,17 @@ public class ForgetActivity extends AppCompatActivity {
                     loading = findViewById(R.id.progressBar);
                     CubeGrid cubeGrid = new CubeGrid();
                     loading.setIndeterminateDrawable(cubeGrid);
-                    cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+                    cubeGrid.setColor(getResources().getColor(android.R.color.white));
 
                     layout.setVisibility(View.INVISIBLE);
                     loading.setVisibility(View.VISIBLE);
 
                     String site_url = getString(R.string.site_url) + getString(R.string.recover) + "?userid=" + edt_id.getText().toString() + "&email=" + edt_email.getText().toString() + "&token=" + token;
-                    RequestQueue queue = Volley.newRequestQueue(ForgetActivity.this);
 
-                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url, null,
-                            response -> {
-                                try {
-
-                                    JSONObject json_raw = new JSONObject(response.toString());
-                                    String iliad = json_raw.getString("iliad");
-
-                                    JSONObject json = new JSONObject(iliad);
-
-                                    Toasty.success(ForgetActivity.this, "fatto", Toast.LENGTH_LONG,
-                                            true).show();
-                                    finish();
-
-                                } catch (JSONException ignored) {
-                                }
-
-                            }, error -> {
+                    requests(site_url, layout, loading);
 
 
-                        try {
-
-                            int error_code = error.networkResponse.statusCode;
-
-                            if (error_code == 400) {
-                                layout.setVisibility(View.VISIBLE);
-                                loading.setVisibility(View.INVISIBLE);
-                                Toasty.warning(ForgetActivity.this, getString(R.string.email_wrong), Toast.LENGTH_LONG,
-                                        true).show();
-                            }
-                        } catch (Exception ignored) {
-                        }
-
-
-                    });
-
-                    queue.add(getRequest);
-                } else {
-                    Toasty.warning(ForgetActivity.this, getString(R.string.error_forget), Toast.LENGTH_LONG,
-                            true).show();
                 }
-
 
             } else {
 
@@ -160,53 +122,19 @@ public class ForgetActivity extends AppCompatActivity {
                     loading = findViewById(R.id.progressBar);
                     CubeGrid cubeGrid = new CubeGrid();
                     loading.setIndeterminateDrawable(cubeGrid);
-                    cubeGrid.setColor(getResources().getColor(R.color.colorWhite));
+                    cubeGrid.setColor(getResources().getColor(android.R.color.white));
 
                     layout.setVisibility(View.INVISIBLE);
                     loading.setVisibility(View.VISIBLE);
 
                     String site_url = getString(R.string.site_url) + getString(R.string.recover) + "?surname=" + edt_surname.getText().toString() + "&name=" + edt_name.getText().toString() + "&email=" + edt_email.getText().toString() + "&token=" + token;
 
-                    RequestQueue queue = Volley.newRequestQueue(ForgetActivity.this);
 
-                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url, null,
-                            response -> {
-                                try {
+                    requests(site_url, layout, loading);
 
-                                    JSONObject json_raw = new JSONObject(response.toString());
-                                    String iliad = json_raw.getString("iliad");
-
-                                    JSONObject json = new JSONObject(iliad);
-
-                                    Toasty.success(ForgetActivity.this, "fatto", Toast.LENGTH_LONG,
-                                            true).show();
-                                    finish();
-
-                                } catch (JSONException ignored) {
-                                }
-
-                            }, error -> {
-
-                        try {
-
-                            int error_code = error.networkResponse.statusCode;
-
-                            if (error_code == 400) {
-                                layout.setVisibility(View.VISIBLE);
-                                loading.setVisibility(View.INVISIBLE);
-                                Toasty.warning(ForgetActivity.this, getString(R.string.email_wrong), Toast.LENGTH_LONG,
-                                        true).show();
-                            }
-                        } catch (Exception ignored) {
-                        }
-
-                    });
-
-                    queue.add(getRequest);
-                } else {
-                    Toasty.warning(ForgetActivity.this, getString(R.string.error_forget1), Toast.LENGTH_LONG,
-                            true).show();
                 }
+
+
 
 
             }
@@ -226,6 +154,58 @@ public class ForgetActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void requests(String site_url, ConstraintLayout layout, ProgressBar loading) {
+        RequestQueue queue = Volley.newRequestQueue(ForgetActivity.this);
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url, null,
+                response -> {
+                    try {
+
+                        JSONObject json_raw = new JSONObject(response.toString());
+                        String iliad = json_raw.getString("iliad");
+
+                        JSONObject json = new JSONObject(iliad);
+                        String string_response = json.getString("0");
+
+                        if (string_response.equals("true")){
+                            Toasty.success(ForgetActivity.this, "Fatto", Toast.LENGTH_LONG,
+                                    true).show();
+                            finish();
+                        }
+                        else{
+                            Toasty.warning(ForgetActivity.this, getString(R.string.error_forget1), Toast.LENGTH_LONG,
+                                    true).show();
+                        }
+
+
+
+
+                    } catch (JSONException ignored) {
+                    }
+
+                }, error -> {
+
+
+            try {
+
+                int error_code = error.networkResponse.statusCode;
+
+                if (error_code == 400) {
+                    layout.setVisibility(View.VISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
+                    Toasty.warning(ForgetActivity.this, getString(R.string.email_wrong), Toast.LENGTH_LONG,
+                            true).show();
+                }
+            } catch (Exception ignored) {
+            }
+
+
+        });
+
+        queue.add(getRequest);
 
     }
 
