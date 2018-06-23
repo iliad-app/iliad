@@ -33,6 +33,7 @@
             android:paddingTop="5dp">
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -90,10 +91,22 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="2dp"
-                android:layout_marginStart="2dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/ic_play"
-                android:textSize="14sp"
                 app:ignore="UnknownIdInLayout"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@+id/button2"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageButton
+                android:visibility="gone"
+                android:id="@+id/button2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="2dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_share"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />

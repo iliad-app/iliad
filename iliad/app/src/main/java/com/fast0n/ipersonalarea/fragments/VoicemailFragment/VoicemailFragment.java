@@ -44,7 +44,13 @@ public class VoicemailFragment extends Fragment {
     public VoicemailFragment() {
     }
 
-
+    boolean isEmail(String email) {
+        String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
+        CharSequence inputString = email;
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputString);
+        return matcher.matches();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,7 +104,6 @@ public class VoicemailFragment extends Fragment {
         TextView textvoicemail, customization, notification;
 
         // java adresses
-        //https://www.youtube.com/watch?v=in5qEVti8EM
         button = view.findViewById(R.id.button);
         cardView1 = view.findViewById(R.id.cardView1);
         editText = view.findViewById(R.id.editText);
@@ -120,45 +125,34 @@ public class VoicemailFragment extends Fragment {
         spinner.setAdapter(spinnerArrayAdapter);
 
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isEmail(editText.getText().toString())) {
-                    String montant = spinner.getSelectedItem().toString();
+        button.setOnClickListener(v -> {
+            if (isEmail(editText.getText().toString())) {
+                String montant = spinner.getSelectedItem().toString();
 
-                    RequestQueue queue = Volley.newRequestQueue(context);
-                    final String site_url = getString(R.string.site_url) + getString(R.string.voicemail);
+                RequestQueue queue = Volley.newRequestQueue(context);
+                final String site_url = getString(R.string.site_url) + getString(R.string.voicemail);
 
-                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + "?email=" + editText.getText().toString() + "&action=add&type=" + montant.replace("Notifica inviata via email", "report").replace("File audio inviato in allegato", "attachment") + "&token=" + token, null,
-                            response -> {
-                                try {
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + "?email=" + editText.getText().toString() + "&action=add&type=" + montant.replace("Notifica inviata via email", "report").replace("File audio inviato in allegato", "attachment") + "&token=" + token, null,
+                        response -> {
+                            try {
 
-                                    JSONObject json_raw = new JSONObject(response.toString());
-                                    String iliad = json_raw.getString("iliad");
+                                JSONObject json_raw = new JSONObject(response.toString());
+                                String iliad = json_raw.getString("iliad");
 
-                                    JSONObject json = new JSONObject(iliad);
+                                JSONObject json = new JSONObject(iliad);
 
-                                } catch (JSONException ignored) {
-                                }
+                            } catch (JSONException ignored) {
+                            }
 
-                            }, error -> {
+                        }, error -> {
 
-                    });
+                });
 
-                    queue.add(getRequest);
+                queue.add(getRequest);
 
-                } else {
-                    Toasty.warning(context, getString(R.string.email_wrong), Toast.LENGTH_LONG,
-                            true).show();
-                }
-            }
-
-            boolean isEmail(String email) {
-                String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
-                CharSequence inputString = email;
-                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(inputString);
-                return matcher.matches();
+            } else {
+                Toasty.warning(context, getString(R.string.email_wrong), Toast.LENGTH_LONG,
+                        true).show();
             }
         });
 

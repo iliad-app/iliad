@@ -1,10 +1,15 @@
 package com.fast0n.ipersonalarea.fragments.VoicemailFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -19,7 +24,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,6 +41,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
     private boolean playPause;
     private boolean initialStage = true;
 
+
     CustomAdapterVoicemail(List<DataVoicemailFragments> conditionList, Context context) {
         this.conditionList = conditionList;
         this.context = context;
@@ -45,6 +50,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DataVoicemailFragments c = conditionList.get(position);
+        final String site_url = context.getString(R.string.site_url) + context.getString(R.string.voicemail);
 
 
         holder.textView.setText(c.num_tell);
@@ -56,7 +62,6 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         }
 
         holder.button.setOnClickListener(v -> {
-            final String site_url = context.getString(R.string.site_url) + context.getString(R.string.voicemail);
 
             String url = site_url + "?deleteaudio=true&idaudio=" + c.id + "&token=" + c.token;
 
@@ -92,6 +97,29 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         });
 
 
+        holder.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String url = site_url +"?idaudio=" + c.id + "&token=" + c.token + ".ogg";
+
+
+
+                Uri uri = Uri.parse("https://avatars2.githubusercontent.com/u/5260133?s=88&v=4");
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("image/jpeg");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                Intent chooserIntent = Intent.createChooser(shareIntent, "Pippo");
+                context.startActivity(chooserIntent);
+
+
+
+
+            }
+        });
+
+
         holder.button1.setOnClickListener(new View.OnClickListener() {
 
 
@@ -105,8 +133,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
 
                     if (initialStage) {
 
-                        final String site_url = context.getString(R.string.site_url);
-                        new Player().execute(site_url + "?idaudio=" + c.id + "&token=" + c.token);
+                        new Player().execute(site_url +"?idaudio=" + c.id + "&token=" + c.token);
                     } else {
                         if (!mediaPlayer.isPlaying())
                             mediaPlayer.start();
@@ -193,7 +220,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         final TextView textView;
         final TextView textView1;
         final ImageButton button;
-        final ImageButton button1;
+        final ImageButton button1, button2;
         final RecyclerView recyclerView;
 
 
@@ -202,6 +229,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
             textView = view.findViewById(R.id.textView);
             textView1 = view.findViewById(R.id.textView1);
             button1 = view.findViewById(R.id.button1);
+            button2 = view.findViewById(R.id.button2);
             button = view.findViewById(R.id.button);
             recyclerView = view.findViewById(R.id.recycler_view);
 

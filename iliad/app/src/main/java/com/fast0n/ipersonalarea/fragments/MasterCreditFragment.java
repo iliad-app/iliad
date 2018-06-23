@@ -1,9 +1,11 @@
 package com.fast0n.ipersonalarea.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +20,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.fast0n.ipersonalarea.ChargeActivity;
+import com.fast0n.ipersonalarea.ConsumptionDetailsActivity.ConsumptionDetailsActivity;
 import com.fast0n.ipersonalarea.R;
 import com.fast0n.ipersonalarea.fragments.CreditFragment.CreditFragment;
 import com.fast0n.ipersonalarea.fragments.CreditRoamingFragment.CreditRoamingFragment;
@@ -42,12 +46,14 @@ public class MasterCreditFragment extends Fragment {
 
         final Context context;
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
+        BottomNavigationView bottomNavigationView;
 
         // java adresses
-        View view = inflater.inflate(R.layout.fragment_master_credit, container, false);
+        View view = inflater.inflate(R.layout.fragment_credit_master, container, false);
         ViewPager viewPager = view.findViewById(R.id.viewpager);
-        final TextView credit = view.findViewById(R.id.creditText);
-        final TextView description = view.findViewById(R.id.descriptionText);
+        TextView credit = view.findViewById(R.id.creditText);
+        TextView description = view.findViewById(R.id.descriptionText);
+        bottomNavigationView = view.findViewById(R.id.bottom_navigation);
 
 
         SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
@@ -55,7 +61,7 @@ public class MasterCreditFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         editor.apply();
 
-        final String site_url = getString(R.string.site_url) + getString(R.string.credit);
+        String site_url = getString(R.string.site_url) + getString(R.string.credit);
         String url = site_url + "?credit=true&token=" + token;
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -74,6 +80,24 @@ public class MasterCreditFragment extends Fragment {
 
                         credit.setText(stringCredit.split("&")[0]);
                         description.setText(stringCredit.split("&")[1]);
+
+                        bottomNavigationView.setOnNavigationItemSelectedListener(
+                                item -> {
+                                    switch (item.getItemId()) {
+                                        case R.id.button:
+                                            Intent intent1 = new Intent(context, ChargeActivity.class);
+                                            intent1.putExtra("token", token);
+                                            startActivity(intent1);
+
+                                            break;
+                                        case R.id.button1:
+                                            Intent intent = new Intent(context, ConsumptionDetailsActivity.class);
+                                            intent.putExtra("token", token);
+                                            startActivity(intent);
+                                            break;
+                                    }
+                                    return true;
+                                });
 
                     } catch (JSONException ignored) {
                     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/button"
+        android:icon="@drawable/ic_credit_card"
+        android:title="@string/chargeNumber"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/button1"
+        android:icon="@drawable/ic_info"
+        android:title="@string/consumptiondetail"
+        app:showAsAction="ifRoom" />
+</menu>

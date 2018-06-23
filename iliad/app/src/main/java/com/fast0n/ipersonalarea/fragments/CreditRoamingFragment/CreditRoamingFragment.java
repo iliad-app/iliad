@@ -9,15 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.fast0n.ipersonalarea.ChargeActivity;
-import com.fast0n.ipersonalarea.ConsumptionDetailsActivity.ConsumptionRoamingDetailActivity;
 import com.fast0n.ipersonalarea.LoginActivity;
 import com.fast0n.ipersonalarea.R;
 import com.github.ybq.android.spinkit.style.CubeGrid;
@@ -34,7 +31,6 @@ public class CreditRoamingFragment extends Fragment {
 
     ProgressBar loading;
     Context context;
-    Button button, button1;
     PullToRefreshRecyclerView recyclerView;
     List<DataCreditRoamingFragments> creditEsteroList = new ArrayList<>();
 
@@ -52,12 +48,7 @@ public class CreditRoamingFragment extends Fragment {
         CubeGrid cubeGrid = new CubeGrid();
         loading.setIndeterminateDrawable(cubeGrid);
         cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
-        button = view.findViewById(R.id.button);
-        button1 = view.findViewById(R.id.button1);
         recyclerView = view.findViewById(R.id.recycler_view);
-
-        button.setVisibility(View.INVISIBLE);
-        button1.setVisibility(View.INVISIBLE);
 
         final Bundle extras = getActivity().getIntent().getExtras();
         assert extras != null;
@@ -66,20 +57,7 @@ public class CreditRoamingFragment extends Fragment {
         final String site_url = getString(R.string.site_url) + getString(R.string.credit);
         String url = site_url + "?estero=true&token=" + token;
 
-        getObject(url, context, view);
-
-        button1.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ConsumptionRoamingDetailActivity.class);
-            intent.putExtra("token", token);
-            startActivity(intent);
-        });
-
-
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ChargeActivity.class);
-            intent.putExtra("token", token);
-            startActivity(intent);
-        });
+        getObject(url, context);
 
         recyclerView.setSwipeEnable(true);
         LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -91,13 +69,13 @@ public class CreditRoamingFragment extends Fragment {
             creditEsteroList.removeAll(creditEsteroList);
             CustomAdapterCreditRoaming ca = new CustomAdapterCreditRoaming(context, creditEsteroList);
             recyclerView.setAdapter(ca);
-            getObject(url, context, view);
+            getObject(url, context);
         });
 
         return view;
     }
 
-    private void getObject(String url, final Context context, View view) {
+    private void getObject(String url, final Context context) {
 
         // java adresses
         loading.setVisibility(View.VISIBLE);
@@ -111,22 +89,6 @@ public class CreditRoamingFragment extends Fragment {
                         String iliad = json_raw.getString("iliad");
 
                         JSONObject json = new JSONObject(iliad);
-
-                        String string1 = json.getString("0");
-                        JSONObject json_strings1 = new JSONObject(string1);
-                        String btn = json_strings1.getString("1");
-                        String btn1 = json_strings1.getString("2");
-
-                        if (btn.equals("true"))
-                            button.setVisibility(View.VISIBLE);
-                        else
-                            button.setVisibility(View.INVISIBLE);
-
-                        if (btn1.equals("true"))
-                            button1.setVisibility(View.VISIBLE);
-                        else
-                            button1.setVisibility(View.INVISIBLE);
-
 
                         for (int j = 1; j < json.length(); j++) {
 

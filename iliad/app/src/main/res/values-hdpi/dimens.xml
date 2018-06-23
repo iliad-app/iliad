@@ -1,9 +1,6 @@
 <resources>
 
 
-    <dimen name="btn_credit_width">145dp</dimen>
-    <dimen name="btn_credit_height">30dp</dimen>
-    <dimen name="btn_credit_dimens">8sp</dimen>
     <dimen name="row_credit_img">25dp</dimen>
     <dimen name="row_credit_padding">8dp</dimen>
     <dimen name="rv_credit_height">60dp</dimen>

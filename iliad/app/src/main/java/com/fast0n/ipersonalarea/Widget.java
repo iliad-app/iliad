@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
@@ -33,6 +34,7 @@ import static android.view.View.VISIBLE;
 
 
 public class Widget extends AppWidgetProvider {
+    Boolean status;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -106,9 +108,9 @@ public class Widget extends AppWidgetProvider {
 
                 loading(site_url, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
 
-            }
 
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+
+            }
 
 
         }
@@ -116,8 +118,8 @@ public class Widget extends AppWidgetProvider {
     }
 
     private void loading(String site, String userid, String password, Context context, RemoteViews views, int[] appWidgetIds, AppWidgetManager appWidgetManager, int appWidgetId) {
+        status = true;
         final String token = GenerateToken.randomString(20);
-
         String url = (site + "login/?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
         RequestQueue login = Volley.newRequestQueue(context);
         JsonObjectRequest getRequestLogin = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -137,7 +139,7 @@ public class Widget extends AppWidgetProvider {
                                 Locale.ITALIAN);
                         String var = dateFormat.format(date);
 
-                        views.setTextViewText(R.id.update, "Aggiornato alle "+ var);
+                        views.setTextViewText(R.id.update, "Aggiornato alle " + var);
 
                     } catch (JSONException ignored) {
                     }
@@ -148,10 +150,13 @@ public class Widget extends AppWidgetProvider {
                     intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
                     context.sendBroadcast(intent1);
 
+
                     String url1 = site + "credit/?credit=true&token=" + token;
+
                     RequestQueue creditqueue = Volley.newRequestQueue(context);
                     JsonObjectRequest getRequestCredit = new JsonObjectRequest(Request.Method.GET, url1, null,
                             response1 -> {
+
                                 try {
 
                                     JSONObject json_raw = new JSONObject(response1.toString());
@@ -223,7 +228,6 @@ public class Widget extends AppWidgetProvider {
                     });
                     creditqueue.add(getRequestCredit);
 
-
                 }, error1 -> {
 
             try {
@@ -237,8 +241,14 @@ public class Widget extends AppWidgetProvider {
 
         });
 
-        login.add(getRequestLogin);
+
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+
+                login.add(getRequestLogin);
+
+            }, 30000 );
+
+
     }
-
-
 }

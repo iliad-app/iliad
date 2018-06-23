@@ -367,8 +367,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 RequestQueue queue = Volley.newRequestQueue(HomeActivity.this);
 
-                String site_url = getString(R.string.site_url) + getString(R.string.alert);
-                String url = site_url;
+                String url = getString(R.string.site_url) + getString(R.string.alert);
 
                 JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         response -> {
