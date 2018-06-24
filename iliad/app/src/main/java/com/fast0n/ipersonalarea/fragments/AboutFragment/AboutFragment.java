@@ -49,17 +49,16 @@ public class AboutFragment extends Fragment {
                         R.drawable.ic_info_outline));
         DataAboutFragments.add(new DataAboutFragment(getString(R.string.source_code), R.drawable.ic_github));
         DataAboutFragments.add(new DataAboutFragment(getString(R.string.donate), R.drawable.ic_credit));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Massimiliano Montaleone</small>",
+        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Massimiliano Montaleone (Fast0n)</small>",
                 R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.follow) + "<br><small>@Fast0n</small>", R.drawable.ic_instagram));
-
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Matteo Monteleone</small>",
+        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Matteo Monteleone (MattVoid)</small>",
                 R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.follow) + "<br><small>@matte_monteleone</small>", R.drawable.ic_instagram));
-
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Domenico Majorana</small>",
+        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Domenico Majorana (Nicuz)</small>",
                 R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.follow) + "<br><small>@nicuz06</small>", R.drawable.ic_instagram));
+        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Luca Stefani (luca020400)</small>",
+                R.drawable.ic_user));
+        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Andrea Crescentini (ElCresh)</small>",
+                R.drawable.ic_user));
 
         DataAboutFragments.add(new DataAboutFragment(getString(R.string.content), R.drawable.ic_warning));
 
@@ -75,30 +74,24 @@ public class AboutFragment extends Fragment {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fast0n/iliad")));
                     break;
                 case 2:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/Fast0n/0.5")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/Fast0n/1.0")));
                     break;
                 case 3:
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fast0n/")));
                     break;
                 case 4:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/fast0n/")));
-                    break;
-                case 5:
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/mattvoid/")));
                     break;
-
-                case 6:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/matte_monteleone/")));
-                    break;
-                case 7:
+                case 5:
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Nicuz/")));
                     break;
-
-                case 8:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/nicuz06/")));
+                case 6:
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/luca020400/")));
                     break;
-
-                case 9:
+                case 7:
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ElCresh/")));
+                    break;
+                case 8:
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Fast0n/iliad/blob/master/LICENSE")));
                     break;
 

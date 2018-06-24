@@ -185,7 +185,7 @@ public class SimFragments extends Fragment {
                         String shipping = json_shipping.getString("0");
                         String order_shipped = json_shipping.getString("1");
                         String tracking = json_shipping.getString("2");
-                        final String tracking_url = json_shipping.getString("3");
+
 
                         tvshipping.setText(shipping);
                         tvorder_shipped.setText(order_shipped);
@@ -209,15 +209,22 @@ public class SimFragments extends Fragment {
                         }
 
 
-                        cardView3.setOnClickListener(v -> {
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(tracking_url));
-                            startActivity(i);
-                        });
+                        try{
+                            String tracking_url = json_shipping.getString("3");
+                            cardView3.setVisibility(View.VISIBLE);
+                            cardView3.setOnClickListener(v -> {
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(tracking_url));
+                                startActivity(i);
+                            });
+                        }
+                        catch (Exception ignored){
+                            cardView3.setVisibility(View.GONE);}
+
 
                         cardView1.setVisibility(View.VISIBLE);
                         cardView2.setVisibility(View.VISIBLE);
-                        cardView3.setVisibility(View.VISIBLE);
+
                         loading.setVisibility(View.INVISIBLE);
 
                     } catch (JSONException ignored) {

@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.fast0n.ipersonalarea.java.GenerateToken;
+import com.fast0n.ipersonalarea.java.myDbAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,10 +36,14 @@ import static android.view.View.VISIBLE;
 
 public class Widget extends AppWidgetProvider {
     Boolean status;
+    myDbAdapter helper;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
+
+            helper = new myDbAdapter(context);
+
 
             RequestOptions options = new RequestOptions().override(50, 50);
             RemoteViews views = new RemoteViews(context.getPackageName(),
@@ -84,8 +89,8 @@ public class Widget extends AppWidgetProvider {
             editor.apply();
             final String site_url = context.getString(R.string.site_url);
 
-            String userid = settings.getString("userid", null);
-            String password = settings.getString("password", null);
+            String userid = helper.getUserID();
+            String password = helper.getPassword();
 
 
             Intent intent1 = new Intent(context, Widget.class);

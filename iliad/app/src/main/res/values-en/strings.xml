@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_login">Login</string>
+    <string name="edt_id">User ID</string>
+    <string name="active">Enabled</string>
+    <string name="error_login">Incorrect user ID or password.</string>
+    <string name="error_forget">Incorrect user ID or email.</string>
+    <string name="error_forget1">Empty filed or incorrect email.</string>
+    <!-- SimFragments -->
+    <string name="error_iccid">Enter the 19 digit code</string>
+    <string name="tv_edit">Review</string>
+    <string name="tv_show">Show</string>
+    <string name="coming_soon">Features coming soon</string>
+    <!-- ChangeEmailActivity -->
+    <string name="change_email_title">Change Email</string>
+    <string name="btn_change_email">Change Email</string>
+    <string name="tv_email">Email</string>
+    <string name="new_email">New Email</string>
+    <string name="email_wrong">Insert a valid email</string>
+    <string name="email_change_success">Your email address has been changed successfully.</string>
+    <!-- ChangePasswordActivity -->
+    <string name="change_password_title">Change Password</string>
+    <string name="edt_newpassword">New Password</string>
+    <string name="edt_oldpassword">Old Password</string>
+    <string name="btn_change_password">Change Password</string>
+    <string name="password_change_success">Your password was changed successfully.</string>
+    <string name="wrong_password">Wrong password</string>
+    <!-- drawer_menu -->
+    <string name="nav_credit">Consumption and credit</string>
+    <string name="nav_sim">Activation of sim</string>
+    <string name="nav_info">My personal information</string>
+    <string name="nav_conditions">The conditions of my offer</string>
+    <string name="nav_options">My options</string>
+    <string name="nav_services">My services</string>
+    <string name="nav_aboutus">About us</string>
+    <string name="split_menu">Info</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_logout">Exit</string>
+    <!-- ErrorConnectionActivity -->
+    <string name="errorconnection">No internet connection</string>
+    <string name="errorconnection_one">Reconnect your device and try again…</string>
+    <string name="italy">Italy</string>
+    <string name="estero">Roaming</string>
+    <!-- AboutActivity -->
+    <string name="reload">Charging</string>
+    <string name="toggle_enable">Enabled</string>
+    <string name="toggle_disable">Not active</string>
+    <string name="version">Version</string>
+    <string name="source_code">Source Code</string>
+    <string name="author">Author</string>
+    <string name="content">The app was created unofficially ILIAD SPA. is not responsible in any way</string>
+    <string name="donate">Buy us a beer</string>
+    <string name="follow">Follow me on instagram</string>
+    <string name="old_version_title">Obsolete version</string>
+    <string name="old_version">Update the application and try again…</string>
+    <string name="update">Update</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dialog_exit">Are you sure you want to quit?</string>
+    <string name="press_back">Press again to exit</string>
+    <!-- link request -->
+    <string name="loading">Loading…</string>
+    <string name="consumptiondetail">Consumption detail</string>
+    <string name="consumptionroamingdetail">Detail external consumption</string>
+    <string name="stay_connected">Stay connected</string>
+    <string name="nav_contactus">Contact Us</string>
+    <string name="warning">Warning</string>
+    <string name="accept">I have read</string>
+    <string name="chargeNumber">Recharge your number</string>
+    <string name="edtExpiration">Expiration date</string>
+    <string name="edtCard">Card number</string>
+    <string name="missing">missing</string>
+    <string name="wrong_credit_card">Invalid credit card</string>
+    <string name="nav_voicemail">Answering machine</string>
+    <string name="add_access">Enter your logon credentials</string>
+    <string name="your_email">Your email</string>
+    <string name="edt_id_forget">User ID (8 digits)</string>
+    <string name="edt_surname_forget">Last name</string>
+    <string name="edt_name_forget">Name</string>
+    <string name="tv_title_foget">Forgotten Password</string>
+    <string name="edt_email_forget">Your email</string>
+    <string name="done_forget">Confirmation</string>
+    <string name="tv_forget_id">Don\'t know your user ID?</string>
+    <string name="tv_forget_password">Have you forgotten your password or lost your user ID?</string>
+</resources>

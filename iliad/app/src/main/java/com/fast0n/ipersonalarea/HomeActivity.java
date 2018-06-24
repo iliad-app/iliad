@@ -36,8 +36,10 @@ import com.fast0n.ipersonalarea.fragments.InfoFragments.InfoFragments;
 import com.fast0n.ipersonalarea.fragments.MasterCreditFragment;
 import com.fast0n.ipersonalarea.fragments.OptionsFragment.OptionsFragment;
 import com.fast0n.ipersonalarea.fragments.ServicesFragment.ServicesFragment;
+import com.fast0n.ipersonalarea.fragments.SettingsFragment.SettingsFragment;
 import com.fast0n.ipersonalarea.fragments.SimFragments;
 import com.fast0n.ipersonalarea.fragments.VoicemailFragment.VoicemailFragment;
+import com.fast0n.ipersonalarea.java.myDbAdapter;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.github.ybq.android.spinkit.style.CubeGrid;
@@ -59,6 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences.Editor editor;
     private View headerView;
     private boolean backPressedToExitOnce = false;
+    myDbAdapter helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         loading.setIndeterminateDrawable(cubeGrid);
         cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
         NavigationView navigationView = findViewById(R.id.nav_view);
+        helper = new myDbAdapter(this);
+
 
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
@@ -90,10 +95,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String userid = extras.getString("userid", null);
-        String password = extras.getString("password", null);
+        String userid = helper.getUserID();
+        String password = helper.getPassword();
         String token = extras.getString("token", null);
-        String checkbox = extras.getString("checkbox", null);
 
         if (isOnline()) {
             String site_url = getString(R.string.site_url) + getString(R.string.login);
@@ -110,20 +114,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        if (checkbox != null && checkbox.equals("true")) {
-            settings = getSharedPreferences("sharedPreferences", 0);
-            editor = settings.edit();
-            editor.putString("userid", userid);
-            editor.putString("password", password);
-            editor.apply();
 
-        }
 
     }
 
     private void getObject(String url, final Menu nav_Menu) {
-
-
         RequestQueue queue = Volley.newRequestQueue(HomeActivity.this);
 
         CustomPriorityRequest customPriorityRequest = new CustomPriorityRequest(
@@ -134,14 +129,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         JSONObject json_raw = new JSONObject(response.toString());
                         String iliad = json_raw.getString("iliad");
                         JSONObject json = new JSONObject(iliad);
-
-                        String stringVersion = json.getString("version");
-                        if (BuildConfig.VERSION_CODE < Integer.parseInt(stringVersion)) {
-                            Intent intent = new Intent(this, ErrorConnectionActivity.class);
-                            intent.putExtra("errorAPI", "true");
-                            startActivity(intent);
-                            finish();
-                        }
 
                         String stringSim = json.getString("sim");
                         String user_name = json.getString("user_name");
@@ -169,6 +156,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 nav_Menu.findItem(R.id.nav_options).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_services).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_voicemail).setVisible(true);
+
+                                if (android.os.Build.VERSION.SDK_INT <= 23)
+                                    nav_Menu.findItem(R.id.nav_settings).setVisible(false);
 
                                 FragmentManager fragmentManager = getSupportFragmentManager();
                                 FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -205,12 +195,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         int error_code = error.networkResponse.statusCode;
 
                         if (error_code == 503) {
-                            settings = getSharedPreferences("sharedPreferences", 0);
-                            editor = settings.edit();
-                            editor.putString("userid", null);
-                            editor.putString("password", null);
-                            editor.apply();
-
                             Toasty.warning(HomeActivity.this, getString(R.string.error_login), Toast.LENGTH_LONG, true)
                                     .show();
                             Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
@@ -221,12 +205,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             getObject(url, nav_Menu);
                             i++;
                         } else {
-                            settings = getSharedPreferences("sharedPreferences", 0);
-                            editor = settings.edit();
-                            editor.putString("userid", null);
-                            editor.putString("password", null);
-                            editor.apply();
-
                             Toasty.warning(HomeActivity.this, getString(R.string.error_login), Toast.LENGTH_LONG, true)
                                     .show();
                             Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
@@ -384,7 +362,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         .setDescription(Html.fromHtml(string_response))
                                         .setScrollable(true)
                                         .setStyle(Style.HEADER_WITH_TITLE)
-                                        .setPositiveText(R.string.accept)
+                                        .setPositiveText(R.string.read)
                                         .setCancelable(false)
                                         .onPositive((dialog, which) -> {
 
@@ -401,6 +379,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
                 break;
+
+            case R.id.nav_settings:
+
+                if (isOnline())
+                    fragment = new SettingsFragment();
+
+                else
+                    startActivity(new Intent(HomeActivity.this, ErrorConnectionActivity.class));
+
+                break;
             case R.id.nav_logout:
 
                 if (isOnline()) {
@@ -408,9 +396,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     new AlertDialog.Builder(this).setMessage(R.string.dialog_exit).setCancelable(false)
                             .setPositiveButton(getString(R.string.yes), (dialog, id1) -> {
                                 settings = getSharedPreferences("sharedPreferences", 0);
-                                editor = settings.edit();
-                                editor.putString("userid", null);
-                                editor.putString("password", null);
+                                String userid = helper.getUserID();
+                                helper.delete(userid);
+
+                                editor.putString("checkbox", "false");
                                 editor.apply();
 
                                 Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);

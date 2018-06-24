@@ -23,6 +23,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.java.GenerateToken;
+import com.fast0n.ipersonalarea.java.myDbAdapter;
 import com.github.ybq.android.spinkit.style.CubeGrid;
 
 import org.json.JSONException;
@@ -37,7 +38,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText edt_newpassword;
     private EditText edt_password;
     private Button btn_password;
-    private ProgressBar loading;
+    myDbAdapter helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +57,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        final Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        final String password = extras.getString("password", null);
-        final String token = extras.getString("token", null);
-        final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
-
         // java adresse
         edt_newpassword = findViewById(R.id.edt_newpassword);
         edt_password = findViewById(R.id.edt_oldpassword);
         btn_password = findViewById(R.id.btn_password);
+        helper = new myDbAdapter(this);
+
+
+        final Bundle extras = getIntent().getExtras();
+        assert extras != null;
+        String password = helper.getPassword();
+        final String token = extras.getString("token", null);
+        final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
         btn_password.setOnClickListener(v -> {
 
@@ -91,7 +94,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         + "&token=" + token;
 
 
-                changePassword(url, newpassword.replaceAll("\\s+", ""));
+                changePassword(url, oldpassword.replaceAll("\\s+", ""),newpassword.replaceAll("\\s+", ""));
                 btn_password.setEnabled(false);
             } else {
                 btn_password.setEnabled(true);
@@ -102,7 +105,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     }
 
-    private void changePassword(String url, final String password) {
+    private void changePassword(String url, String oldPassword,final String newpassword) {
 
         final ProgressBar loading;
         final ConstraintLayout layout;
@@ -132,15 +135,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                         if (string_response.equals("true")) {
 
-
                             SharedPreferences prefs = getSharedPreferences("sharedPreferences", 0);
                             String userid = prefs.getString("userid", null);
 
                             String token = GenerateToken.randomString(20);
 
+
                             Intent intent = new Intent(ChangePasswordActivity.this, HomeActivity.class);
-                            intent.putExtra("userid", userid);
-                            intent.putExtra("password", password);
+                            helper.updatePassword( oldPassword, newpassword);
                             intent.putExtra("token", token);
                             intent.putExtra("checkbox", "true");
                             startActivity(intent);
