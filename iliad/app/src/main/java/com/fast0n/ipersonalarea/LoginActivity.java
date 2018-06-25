@@ -179,6 +179,11 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
 
+                        String stringName = json.getString("user_name");
+                        String stringNumber = json.getString("user_numtell").replace("Numero: ","");
+
+
+
                         String user_id = json.getString("user_id");
                         btn_login.loadingSuccessful();
 
@@ -194,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (checkBox.isChecked()) {
 
                                 // Inserire i dati su DB
-                                helper.insertData(edt_id.getText().toString(), password);
+                                helper.insertData(edt_id.getText().toString(), password, stringName, stringNumber);
 
 
                                 settings = getSharedPreferences("sharedPreferences", 0);

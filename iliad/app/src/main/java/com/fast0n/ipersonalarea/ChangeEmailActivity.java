@@ -1,12 +1,12 @@
 package com.fast0n.ipersonalarea;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -22,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.fast0n.ipersonalarea.java.myDbAdapter;
 import com.github.ybq.android.spinkit.style.CubeGrid;
 
 import org.json.JSONException;
@@ -38,6 +39,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
     private EditText edt_email;
     private EditText edt_password;
     private Button btn_change_email;
+    myDbAdapter helper;
 
     private static boolean isEmail(String email) {
         String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
@@ -62,10 +64,11 @@ public class ChangeEmailActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
+        helper = new myDbAdapter(this);
 
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
-        final String password = extras.getString("password");
+        String password = helper.getPassword();
         final String token = extras.getString("token");
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
@@ -84,8 +87,9 @@ public class ChangeEmailActivity extends AppCompatActivity {
                     && edt_email.getText().toString().length() != 0) {
                 if (isEmail(edt_email.getText().toString())) {
 
-                    InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    View view = this.getCurrentFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);;
                     String url = site_url + "?email=" + edt_email.getText().toString() + "&email_confirm="
                             + edt_email.getText().toString() + "&password=" + password.replaceAll("\\s+", "") + "&token=" + token;
                     changeMail(url);

@@ -114,7 +114,6 @@ public class Widget extends AppWidgetProvider {
                 loading(site_url, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
 
 
-
             }
 
 
@@ -131,23 +130,15 @@ public class Widget extends AppWidgetProvider {
                 (JSONObject response) -> {
 
 
-                    try {
-                        JSONObject json_raw = new JSONObject(response.toString());
-                        String iliad = json_raw.getString("iliad");
-                        JSONObject json = new JSONObject(iliad);
+                    String stringUser_numtell = helper.getPhoneNumber();
+                    views.setTextViewText(R.id.user_numtell, stringUser_numtell);
 
-                        String stringUser_numtell = json.getString("user_numtell");
-                        views.setTextViewText(R.id.user_numtell, stringUser_numtell.replace("Numero: ", ""));
+                    Date date = new Date(System.currentTimeMillis());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm",
+                            Locale.ITALIAN);
+                    String var = dateFormat.format(date);
 
-                        Date date = new Date(System.currentTimeMillis());
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm",
-                                Locale.ITALIAN);
-                        String var = dateFormat.format(date);
-
-                        views.setTextViewText(R.id.update, "Aggiornato alle " + var);
-
-                    } catch (JSONException ignored) {
-                    }
+                    views.setTextViewText(R.id.update, "Aggiornato alle " + var);
 
 
                     Intent intent1 = new Intent(context, Widget.class);
@@ -247,12 +238,12 @@ public class Widget extends AppWidgetProvider {
         });
 
 
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
 
-                login.add(getRequestLogin);
+            login.add(getRequestLogin);
 
-            }, 30000 );
+        }, 30000);
 
 
     }
