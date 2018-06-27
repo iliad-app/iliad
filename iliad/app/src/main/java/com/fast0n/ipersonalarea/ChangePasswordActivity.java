@@ -41,6 +41,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText edt_password;
     private Button btn_password;
     myDbAdapter helper;
+    SharedPreferences settings;
+    String account, pwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,47 +61,72 @@ public class ChangePasswordActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        // java adresse
+        // java adresses
+        settings = getSharedPreferences("sharedPreferences", 0);
         edt_newpassword = findViewById(R.id.edt_newpassword);
         edt_password = findViewById(R.id.edt_oldpassword);
         btn_password = findViewById(R.id.btn_password);
         helper = new myDbAdapter(this);
 
+        // prendere le SharedPreferences
+        account = settings.getString("account", null);
+
 
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String password = helper.getPassword();
         final String token = extras.getString("token", null);
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
         btn_password.setOnClickListener(v -> {
-            View view = this.getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            byte[] decodeValue1 = Base64.decode(password, Base64.DEFAULT);
-            String ppassword = new String(decodeValue1);
 
 
-            if (edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))
-                    && edt_password.getText().toString().length() != 0
-                    && edt_newpassword.getText().toString().length() != 0) {
 
-                byte[] decodeValue = Base64.encode(edt_password.getText().toString().getBytes(), Base64.DEFAULT);
-                String oldpassword = new String(decodeValue);
+            if (edt_password.getText().toString().length() != 0
+                    || edt_newpassword.getText().toString().length() != 0) {
 
 
-                byte[] encodeValue1 = Base64.encode(edt_newpassword.getText().toString().getBytes(), Base64.DEFAULT);
-                String newpassword = new String(encodeValue1);
+
+                String getAllData = helper.getAllData();
+                String[] arrayData = getAllData.split("\n");
+                for (String anArrayData : arrayData) {
+                    String onlyname = anArrayData.split("&")[0];
+                    String onlypassword = anArrayData.split("&")[1];
+                    if (onlyname.equals(account)) {
+                        pwd = onlypassword;
+                        break;
+                    }
+                }
+
+                byte[] decodeValue1 = Base64.decode(pwd, Base64.DEFAULT);
+                String ppassword = new String(decodeValue1);
 
 
-                String url = site_url + "?new_password=" + newpassword.replaceAll("\\s+", "")
-                        + "&new_password_confirm=" + newpassword.replaceAll("\\s+", "") + "&password=" + oldpassword.replaceAll("\\s+", "")
-                        + "&token=" + token;
+                if (edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))){
+                    View view = this.getCurrentFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                    byte[] decodeValue = Base64.encode(edt_password.getText().toString().getBytes(), Base64.DEFAULT);
+                    String oldpassword = new String(decodeValue);
 
 
-                changePassword(url, oldpassword.replaceAll("\\s+", ""),newpassword.replaceAll("\\s+", ""));
-                btn_password.setEnabled(false);
-            } else {
+                    byte[] encodeValue1 = Base64.encode(edt_newpassword.getText().toString().getBytes(), Base64.DEFAULT);
+                    String newpassword = new String(encodeValue1);
+
+
+                    String url = site_url + "?new_password=" + newpassword.replaceAll("\\s+", "")
+                            + "&new_password_confirm=" + newpassword.replaceAll("\\s+", "") + "&password=" + oldpassword.replaceAll("\\s+", "")
+                            + "&token=" + token;
+
+
+                    changePassword(url, oldpassword.replaceAll("\\s+", ""),newpassword.replaceAll("\\s+", ""));
+                    btn_password.setEnabled(false);
+                }else {
+                    btn_password.setEnabled(true);
+                    Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
+                            true).show();
+            }
+            }else {
                 btn_password.setEnabled(true);
                 Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                         true).show();

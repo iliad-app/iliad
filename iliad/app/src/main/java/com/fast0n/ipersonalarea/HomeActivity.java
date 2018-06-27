@@ -53,6 +53,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import org.json.JSONException;
@@ -65,8 +66,9 @@ import es.dmoral.toasty.Toasty;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int PROFILE_SETTING = 100000;
-    int i;
+    int i, pos = 0;
     myDbAdapter helper;
+    String account, userid, password;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private ProgressBar loading;
@@ -88,6 +90,8 @@ public class HomeActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // java adresses
+        settings = getSharedPreferences("sharedPreferences", 0);
+        editor = settings.edit();
         drawer = findViewById(R.id.drawer_layout);
         loading = findViewById(R.id.progressBar);
         CubeGrid cubeGrid = new CubeGrid();
@@ -101,10 +105,24 @@ public class HomeActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
+        // prendere le SharedPreferences
+        account = settings.getString("account", null);
+
+        String getAllData = helper.getAllData();
+        String[] arrayData = getAllData.split("\n");
+        for (int p = 0; p < arrayData.length; p++) {
+            String onlyname = arrayData[p].split("&")[0];
+            String onlypassword = arrayData[p].split("&")[1];
+            if (onlyname.equals(account)) {
+                userid = onlyname;
+                password = onlypassword;
+                break;
+            }
+        }
+
+
         Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String userid = helper.getUserID();
-        String password = helper.getPassword();
         String token = extras.getString("token", null);
 
 
@@ -117,22 +135,36 @@ public class HomeActivity extends AppCompatActivity {
 
                 )
                 .withOnAccountHeaderListener((view, profile, current) -> {
-
-
-                    Toasty.info(HomeActivity.this, getString(R.string.coming_soon), Toast.LENGTH_LONG, true)
-                            .show();
-                    /*
                     if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
-                        int count = 100 + headerResult.getProfiles().size() + 1;
-                        IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("Nuovo Account").withEmail("321000000" + count).withTextColor(getResources().getColor(android.R.color.black)).withIcon(R.drawable.ic_account).withIdentifier(count);
                         if (headerResult.getProfiles() != null) {
-                            //we know that there are 2 setting elements. set the new profile above them ;)
-                            headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
-                        } else {
-                            headerResult.addProfiles(newProfile);
+                            editor.putString("checkbox", "false");
+                            editor.apply();
+
+                            Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
+                            startActivity(mainActivity);
+                        }
+                    } else {
+
+                        for (int p = 0; p < arrayData.length; p++) {
+                            String onlyname = arrayData[p].split("&")[0];
+                            String onlypassword = arrayData[p].split("&")[1];
+                            String phone = arrayData[p].split("&")[2];
+                            String getPhone = profile.getEmail().getText().toString();
+
+
+                            if (getPhone.replaceAll("\\s+", "").equals(phone.replaceAll("\\s+", ""))) {
+                                userid = onlyname;
+                                password = onlypassword;
+                                editor.putString("account", onlyname);
+                                editor.apply();
+
+                                Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
+                                startActivity(mainActivity);
+                                break;
+                            }
                         }
                     }
-                    */
+
 
                     return false;
                 })
@@ -142,14 +174,27 @@ public class HomeActivity extends AppCompatActivity {
 
         String nameDB = helper.getName();
         String phoneDB = helper.getPhoneNumber();
+        String idDB = helper.getUserID();
 
         String[] prova = nameDB.split("\n");
         String[] prova1 = phoneDB.split("\n");
+        String[] prova2 = idDB.split("\n");
 
 
         for (int z = 0; z < prova.length; z++) {
-            IProfile profile = new ProfileDrawerItem().withNameShown(true).withName(prova[z]).withEmail(prova1[z]).withTextColor(getResources().getColor(android.R.color.black)).withIcon(R.drawable.ic_account).withIdentifier(z);
-            headerResult.addProfile(profile, z);
+
+            if (prova2[z].equals(account)) {
+                IProfile profile = new ProfileDrawerItem().withNameShown(true).withName(prova[z]).withEmail(prova1[z]).withTextColor(getResources().getColor(android.R.color.black)).withIcon(R.drawable.ic_account).withIdentifier(z);
+                headerResult.addProfile(profile, pos);
+            }
+        }
+
+        for (int z = 0; z < prova.length; z++) {
+
+            if (!prova2[z].equals(account)) {
+                IProfile profile = new ProfileDrawerItem().withNameShown(true).withName(prova[z]).withEmail(prova1[z]).withTextColor(getResources().getColor(android.R.color.black)).withIcon(R.drawable.ic_account).withIdentifier(z);
+                headerResult.addProfile(profile, pos++);
+            }
         }
 
 
@@ -301,15 +346,36 @@ public class HomeActivity extends AppCompatActivity {
 
                                                 new AlertDialog.Builder(HomeActivity.this).setMessage(R.string.dialog_exit).setCancelable(false)
                                                         .setPositiveButton(getString(R.string.yes), (dialog, id1) -> {
-                                                            settings = getSharedPreferences("sharedPreferences", 0);
-                                                            String userid = helper.getUserID();
-                                                            helper.delete(userid);
 
-                                                            editor.putString("checkbox", "false");
-                                                            editor.apply();
 
-                                                            Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
-                                                            startActivity(mainActivity);
+                                                            String getAllData = helper.getAllData();
+                                                            String[] arrayData = getAllData.split("\n");
+
+                                                            for (int p = 0; p < arrayData.length; p++) {
+                                                                String onlyname = arrayData[p].split("&")[0];
+                                                                if (onlyname.equals(account)) {
+                                                                    helper.delete(account);
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if (arrayData.length > 1) {
+                                                                String onlyname = arrayData[arrayData.length - 1].split("&")[0];
+                                                                editor.putString("account", onlyname);
+                                                                editor.apply();
+                                                                Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
+                                                                startActivity(mainActivity);
+                                                            } else {
+
+                                                                editor.putString("checkbox", "false");
+                                                                editor.putString("account", null);
+                                                                editor.apply();
+
+                                                                Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
+                                                                startActivity(mainActivity);
+                                                            }
+
+
                                                         }).setNegativeButton(getString(R.string.no), null).show();
 
                                             }
@@ -414,19 +480,10 @@ public class HomeActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (backPressedToExitOnce) {
-                new Handler().postDelayed(this::finishAffinity, 500);
+                finishAffinity();
 
             } else {
                 this.backPressedToExitOnce = true;
-                Fragment fragment;
-                fragment = new MasterCreditFragment();
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.fragment, fragment);
-                ft.commit();
-
-
                 Toasty.info(HomeActivity.this, getString(R.string.press_back), Toast.LENGTH_SHORT).show();
                 new Handler().postDelayed(() -> backPressedToExitOnce = false, 1000);
             }
@@ -440,4 +497,4 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    }
+}

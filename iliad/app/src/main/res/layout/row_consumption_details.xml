@@ -52,7 +52,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/colorAccent"
-                    card_view:srcCompat="@drawable/ic_account" />
+                    card_view:srcCompat="@drawable/ic_account_circle" />
 
             </LinearLayout>
 

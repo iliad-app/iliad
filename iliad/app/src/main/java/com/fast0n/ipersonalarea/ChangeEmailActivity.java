@@ -2,6 +2,7 @@ package com.fast0n.ipersonalarea;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -36,10 +37,12 @@ import es.dmoral.toasty.Toasty;
 
 public class ChangeEmailActivity extends AppCompatActivity {
 
+    myDbAdapter helper;
+    SharedPreferences settings;
+    String account, pwd;
     private EditText edt_email;
     private EditText edt_password;
     private Button btn_change_email;
-    myDbAdapter helper;
 
     private static boolean isEmail(String email) {
         String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
@@ -68,44 +71,55 @@ public class ChangeEmailActivity extends AppCompatActivity {
 
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String password = helper.getPassword();
         final String token = extras.getString("token");
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
         // java adresses
+        settings = getSharedPreferences("sharedPreferences", 0);
         edt_email = findViewById(R.id.edt_email);
         edt_password = findViewById(R.id.edt_password);
         btn_change_email = findViewById(R.id.btn_change_email);
+
+        // prendere le SharedPreferences
+        account = settings.getString("account", null);
+
         btn_change_email.setOnClickListener(v -> {
 
-            byte[] decodeValue1 = Base64.decode(password, Base64.DEFAULT);
-            String ppassword = new String(decodeValue1);
+            if (edt_password.getText().toString().length() != 0
+                    || edt_email.getText().toString().length() != 0) {
 
+                String getAllData = helper.getAllData();
+                String[] arrayData = getAllData.split("\n");
+                for (String anArrayData : arrayData) {
+                    String onlyname = anArrayData.split("&")[0];
+                    String onlypassword = anArrayData.split("&")[1];
+                    if (onlyname.equals(account)) {
+                        pwd = onlypassword;
+                        break;
+                    }
+                }
 
-            if (edt_password.getText().toString().equals(ppassword.replace("\n", "").replace("    ", ""))
-                    && edt_password.getText().toString().length() != 0
-                    && edt_email.getText().toString().length() != 0) {
-                if (isEmail(edt_email.getText().toString())) {
+                byte[] decodeValue1 = Base64.decode(pwd, Base64.DEFAULT);
+                String ppassword = new String(decodeValue1);
 
+                if (isEmail(edt_email.getText().toString()) && edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))) {
                     View view = this.getCurrentFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);;
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     String url = site_url + "?email=" + edt_email.getText().toString() + "&email_confirm="
-                            + edt_email.getText().toString() + "&password=" + password.replaceAll("\\s+", "") + "&token=" + token;
+                            + edt_email.getText().toString() + "&password=" + pwd.replaceAll("\\s+", "") + "&token=" + token;
                     changeMail(url);
 
 
                     btn_change_email.setEnabled(false);
                 } else {
-
-
-                    edt_password.setInputType(0);
                     btn_change_email.setEnabled(true);
                     Toasty.warning(ChangeEmailActivity.this, getString(R.string.email_wrong), Toast.LENGTH_LONG,
                             true).show();
                 }
             } else
-                Toasty.warning(ChangeEmailActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
+            btn_change_email.setEnabled(true);
+                Toasty.warning(ChangeEmailActivity.this, getString(R.string.error_forget1), Toast.LENGTH_LONG,
                         true).show();
 
         });

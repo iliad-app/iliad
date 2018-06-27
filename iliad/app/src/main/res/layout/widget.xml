@@ -6,13 +6,22 @@
     android:layout_margin="@dimen/widget_margin"
     android:background="@drawable/round_rect_shape">
 
+    <TextView
+        android:id="@+id/textView"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="@string/loading" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,7 +84,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingEnd="10dp"
-                    android:paddingStart="5dp">
+                    android:paddingStart="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="5dp">
 
                     <ImageView
                         android:id="@+id/img"
@@ -103,7 +114,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingEnd="10dp"
-                    android:paddingStart="5dp">
+                    android:paddingStart="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="5dp">
 
                     <ImageView
                         android:id="@+id/img2"
@@ -130,7 +143,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingEnd="10dp"
-                    android:paddingStart="5dp">
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp">
 
                     <ImageView
                         android:id="@+id/img3"
@@ -206,7 +221,9 @@
                                 android:gravity="center"
                                 android:textColor="@android:color/black"
                                 android:textSize="10sp"
-                                tools:ignore="SmallSp" />
+                                tools:ignore="SmallSp"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentLeft="true" />
                         </RelativeLayout>
 
                     </LinearLayout>

@@ -60,6 +60,7 @@
     <string name="press_back">Press again to exit</string>
     <!-- link request -->
     <string name="loading">Loading…</string>
+    <string name="updatedat">Update at</string>
     <string name="consumptiondetail">Consumption detail</string>
     <string name="consumptionroamingdetail">Detail external consumption</string>
     <string name="stay_connected">Stay connected</string>

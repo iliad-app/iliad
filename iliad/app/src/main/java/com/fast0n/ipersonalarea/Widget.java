@@ -37,13 +37,12 @@ import static android.view.View.VISIBLE;
 public class Widget extends AppWidgetProvider {
     Boolean status;
     myDbAdapter helper;
+    SharedPreferences settings;
+    String account, password, userid;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-
-            helper = new myDbAdapter(context);
-
 
             RequestOptions options = new RequestOptions().override(50, 50);
             RemoteViews views = new RemoteViews(context.getPackageName(),
@@ -84,13 +83,27 @@ public class Widget extends AppWidgetProvider {
             Glide.with(context.getApplicationContext()).asBitmap()
                     .load("http://android12.altervista.org/res/ic_mms.png").apply(options).into(img3);
 
-            SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.apply();
+            helper = new myDbAdapter(context);
+            // java adresses
+            settings = context.getSharedPreferences("sharedPreferences", 0);
+
+            // prendere le SharedPreferences
+            account = settings.getString("account", null);
+
             final String site_url = context.getString(R.string.site_url);
 
-            String userid = helper.getUserID();
-            String password = helper.getPassword();
+            String getAllData = helper.getAllData();
+            String[] arrayData = getAllData.split("\n");
+            for (String anArrayData : arrayData) {
+                String onlyname = anArrayData.split("&")[0];
+                String onlypassword = anArrayData.split("&")[1];
+                if (onlyname.equals(account)) {
+                    userid = onlyname;
+                    password = onlypassword;
+                    break;
+                }
+            }
+
 
 
             Intent intent1 = new Intent(context, Widget.class);
@@ -105,13 +118,15 @@ public class Widget extends AppWidgetProvider {
 
             if (password == null) {
                 views.setViewVisibility(R.id.login, VISIBLE);
+                views.setViewVisibility(R.id.textView, INVISIBLE);
                 views.setViewVisibility(R.id.linearLayout, INVISIBLE);
 
             } else {
                 views.setViewVisibility(R.id.linearLayout, VISIBLE);
+                views.setViewVisibility(R.id.textView, INVISIBLE);
                 views.setViewVisibility(R.id.login, INVISIBLE);
 
-                loading(site_url, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
+                loading(site_url, account, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
 
 
             }
@@ -130,7 +145,7 @@ public class Widget extends AppWidgetProvider {
                 (JSONObject response) -> {
 
 
-                    String stringUser_numtell = helper.getPhoneNumber();
+                    String stringUser_numtell = helper.getPhoneNumber().split("\n")[0];
                     views.setTextViewText(R.id.user_numtell, stringUser_numtell);
 
                     Date date = new Date(System.currentTimeMillis());
@@ -138,7 +153,7 @@ public class Widget extends AppWidgetProvider {
                             Locale.ITALIAN);
                     String var = dateFormat.format(date);
 
-                    views.setTextViewText(R.id.update, "Aggiornato alle " + var);
+                    views.setTextViewText(R.id.update, context.getString(R.string.updatedat) +" " +var);
 
 
                     Intent intent1 = new Intent(context, Widget.class);

@@ -40,13 +40,13 @@ public class LoginActivity extends AppCompatActivity {
     TextView textView2;
     int i;
     private LoadingButton btn_login;
-    private EditText edt_id;
-    private EditText edt_password;
-    private SharedPreferences settings;
-    private SharedPreferences.Editor editor;
-    private CheckBox checkBox;
+    private EditText edt_id, edt_password;
+    SharedPreferences settings;
+    SharedPreferences.Editor editor;
     myDbAdapter helper;
     String token = GenerateToken.randomString(20);
+    String account, alert, checkbox_preference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,43 +60,34 @@ public class LoginActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // java adresses
+        settings = getSharedPreferences("sharedPreferences", 0);
+        editor = settings.edit();
         btn_login = findViewById(R.id.btn_login);
         edt_id = findViewById(R.id.edt_id);
         edt_password = findViewById(R.id.edt_password);
-        checkBox = findViewById(R.id.checkBox);
         textView2 = findViewById(R.id.textView2);
-
         helper = new myDbAdapter(this);
 
-
+        // recupero password
         textView2.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgetActivity.class)));
 
-
-        settings = getSharedPreferences("sharedPreferences", 0);
-        String checkbox_preference = settings.getString("checkbox", null);
-        editor = settings.edit();
+        // prendere le SharedPreferences
+        checkbox_preference = settings.getString("checkbox", null);
+        alert = settings.getString("alert", null);
+        account = settings.getString("account", null);
         editor.apply();
 
+        // se la checkbox è uguale a true va alla home activity
         if (checkbox_preference != null && checkbox_preference.equals("true")) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.putExtra("token", token);
             startActivity(intent);
-
-
         }
 
-        settings = getSharedPreferences("sharedPreferences", 0);
-        String alert = settings.getString("alert", null);
-        editor = settings.edit();
-        editor.apply();
-
-
+        // se alert non esiste esegui l'azione e incrementalo a 1
         if (alert == null) {
-
             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-
             String site_url = getString(R.string.site_url) + getString(R.string.alert);
-
             JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url, null,
                     response -> {
                         try {
@@ -115,8 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                                     .setPositiveText(R.string.read)
                                     .setCancelable(false)
                                     .onPositive((dialog, which) -> {
-                                        settings = getSharedPreferences("sharedPreferences", 0);
-                                        editor = settings.edit();
                                         editor.putString("alert", "1");
                                         editor.apply();
                                     }).setScrollable(true, 10)
@@ -128,11 +117,12 @@ public class LoginActivity extends AppCompatActivity {
                     }, error -> {
             });
             queue.add(getRequest);
-
         }
 
-
+        // azione tasto login
         btn_login.setOnClickListener(v -> {
+
+            // nascondere la tastiera
             View view = this.getCurrentFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -142,13 +132,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 String userid1 = edt_id.getText().toString();
                 String password1 = edt_password.getText().toString();
-                String token = GenerateToken.randomString(20);
 
                 byte[] encodeValue = Base64.encode(password1.getBytes(), Base64.DEFAULT);
                 String npassword = new String(encodeValue);
 
                 String site_url = getString(R.string.site_url) + getString(R.string.login);
                 String url = site_url + "?userid=" + userid1 + "&password=" + npassword.replaceAll("\\s+", "") + "&token=" + token;
+                System.out.println(url);
                 getObject(url, token, npassword.replaceAll("\\s+", ""));
                 btn_login.setEnabled(false);
 
@@ -171,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                         String iliad = json_raw.getString("iliad");
                         JSONObject json = new JSONObject(iliad);
 
+                        // se la versione non è supportata vai alla schermata di errore
                         String stringVersion = json.getString("version");
                         if (BuildConfig.VERSION_CODE < Integer.parseInt(stringVersion)) {
                             Intent intent = new Intent(this, ErrorConnectionActivity.class);
@@ -181,38 +172,31 @@ public class LoginActivity extends AppCompatActivity {
 
                         String stringName = json.getString("user_name");
                         String stringNumber = json.getString("user_numtell").replace("Numero: ","");
-
-
-
-                        String user_id = json.getString("user_id");
                         btn_login.loadingSuccessful();
 
+                        // esegue il login dopo 1 sec per visualizzare l'animazione
                         Handler handler = new Handler();
                         handler.postDelayed(() -> {
+
+
+
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.putExtra("userid", user_id);
                             byte[] encodeValue = Base64.encode(password.getBytes(), Base64.DEFAULT);
                             String npassword = new String(encodeValue);
                             intent.putExtra("password", npassword);
                             intent.putExtra("token", token);
 
-                            if (checkBox.isChecked()) {
 
-                                // Inserire i dati su DB
-                                helper.insertData(edt_id.getText().toString(), password, stringName, stringNumber);
+                            editor.putString("account", edt_id.getText().toString());
+                            editor.apply();
 
+                            // Inserire i dati su DB
+                            helper.insertData(edt_id.getText().toString(), password, stringName, stringNumber);
 
-                                settings = getSharedPreferences("sharedPreferences", 0);
-                                editor = settings.edit();
-                                editor.putString("checkbox", "true");
-                                editor.apply();
-
-                            } else {
-                                settings = getSharedPreferences("sharedPreferences", 0);
-                                editor = settings.edit();
-                                editor.putString("checkbox", "false");
-                                editor.apply();
-                            }
+                            settings = getSharedPreferences("sharedPreferences", 0);
+                            editor = settings.edit();
+                            editor.putString("checkbox", "true");
+                            editor.apply();
                             startActivity(intent);
 
                         }, 1000);
@@ -259,7 +243,14 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finishAffinity();
+
+        if (account == null && checkbox_preference.equals("false"))
+            finishAffinity();
+        else{
+            editor.putString("checkbox", "true");
+            editor.apply();
+            finish();
+        }
 
     }
 

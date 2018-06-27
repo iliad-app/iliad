@@ -117,21 +117,6 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@android:color/white"
-            android:buttonTint="@android:color/white"
-            android:text="@string/stay_connected"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
@@ -143,7 +128,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 
         <com.dx.dxloadingbutton.lib.LoadingButton

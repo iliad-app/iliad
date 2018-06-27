@@ -60,6 +60,7 @@
   <string name="press_back">Appuyez sur pour quitter</string>
   <!-- link request -->
   <string name="loading">Chargement…</string>
+  <string name="updatedat">Mis à jour à</string>
   <string name="consumptiondetail">Détails de la consommation</string>
   <string name="consumptionroamingdetail">Consommation étrangère en détail</string>
   <string name="stay_connected">Rester connecté</string>
