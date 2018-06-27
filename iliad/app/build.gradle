@@ -63,9 +63,8 @@ dependencies {
     implementation 'com.github.StevenDXC:DxLoadingButton:2.0'
     implementation 'gun0912.ted:tedpermission:2.1.1'
 
-
     //account Library
     implementation 'com.mikepenz:itemanimators:1.0.2'
     implementation 'com.mikepenz:materialdrawer:6.0.8'
 }
-    apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'

@@ -1,7 +1,6 @@
 package com.fast0n.ipersonalarea.fragments.SettingsFragment;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fast0n.ipersonalarea.R;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -52,36 +49,36 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
 
                 @Override
                 public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                    Toasty.error(context,"Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toasty.error(context, "Permission Denied", Toast.LENGTH_SHORT).show();
 
                 }
             };
 
-            LayoutInflater inflater = (LayoutInflater)context.getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             switch (position) {
                 case 0:
                     if (holder.toggle.isChecked())
-                                    TedPermission.with(context)
-                                            .setPermissionListener(permissionlistener)
-                                            .setPermissions(Manifest.permission.READ_CONTACTS)
-                                            .check();
-                        break;
+                        TedPermission.with(context)
+                                .setPermissionListener(permissionlistener)
+                                .setPermissions(Manifest.permission.READ_CONTACTS)
+                                .check();
+                    break;
 
                 case 1:
                     if (holder.toggle.isChecked())
-                                    TedPermission.with(context)
-                                            .setPermissionListener(permissionlistener)
-                                            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                                            .check();
-                                break;
+                        TedPermission.with(context)
+                                .setPermissionListener(permissionlistener)
+                                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .check();
+                    break;
 
                 case 2:
                     if (holder.toggle.isChecked())
-                                    TedPermission.with(context)
-                                            .setPermissionListener(permissionlistener)
-                                            .setPermissions(Manifest.permission.CAMERA)
-                                            .check();
-                                break;
+                        TedPermission.with(context)
+                                .setPermissionListener(permissionlistener)
+                                .setPermissions(Manifest.permission.CAMERA)
+                                .check();
+                    break;
 
 
             }
@@ -90,7 +87,6 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
         });
 
     }
-
 
 
     @Override

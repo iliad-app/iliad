@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -37,12 +36,12 @@ import es.dmoral.toasty.Toasty;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
+    private myDbAdapter helper;
+    private String account;
+    private String pwd;
     private EditText edt_newpassword;
     private EditText edt_password;
     private Button btn_password;
-    myDbAdapter helper;
-    SharedPreferences settings;
-    String account, pwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
 
         // java adresses
-        settings = getSharedPreferences("sharedPreferences", 0);
+        SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
         edt_newpassword = findViewById(R.id.edt_newpassword);
         edt_password = findViewById(R.id.edt_oldpassword);
         btn_password = findViewById(R.id.btn_password);
@@ -80,10 +79,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btn_password.setOnClickListener(v -> {
 
 
-
             if (edt_password.getText().toString().length() != 0
                     || edt_newpassword.getText().toString().length() != 0) {
-
 
 
                 String getAllData = helper.getAllData();
@@ -101,7 +98,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 String ppassword = new String(decodeValue1);
 
 
-                if (edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))){
+                if (edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))) {
                     View view = this.getCurrentFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -119,14 +116,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             + "&token=" + token;
 
 
-                    changePassword(url, oldpassword.replaceAll("\\s+", ""),newpassword.replaceAll("\\s+", ""));
+                    changePassword(url, oldpassword.replaceAll("\\s+", ""), newpassword.replaceAll("\\s+", ""));
                     btn_password.setEnabled(false);
-                }else {
+                } else {
                     btn_password.setEnabled(true);
                     Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                             true).show();
-            }
-            }else {
+                }
+            } else {
                 btn_password.setEnabled(true);
                 Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                         true).show();
@@ -135,7 +132,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     }
 
-    private void changePassword(String url, String oldPassword,final String newpassword) {
+    private void changePassword(String url, String oldPassword, final String newpassword) {
 
         final ProgressBar loading;
         final ConstraintLayout layout;
@@ -172,7 +169,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
                             Intent intent = new Intent(ChangePasswordActivity.this, HomeActivity.class);
-                            helper.updatePassword( oldPassword, newpassword);
+                            helper.updatePassword(oldPassword, newpassword);
                             intent.putExtra("token", token);
                             intent.putExtra("checkbox", "true");
                             startActivity(intent);

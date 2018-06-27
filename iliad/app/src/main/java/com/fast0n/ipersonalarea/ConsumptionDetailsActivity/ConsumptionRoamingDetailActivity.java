@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -21,8 +20,6 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class ConsumptionRoamingDetailActivity extends AppCompatActivity {
-
-    Button requests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

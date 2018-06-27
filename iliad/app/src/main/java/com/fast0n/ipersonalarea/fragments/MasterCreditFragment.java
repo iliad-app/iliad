@@ -56,7 +56,6 @@ public class MasterCreditFragment extends Fragment {
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
 
 
-
         SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
         String token = settings.getString("token", null);
         SharedPreferences.Editor editor = settings.edit();

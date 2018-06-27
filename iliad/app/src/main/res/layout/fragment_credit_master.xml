@@ -68,13 +68,13 @@
             app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
         <android.support.design.widget.BottomNavigationView
-            android:background="@android:color/white"
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:itemIconTint="@color/colorPrimary"
-            android:fitsSystemWindows="true"
             android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true"
+            app:itemIconTint="@color/colorPrimary"
             app:itemTextColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

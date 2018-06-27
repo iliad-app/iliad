@@ -34,10 +34,13 @@ import es.dmoral.toasty.Toasty;
 
 public class ForgetActivity extends AppCompatActivity {
 
-    TextInputLayout id, surname, name;
-    TextView tv_forget_id;
-    Button done_forget;
-    EditText edt_id, edt_email, edt_surname, edt_name;
+    private TextInputLayout id;
+    private TextInputLayout surname;
+    private TextInputLayout name;
+    private EditText edt_id;
+    private EditText edt_email;
+    private EditText edt_surname;
+    private EditText edt_name;
 
     private static boolean isEmail(String email) {
         String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
@@ -67,8 +70,8 @@ public class ForgetActivity extends AppCompatActivity {
         id = findViewById(R.id.id);
         surname = findViewById(R.id.surname);
         name = findViewById(R.id.name);
-        tv_forget_id = findViewById(R.id.tv_forget_id);
-        done_forget = findViewById(R.id.done_forget);
+        TextView tv_forget_id = findViewById(R.id.tv_forget_id);
+        Button done_forget = findViewById(R.id.done_forget);
 
         edt_id = findViewById(R.id.edt_id);
         edt_email = findViewById(R.id.edt_email);
@@ -135,8 +138,6 @@ public class ForgetActivity extends AppCompatActivity {
                 }
 
 
-
-
             }
 
         });
@@ -170,17 +171,14 @@ public class ForgetActivity extends AppCompatActivity {
                         JSONObject json = new JSONObject(iliad);
                         String string_response = json.getString("0");
 
-                        if (string_response.equals("true")){
+                        if (string_response.equals("true")) {
                             Toasty.success(ForgetActivity.this, "Fatto", Toast.LENGTH_LONG,
                                     true).show();
                             finish();
-                        }
-                        else{
+                        } else {
                             Toasty.warning(ForgetActivity.this, getString(R.string.error_forget1), Toast.LENGTH_LONG,
                                     true).show();
                         }
-
-
 
 
                     } catch (JSONException ignored) {

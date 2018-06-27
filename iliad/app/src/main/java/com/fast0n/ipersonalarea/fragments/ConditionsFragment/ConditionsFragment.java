@@ -117,7 +117,7 @@ public class ConditionsFragment extends Fragment {
                                         }
                                     }));
 
-                            conditionList.add(new DataConditionsFragments(a, b, c));
+                            conditionList.add(new DataConditionsFragments(a, b));
                             CustomAdapterConditions ca = new CustomAdapterConditions(conditionList);
                             recyclerView.setAdapter(ca);
                         }

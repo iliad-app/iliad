@@ -4,11 +4,9 @@ class DataConditionsFragments {
 
     public final String textView;
     public final String textView1;
-    private final String url;
 
-    DataConditionsFragments(String textView, String textView1, String url) {
+    DataConditionsFragments(String textView, String textView1) {
         this.textView = textView;
         this.textView1 = textView1;
-        this.url = url;
     }
 }

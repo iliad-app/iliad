@@ -44,7 +44,6 @@ public class CustomAdapterConditions extends RecyclerView.Adapter<CustomAdapterC
 
         final TextView textView;
         final TextView textView1;
-        TextView url;
 
         MyViewHolder(View view) {
             super(view);

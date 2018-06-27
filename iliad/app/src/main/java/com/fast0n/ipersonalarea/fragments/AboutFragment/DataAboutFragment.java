@@ -1,6 +1,6 @@
 package com.fast0n.ipersonalarea.fragments.AboutFragment;
 
-public class DataAboutFragment {
+class DataAboutFragment {
 
     private final String name;
     private final int icon;

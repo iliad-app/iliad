@@ -13,7 +13,6 @@ import android.text.Html;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,16 +36,15 @@ import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView textView2;
-    int i;
+    private final String token = GenerateToken.randomString(20);
+    private int i;
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
+    private myDbAdapter helper;
+    private String account;
+    private String checkbox_preference;
     private LoadingButton btn_login;
     private EditText edt_id, edt_password;
-    SharedPreferences settings;
-    SharedPreferences.Editor editor;
-    myDbAdapter helper;
-    String token = GenerateToken.randomString(20);
-    String account, alert, checkbox_preference;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         edt_id = findViewById(R.id.edt_id);
         edt_password = findViewById(R.id.edt_password);
-        textView2 = findViewById(R.id.textView2);
+        TextView textView2 = findViewById(R.id.textView2);
         helper = new myDbAdapter(this);
 
         // recupero password
@@ -73,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // prendere le SharedPreferences
         checkbox_preference = settings.getString("checkbox", null);
-        alert = settings.getString("alert", null);
+        String alert = settings.getString("alert", null);
         account = settings.getString("account", null);
         editor.apply();
 
@@ -171,13 +169,12 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         String stringName = json.getString("user_name");
-                        String stringNumber = json.getString("user_numtell").replace("Numero: ","");
+                        String stringNumber = json.getString("user_numtell").replace("Numero: ", "");
                         btn_login.loadingSuccessful();
 
                         // esegue il login dopo 1 sec per visualizzare l'animazione
                         Handler handler = new Handler();
                         handler.postDelayed(() -> {
-
 
 
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -246,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (account == null && checkbox_preference.equals("false"))
             finishAffinity();
-        else{
+        else {
             editor.putString("checkbox", "true");
             editor.apply();
             finish();

@@ -7,8 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -66,13 +63,14 @@ import es.dmoral.toasty.Toasty;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int PROFILE_SETTING = 100000;
-    int i, pos = 0;
-    myDbAdapter helper;
-    String account, userid, password;
+    private int pos = 0;
+    private myDbAdapter helper;
+    private String account;
+    private String userid;
+    private String password;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private ProgressBar loading;
-    private SharedPreferences settings;
     private SharedPreferences.Editor editor;
     private boolean backPressedToExitOnce = false;
     private AccountHeader headerResult = null;
@@ -90,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // java adresses
-        settings = getSharedPreferences("sharedPreferences", 0);
+        SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
         editor = settings.edit();
         drawer = findViewById(R.id.drawer_layout);
         loading = findViewById(R.id.progressBar);
@@ -110,9 +108,9 @@ public class HomeActivity extends AppCompatActivity {
 
         String getAllData = helper.getAllData();
         String[] arrayData = getAllData.split("\n");
-        for (int p = 0; p < arrayData.length; p++) {
-            String onlyname = arrayData[p].split("&")[0];
-            String onlypassword = arrayData[p].split("&")[1];
+        for (String anArrayData1 : arrayData) {
+            String onlyname = anArrayData1.split("&")[0];
+            String onlypassword = anArrayData1.split("&")[1];
             if (onlyname.equals(account)) {
                 userid = onlyname;
                 password = onlypassword;
@@ -145,10 +143,10 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     } else {
 
-                        for (int p = 0; p < arrayData.length; p++) {
-                            String onlyname = arrayData[p].split("&")[0];
-                            String onlypassword = arrayData[p].split("&")[1];
-                            String phone = arrayData[p].split("&")[2];
+                        for (String anArrayData : arrayData) {
+                            String onlyname = anArrayData.split("&")[0];
+                            String onlypassword = anArrayData.split("&")[1];
+                            String phone = anArrayData.split("&")[2];
                             String getPhone = profile.getEmail().getText().toString();
 
 
@@ -351,8 +349,8 @@ public class HomeActivity extends AppCompatActivity {
                                                             String getAllData = helper.getAllData();
                                                             String[] arrayData = getAllData.split("\n");
 
-                                                            for (int p = 0; p < arrayData.length; p++) {
-                                                                String onlyname = arrayData[p].split("&")[0];
+                                                            for (String anArrayData : arrayData) {
+                                                                String onlyname = anArrayData.split("&")[0];
                                                                 if (onlyname.equals(account)) {
                                                                     helper.delete(account);
                                                                     break;

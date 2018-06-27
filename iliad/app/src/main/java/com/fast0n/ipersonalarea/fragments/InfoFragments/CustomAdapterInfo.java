@@ -16,8 +16,8 @@ import java.util.List;
 
 public class CustomAdapterInfo extends RecyclerView.Adapter<CustomAdapterInfo.MyViewHolder> {
 
-    private List<DataInfoFragments> infoList;
-    private Context context;
+    private final List<DataInfoFragments> infoList;
+    private final Context context;
 
     CustomAdapterInfo(Context context, List<DataInfoFragments> infoList) {
         this.context = context;

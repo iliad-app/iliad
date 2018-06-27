@@ -37,9 +37,9 @@ import es.dmoral.toasty.Toasty;
 
 public class ChangeEmailActivity extends AppCompatActivity {
 
-    myDbAdapter helper;
-    SharedPreferences settings;
-    String account, pwd;
+    private myDbAdapter helper;
+    private String account;
+    private String pwd;
     private EditText edt_email;
     private EditText edt_password;
     private Button btn_change_email;
@@ -75,7 +75,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
         // java adresses
-        settings = getSharedPreferences("sharedPreferences", 0);
+        SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
         edt_email = findViewById(R.id.edt_email);
         edt_password = findViewById(R.id.edt_password);
         btn_change_email = findViewById(R.id.btn_change_email);
@@ -118,9 +118,9 @@ public class ChangeEmailActivity extends AppCompatActivity {
                             true).show();
                 }
             } else
-            btn_change_email.setEnabled(true);
-                Toasty.warning(ChangeEmailActivity.this, getString(R.string.error_forget1), Toast.LENGTH_LONG,
-                        true).show();
+                btn_change_email.setEnabled(true);
+            Toasty.warning(ChangeEmailActivity.this, getString(R.string.error_forget1), Toast.LENGTH_LONG,
+                    true).show();
 
         });
 

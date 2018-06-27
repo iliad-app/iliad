@@ -1,91 +1,91 @@
 <resources>
 
-  <string name="btn_login">Accede</string>
-  <string name="edt_id">ID de Usuario</string>
-  <string name="active">Activar</string>
-  <string name="error_login">ID de Usuario o Contraseña incorrectos.</string>
-  <string name="error_forget">ID de Usuario o Email incorrectos.</string>
-  <string name="error_forget1">Campo Vacio o Email no correctos.</string>
+    <string name="btn_login">Accede</string>
+    <string name="edt_id">ID de Usuario</string>
+    <string name="active">Activar</string>
+    <string name="error_login">ID de Usuario o Contraseña incorrectos.</string>
+    <string name="error_forget">ID de Usuario o Email incorrectos.</string>
+    <string name="error_forget1">Campo Vacio o Email no correctos.</string>
 
-  <!-- SimFragments -->
-  <string name="error_iccid">Introduce el codigo de 19 cifras</string>
-  <string name="tv_edit">Modifica</string>
-  <string name="tv_show">Visualiza</string>
-  <string name="coming_soon">Funcionalidad disponible en breve</string>
+    <!-- SimFragments -->
+    <string name="error_iccid">Introduce el codigo de 19 cifras</string>
+    <string name="tv_edit">Modifica</string>
+    <string name="tv_show">Visualiza</string>
+    <string name="coming_soon">Funcionalidad disponible en breve</string>
 
-  <!-- ChangeEmailActivity -->
-  <string name="change_email_title">Cambia Email</string>
-  <string name="btn_change_email">Cambia Email</string>
-  <string name="new_email">Nueva Email</string>
-  <string name="email_wrong">Introduzca una email valida</string>
-  <string name="email_change_success">Tu direccion de email fue cambiada con exito.</string>
+    <!-- ChangeEmailActivity -->
+    <string name="change_email_title">Cambia Email</string>
+    <string name="btn_change_email">Cambia Email</string>
+    <string name="new_email">Nueva Email</string>
+    <string name="email_wrong">Introduzca una email valida</string>
+    <string name="email_change_success">Tu direccion de email fue cambiada con exito.</string>
 
-  <!-- ChangePasswordActivity -->
-  <string name="change_password_title">Cambia Contraseña</string>
-  <string name="edt_newpassword">Nueva Contraseña</string>
-  <string name="edt_oldpassword">Contraseña Vieja</string>
-  <string name="btn_change_password">Cambia Contraseña</string>
-  <string name="password_change_success">Tu contraseña fue cambiada con exito.</string>
-  <string name="wrong_password">Contraseña Invalida</string>
+    <!-- ChangePasswordActivity -->
+    <string name="change_password_title">Cambia Contraseña</string>
+    <string name="edt_newpassword">Nueva Contraseña</string>
+    <string name="edt_oldpassword">Contraseña Vieja</string>
+    <string name="btn_change_password">Cambia Contraseña</string>
+    <string name="password_change_success">Tu contraseña fue cambiada con exito.</string>
+    <string name="wrong_password">Contraseña Invalida</string>
 
-  <!-- drawer_menu -->
-  <string name="nav_credit">Consumo y Creditos</string>
-  <string name="nav_sim">Activacion de la SIM</string>
-  <string name="nav_info">Mis Datos Personales</string>
-  <string name="nav_conditions">Condiciones de mi Oferta</string>
-  <string name="nav_options">Mis Opciones</string>
-  <string name="nav_services">Mis Servicios</string>
-  <string name="nav_aboutus">Quienes Somos</string>
-  <string name="nav_logout">Salir</string>
-  <string name="split_menu">Info</string>
+    <!-- drawer_menu -->
+    <string name="nav_credit">Consumo y Creditos</string>
+    <string name="nav_sim">Activacion de la SIM</string>
+    <string name="nav_info">Mis Datos Personales</string>
+    <string name="nav_conditions">Condiciones de mi Oferta</string>
+    <string name="nav_options">Mis Opciones</string>
+    <string name="nav_services">Mis Servicios</string>
+    <string name="nav_aboutus">Quienes Somos</string>
+    <string name="nav_logout">Salir</string>
+    <string name="split_menu">Info</string>
 
-  <!-- ErrorConnectionActivity -->
-  <string name="errorconnection">No hay conexion a Internet</string>
-  <string name="errorconnection_one">Conecta de nuevo el dispositivo y prueba de nuevo</string>
-  <string name="italy">Italia</string>
-  <string name="estero">Extranjero</string>
+    <!-- ErrorConnectionActivity -->
+    <string name="errorconnection">No hay conexion a Internet</string>
+    <string name="errorconnection_one">Conecta de nuevo el dispositivo y prueba de nuevo</string>
+    <string name="italy">Italia</string>
+    <string name="estero">Extranjero</string>
 
-  <!-- AboutActivity -->
-  <string name="reload">Recarga</string>
-  <string name="toggle_enable">Activo</string>
-  <string name="toggle_disable">No activo</string>
-  <string name="version">Version</string>
-  <string name="source_code">Codigo de la App</string>
-  <string name="author">Autor</string>
-  <string name="content">La app fue creada en modo no oficial ILIAD SPA. no es responsable de ningun modo</string>
-  <string name="donate">Ofrezcanos una Cerveza</string>
-  <string name="follow">Seguidnos en Instagram</string>
-  <string name="old_version_title">Version obsoleta</string>
-  <string name="old_version">Actualiza la aplicacion y prueba de nuevo…</string>
-  <string name="update">Actualiza</string>
+    <!-- AboutActivity -->
+    <string name="reload">Recarga</string>
+    <string name="toggle_enable">Activo</string>
+    <string name="toggle_disable">No activo</string>
+    <string name="version">Version</string>
+    <string name="source_code">Codigo de la App</string>
+    <string name="author">Autor</string>
+    <string name="content">La app fue creada en modo no oficial ILIAD SPA. no es responsable de ningun modo</string>
+    <string name="donate">Ofrezcanos una Cerveza</string>
+    <string name="follow">Seguidnos en Instagram</string>
+    <string name="old_version_title">Version obsoleta</string>
+    <string name="old_version">Actualiza la aplicacion y prueba de nuevo…</string>
+    <string name="update">Actualiza</string>
 
-  <string name="yes">Si</string>
-  <string name="no">No</string>
-  <string name="dialog_exit">Estas seguro de querer salir?</string>
-  <string name="press_back">Pulsa de nuevo para salir</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="dialog_exit">Estas seguro de querer salir?</string>
+    <string name="press_back">Pulsa de nuevo para salir</string>
 
-  <string name="loading">Cargando…</string>
-  <string name="consumptiondetail">Detalle de Consumo</string>
-  <string name="consumptionroamingdetail">Detalle de Consumo Extranjero</string>
-  <string name="stay_connected">Mantente Conectado</string>
-  <string name="nav_contactus">Contactanos</string>
-  <string name="warning">Atencion</string>
-  <string name="accept">Declaro haber leido</string>
-  <string name="chargeNumber">Recarga tu telefono</string>
-  <string name="edtExpiration">Fecha de Caducidad</string>
-  <string name="edtCard">Numero de Tarjeta</string>
-  <string name="missing">Falta</string>
-  <string name="wrong_credit_card">Tarjeta de Credito no Valida</string>
-  <string name="nav_voicemail">Buzon de Voz</string>
-  <string name="add_access">Introduce las Credenciales de Acceso</string>
-  <string name="your_email">Tu Email</string>
-  <string name="edt_id_forget">ID Usuario (8 cifras)</string>
-  <string name="edt_surname_forget">Apellido</string>
-  <string name="edt_name_forget">Nombre</string>
-  <string name="tv_title_foget">Contraseña olvidada?</string>
-  <string name="edt_email_forget">Tu Email</string>
-  <string name="done_forget">Confirma</string>
-  <string name="tv_forget_id">No Conoces tu Id de Usuario??</string>
-  <string name="tv_forget_password">Olvidaste tu ID de Usuario y tu Contraseña?</string>
+    <string name="loading">Cargando…</string>
+    <string name="consumptiondetail">Detalle de Consumo</string>
+    <string name="consumptionroamingdetail">Detalle de Consumo Extranjero</string>
+    <string name="stay_connected">Mantente Conectado</string>
+    <string name="nav_contactus">Contactanos</string>
+    <string name="warning">Atencion</string>
+    <string name="accept">Declaro haber leido</string>
+    <string name="chargeNumber">Recarga tu telefono</string>
+    <string name="edtExpiration">Fecha de Caducidad</string>
+    <string name="edtCard">Numero de Tarjeta</string>
+    <string name="missing">Falta</string>
+    <string name="wrong_credit_card">Tarjeta de Credito no Valida</string>
+    <string name="nav_voicemail">Buzon de Voz</string>
+    <string name="add_access">Introduce las Credenciales de Acceso</string>
+    <string name="your_email">Tu Email</string>
+    <string name="edt_id_forget">ID Usuario (8 cifras)</string>
+    <string name="edt_surname_forget">Apellido</string>
+    <string name="edt_name_forget">Nombre</string>
+    <string name="tv_title_foget">Contraseña olvidada?</string>
+    <string name="edt_email_forget">Tu Email</string>
+    <string name="done_forget">Confirma</string>
+    <string name="tv_forget_id">No Conoces tu Id de Usuario??</string>
+    <string name="tv_forget_password">Olvidaste tu ID de Usuario y tu Contraseña?</string>
 
 </resources>

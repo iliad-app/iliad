@@ -30,13 +30,13 @@ import java.util.Objects;
 
 public class CreditFragment extends Fragment {
 
+    private final List<DataCreditFragments> creditList = new ArrayList<>();
+    private PullToRefreshRecyclerView recyclerView;
+    private ProgressBar loading;
+    private Context context;
+
     public CreditFragment() {
     }
-
-    PullToRefreshRecyclerView recyclerView;
-    ProgressBar loading;
-    List<DataCreditFragments> creditList = new ArrayList<>();
-    Context context;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,10 +65,10 @@ public class CreditFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(llm);
 
-        recyclerView.setOnRefreshListener(() ->{
+        recyclerView.setOnRefreshListener(() -> {
             recyclerView.setRefreshing(false);
             recyclerView.setEnabled(false);
-            creditList.removeAll(creditList);
+            creditList.clear();
             CustomAdapterCredit ca = new CustomAdapterCredit(context, creditList);
             recyclerView.setAdapter(ca);
             getObject(url, context);
@@ -104,7 +104,7 @@ public class CreditFragment extends Fragment {
                             String a = json_strings.getString("2");
                             String d = json_strings.getString("3");
 
-                            creditList.add(new DataCreditFragments(a, b, c, d));
+                            creditList.add(new DataCreditFragments(b, c, d));
                             CustomAdapterCredit ca = new CustomAdapterCredit(context, creditList);
                             recyclerView.setAdapter(ca);
 

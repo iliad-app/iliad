@@ -13,10 +13,6 @@ public class CustomPriorityRequest extends JsonObjectRequest {
         super(method, url, jsonRequest, listener, errorListener);
     }
 
-    public CustomPriorityRequest(String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        super(url, jsonRequest, listener, errorListener);
-    }
-
     @Override
     public Priority getPriority() {
         return priority;

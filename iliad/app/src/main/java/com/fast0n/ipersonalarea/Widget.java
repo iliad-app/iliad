@@ -6,9 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import com.android.volley.Request;
@@ -18,7 +16,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.fast0n.ipersonalarea.java.GenerateToken;
 import com.fast0n.ipersonalarea.java.myDbAdapter;
 
@@ -35,10 +32,8 @@ import static android.view.View.VISIBLE;
 
 
 public class Widget extends AppWidgetProvider {
-    Boolean status;
-    myDbAdapter helper;
-    SharedPreferences settings;
-    String account, password, userid;
+    private myDbAdapter helper;
+    private String password;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -55,40 +50,28 @@ public class Widget extends AppWidgetProvider {
 
 
             AppWidgetTarget img = new AppWidgetTarget(context, R.id.img, views, appWidgetId) {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                    super.onResourceReady(resource, transition);
-                }
             };
             Glide.with(context.getApplicationContext()).asBitmap()
                     .load("http://android12.altervista.org/res/ic_call.png").apply(options).into(img);
 
 
             AppWidgetTarget img2 = new AppWidgetTarget(context, R.id.img2, views, appWidgetId) {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                    super.onResourceReady(resource, transition);
-                }
             };
             Glide.with(context.getApplicationContext()).asBitmap()
                     .load("http://android12.altervista.org/res/ic_sms.png").apply(options).into(img2);
 
 
             AppWidgetTarget img3 = new AppWidgetTarget(context, R.id.img3, views, appWidgetId) {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                    super.onResourceReady(resource, transition);
-                }
             };
             Glide.with(context.getApplicationContext()).asBitmap()
                     .load("http://android12.altervista.org/res/ic_mms.png").apply(options).into(img3);
 
             helper = new myDbAdapter(context);
             // java adresses
-            settings = context.getSharedPreferences("sharedPreferences", 0);
+            SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
 
             // prendere le SharedPreferences
-            account = settings.getString("account", null);
+            String account = settings.getString("account", null);
 
             final String site_url = context.getString(R.string.site_url);
 
@@ -98,12 +81,10 @@ public class Widget extends AppWidgetProvider {
                 String onlyname = anArrayData.split("&")[0];
                 String onlypassword = anArrayData.split("&")[1];
                 if (onlyname.equals(account)) {
-                    userid = onlyname;
                     password = onlypassword;
                     break;
                 }
             }
-
 
 
             Intent intent1 = new Intent(context, Widget.class);
@@ -137,7 +118,6 @@ public class Widget extends AppWidgetProvider {
     }
 
     private void loading(String site, String userid, String password, Context context, RemoteViews views, int[] appWidgetIds, AppWidgetManager appWidgetManager, int appWidgetId) {
-        status = true;
         final String token = GenerateToken.randomString(20);
         String url = (site + "login/?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
         RequestQueue login = Volley.newRequestQueue(context);
@@ -153,7 +133,7 @@ public class Widget extends AppWidgetProvider {
                             Locale.ITALIAN);
                     String var = dateFormat.format(date);
 
-                    views.setTextViewText(R.id.update, context.getString(R.string.updatedat) +" " +var);
+                    views.setTextViewText(R.id.update, context.getString(R.string.updatedat) + " " + var);
 
 
                     Intent intent1 = new Intent(context, Widget.class);
@@ -254,11 +234,7 @@ public class Widget extends AppWidgetProvider {
 
 
         Handler handler = new Handler();
-        handler.postDelayed(() -> {
-
-            login.add(getRequestLogin);
-
-        }, 30000);
+        handler.postDelayed(() -> login.add(getRequestLogin), 30000);
 
 
     }

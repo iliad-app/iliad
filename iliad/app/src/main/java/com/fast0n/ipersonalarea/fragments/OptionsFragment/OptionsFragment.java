@@ -116,7 +116,7 @@ public class OptionsFragment extends Fragment {
                             String a = json_strings.getString("0");
                             String b = json_strings.getString("2");
                             String c = json_strings.getString("3");
-                            infoList.add(new DataOptionsFragments(a, b, c, i));
+                            infoList.add(new DataOptionsFragments(a, b, c));
                             CustomAdapterOptions ca = new CustomAdapterOptions(context, infoList, token);
                             recyclerView.setAdapter(ca);
 

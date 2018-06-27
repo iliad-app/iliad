@@ -27,14 +27,13 @@ import java.util.Objects;
 
 public class ConsumptionDetailsActivity extends AppCompatActivity {
 
+    private final ArrayList<ModelChildren> iphones = new ArrayList<>();
+    private final ArrayList<ModelChildren> nexus = new ArrayList<>();
+    private final ArrayList<ModelChildren> windows = new ArrayList<>();
     private RecyclerView recyclerView;
     private ArrayList<Model> model;
     private CustomAdapter adapter;
     private ProgressBar loading;
-    private ArrayList<ModelChildren> iphones = new ArrayList<>();
-    private ArrayList<ModelChildren> nexus = new ArrayList<>();
-    private ArrayList<ModelChildren> windows = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -29,10 +29,10 @@ import java.util.Objects;
 
 public class CreditRoamingFragment extends Fragment {
 
-    ProgressBar loading;
-    Context context;
-    PullToRefreshRecyclerView recyclerView;
-    List<DataCreditRoamingFragments> creditEsteroList = new ArrayList<>();
+    private final List<DataCreditRoamingFragments> creditEsteroList = new ArrayList<>();
+    private ProgressBar loading;
+    private Context context;
+    private PullToRefreshRecyclerView recyclerView;
 
     public CreditRoamingFragment() {
     }
@@ -66,7 +66,7 @@ public class CreditRoamingFragment extends Fragment {
         recyclerView.setOnRefreshListener(() -> {
             recyclerView.setRefreshing(false);
             recyclerView.setEnabled(false);
-            creditEsteroList.removeAll(creditEsteroList);
+            creditEsteroList.clear();
             CustomAdapterCreditRoaming ca = new CustomAdapterCreditRoaming(context, creditEsteroList);
             recyclerView.setAdapter(ca);
             getObject(url, context);
@@ -99,7 +99,7 @@ public class CreditRoamingFragment extends Fragment {
                             String b = json_strings.getString("1");
                             String a = json_strings.getString("2");
                             String d = json_strings.getString("3");
-                            creditEsteroList.add(new DataCreditRoamingFragments(a, b, c, d));
+                            creditEsteroList.add(new DataCreditRoamingFragments(b, c, d));
                             CustomAdapterCreditRoaming ca = new CustomAdapterCreditRoaming(context, creditEsteroList);
                             recyclerView.setAdapter(ca);
                         }

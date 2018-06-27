@@ -209,7 +209,7 @@ public class SimFragments extends Fragment {
                         }
 
 
-                        try{
+                        try {
                             String tracking_url = json_shipping.getString("3");
                             cardView3.setVisibility(View.VISIBLE);
                             cardView3.setOnClickListener(v -> {
@@ -217,9 +217,9 @@ public class SimFragments extends Fragment {
                                 i.setData(Uri.parse(tracking_url));
                                 startActivity(i);
                             });
+                        } catch (Exception ignored) {
+                            cardView3.setVisibility(View.GONE);
                         }
-                        catch (Exception ignored){
-                            cardView3.setVisibility(View.GONE);}
 
 
                         cardView1.setVisibility(View.VISIBLE);

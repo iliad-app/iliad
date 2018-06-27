@@ -44,13 +44,13 @@ public class VoicemailFragment extends Fragment {
     public VoicemailFragment() {
     }
 
-    boolean isEmail(String email) {
+    private boolean isEmail(String email) {
         String expression = "^[\\w.]+@([\\w]+\\.)+[A-Z]{2,7}$";
-        CharSequence inputString = email;
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputString);
+        Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -247,7 +247,7 @@ public class VoicemailFragment extends Fragment {
                             String a = json_strings.getString("0");
                             String b = json_strings.getString("2");
                             String c = json_strings.getString("3");
-                            infoList.add(new DataCustomizationFragments(a, b, c, i));
+                            infoList.add(new DataCustomizationFragments(a, b, c));
                             customization.setVisibility(View.VISIBLE);
 
                         }

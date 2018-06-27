@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import com.fast0n.ipersonalarea.R;
 import com.github.ybq.android.spinkit.style.CubeGrid;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +32,6 @@ public class SettingsFragment extends Fragment {
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
         final RecyclerView recyclerView;
         final List<DataSettingsFragments> infoList = new ArrayList<>();
-
 
 
         // java adresses
@@ -58,7 +56,6 @@ public class SettingsFragment extends Fragment {
             CustomAdapterSettings ca = new CustomAdapterSettings(context, infoList);
             recyclerView.setAdapter(ca);
         }
-
 
 
         return view;
