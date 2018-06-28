@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,11 +74,18 @@ public class ChargeActivity extends AppCompatActivity {
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
         final String token = extras.getString("token");
+        final String name = extras.getString("name");
+        final String price_spinner = extras.getString("price");
+
+        if (price_spinner.equals("false")){
+            spinner.setVisibility(View.INVISIBLE);
+        }
+
+        creditCardView.setCardHolderName(name);
+
+        // prendi gli importi
         final String site_url = getString(R.string.site_url) + getString(R.string.recharge);
-
-
         RequestQueue queue = Volley.newRequestQueue(ChargeActivity.this);
-
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + "?payinfoprice=true&&token=" + token, null,
                 response -> {
                     try {
@@ -113,7 +121,6 @@ public class ChargeActivity extends AppCompatActivity {
                 }, error -> {
 
         });
-
         queue.add(getRequest);
 
 
@@ -230,8 +237,6 @@ public class ChargeActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
 
             String typecard = null;
-
-
             String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
             for (String p : listOfPattern) {
                 if (ccNum.matches(p)) {
@@ -251,9 +256,7 @@ public class ChargeActivity extends AppCompatActivity {
             }
 
             String montant = spinner.getSelectedItem().toString();
-
-
-            if (montant.equals("Importo"))
+            if (montant.equals("Importo") || price_spinner.equals("false"))
                 Toasty.warning(ChargeActivity.this, montant + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
             else if (nCard.getText().toString().length() == 0)
                 Toasty.warning(ChargeActivity.this, getString(R.string.edtCard) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
@@ -263,42 +266,42 @@ public class ChargeActivity extends AppCompatActivity {
                 Toasty.warning(ChargeActivity.this, getString(R.string.edtExpiration) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
             else if (ncvv.getText().toString().length() == 0)
                 Toasty.warning(ChargeActivity.this, getString(R.string.edtCvv) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
-
             else {
+                if (price_spinner.equals("false")) {
+                    RequestQueue queue1 = Volley.newRequestQueue(ChargeActivity.this);
+                    JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url + "?phonecharge=true&montant=" + montant.replace("€", "") + "&cbtype=" + typecard + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "") + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0] + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1] + "&cbcrypto=" + ncvv.getText().toString() + "&token=" + token, null,
+                            response -> {
+                                try {
 
-                RequestQueue queue1 = Volley.newRequestQueue(ChargeActivity.this);
+                                    JSONObject json_raw = new JSONObject(response.toString());
+                                    String iliad = json_raw.getString("iliad");
+                                    JSONObject json = new JSONObject(iliad);
 
-                JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url + "?phonecharge=true&montant=" + montant.replace("€", "") + "&cbtype=" + typecard + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "") + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0] + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1] + "&cbcrypto=" + ncvv.getText().toString() + "&token=" + token, null,
-                        response -> {
-                            try {
-
-                                JSONObject json_raw = new JSONObject(response.toString());
-                                String iliad = json_raw.getString("iliad");
-                                JSONObject json = new JSONObject(iliad);
-
-                                String price = json.getString("0");
+                                    String price = json.getString("0");
 
 
-                                if (price.equals("true")) {
+                                    if (price.equals("true")) {
+                                        Toasty.success(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(ChargeActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toasty.error(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
+                                    }
 
-                                    Toasty.success(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(ChargeActivity.this, LoginActivity.class);
-                                    startActivity(intent);
 
-                                } else {
-                                    Toasty.error(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
+                                } catch (JSONException ignored) {
                                 }
 
+                            }, error -> {
 
-                            } catch (JSONException ignored) {
-                            }
+                    });
 
-                        }, error -> {
+                    queue1.add(getRequest1);
+                }
 
-                });
-
-                queue1.add(getRequest1);
-
+                else{
+                    //cambio metodo
+                }
             }
         });
 

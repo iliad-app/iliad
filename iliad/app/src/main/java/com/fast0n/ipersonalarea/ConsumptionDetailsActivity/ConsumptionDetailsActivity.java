@@ -96,7 +96,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                         String title = json.getString("title");
                         JSONObject json_title = new JSONObject(title);
 
-                        ArrayList[] ciao = new ArrayList[]{iphones, nexus, windows};
+                        ArrayList[] ConsumptionDetails = new ArrayList[]{iphones, nexus, windows};
                         for (int z = 0; z < json_title.length(); z++) {
                             String x = json_title.getString(String.valueOf(z));
 
@@ -116,9 +116,9 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                                     String e = json_strings_one.getString(String.valueOf(4));
                                     String f = json_strings_one.getString(String.valueOf(5));
 
-                                    ciao[z].add(new ModelChildren(a, b, c, d, e, f));
+                                    ConsumptionDetails[z].add(new ModelChildren(a, b, c, d, e, f));
                                 }
-                                model.add(new Model(x, ciao[z]));
+                                model.add(new Model(x, ConsumptionDetails[z]));
                                 loading.setVisibility(View.INVISIBLE);
                             } catch (Exception ignored) {
 

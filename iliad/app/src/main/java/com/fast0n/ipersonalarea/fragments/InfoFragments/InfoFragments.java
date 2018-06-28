@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.ChangeEmailActivity;
 import com.fast0n.ipersonalarea.ChangePasswordActivity;
+import com.fast0n.ipersonalarea.ChargeActivity;
 import com.fast0n.ipersonalarea.LoginActivity;
 import com.fast0n.ipersonalarea.R;
 import com.fast0n.ipersonalarea.java.RecyclerItemListener;
@@ -99,6 +100,17 @@ public class InfoFragments extends Fragment {
 
                         switch (position) {
                             case 1:
+
+                                TextView getNome = arg1.findViewById(R.id.textView3);
+                                String type = getNome.getText().toString();
+
+                                if (type.equals("Manuale")){
+                                    Intent intent1 = new Intent(context, ChargeActivity.class);
+                                    intent1.putExtra("name", "Cambio metodo...");
+                                    intent1.putExtra("price", "false");
+                                    intent1.putExtra("token", token);
+                                    startActivity(intent1);
+                                }
                                 break;
                             case 2:
                                 Intent intent2 = new Intent(context, ChangeEmailActivity.class);

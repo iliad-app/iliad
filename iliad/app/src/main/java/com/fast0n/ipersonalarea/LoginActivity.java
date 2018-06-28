@@ -136,9 +136,26 @@ public class LoginActivity extends AppCompatActivity {
 
                 String site_url = getString(R.string.site_url) + getString(R.string.login);
                 String url = site_url + "?userid=" + userid1 + "&password=" + npassword.replaceAll("\\s+", "") + "&token=" + token;
-                System.out.println(url);
-                getObject(url, token, npassword.replaceAll("\\s+", ""));
-                btn_login.setEnabled(false);
+
+
+                String getAllData = helper.getAllData();
+                String[] arrayData = getAllData.split("\n");
+
+
+                for (String anArrayData : arrayData) {
+                    String onlyname = anArrayData.split("&")[0];
+                    if (onlyname.equals(userid1)) {
+                        btn_login.loadingFailed();
+                        Toasty.info(LoginActivity.this, "Account già in uso", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    else{
+                        getObject(url, token, npassword.replaceAll("\\s+", ""));
+                        btn_login.setEnabled(false);
+                    }
+                }
+
+
 
             } else {
                 btn_login.setEnabled(true);

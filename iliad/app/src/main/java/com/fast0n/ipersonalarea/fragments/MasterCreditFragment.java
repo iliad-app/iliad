@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class MasterCreditFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         final Context context;
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
         BottomNavigationView bottomNavigationView;
@@ -86,6 +87,8 @@ public class MasterCreditFragment extends Fragment {
                                     switch (item.getItemId()) {
                                         case R.id.button:
                                             Intent intent1 = new Intent(context, ChargeActivity.class);
+                                            intent1.putExtra("name", "Ricarica");
+                                            intent1.putExtra("price", "true");
                                             intent1.putExtra("token", token);
                                             startActivity(intent1);
 

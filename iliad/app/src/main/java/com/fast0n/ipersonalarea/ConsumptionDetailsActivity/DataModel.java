@@ -1,5 +1,9 @@
 package com.fast0n.ipersonalarea.ConsumptionDetailsActivity;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +19,7 @@ public class DataModel extends ChildViewHolder {
     private final TextView e;
     private final TextView f;
 
-    public DataModel(View itemView) {
+    DataModel(View itemView) {
         super(itemView);
 
         a = itemView.findViewById(R.id.a);
@@ -31,9 +35,34 @@ public class DataModel extends ChildViewHolder {
         a.setText(modelChildren.getA());
         b.setText(modelChildren.getB());
         c.setText(modelChildren.getC());
-        d.setText(modelChildren.getD());
+        d.setText(modelChildren.getD().split(": ")[0] +": " + getContactName(modelChildren.getD().split(": ")[1].replace("***","")));
         e.setText(modelChildren.getE());
         f.setText(modelChildren.getF());
 
+    }
+
+    private String getContactName(String number) {
+        String name = "";
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+
+        ContentResolver contentResolver = itemView.getContext().getContentResolver();
+        try{
+            Cursor contactLookup = contentResolver.query(uri, null, null, null, null);
+
+            try {
+                if (contactLookup != null && contactLookup.getCount() > 0) {
+                    contactLookup.moveToNext();
+                    name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
+                }else{
+                    name = number + "***";
+                }
+            } finally {
+                if (contactLookup != null) {
+                    contactLookup.close();
+                }
+            }
+        }catch (Exception ignored){name = number + "***";}
+
+        return name;
     }
 }

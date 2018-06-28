@@ -33,7 +33,7 @@ public class ModelChildren implements Parcelable {
         f = in.readString();
     }
 
-    public ModelChildren(String a, String b, String c, String d, String e, String f) {
+    ModelChildren(String a, String b, String c, String d, String e, String f) {
         this.a = a;
         this.b = b;
         this.c = c;

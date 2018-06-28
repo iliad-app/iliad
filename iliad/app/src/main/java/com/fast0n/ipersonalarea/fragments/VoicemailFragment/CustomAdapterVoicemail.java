@@ -1,11 +1,16 @@
 package com.fast0n.ipersonalarea.fragments.VoicemailFragment;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -18,13 +23,19 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.R;
+import com.fast0n.ipersonalarea.java.InputStreamVolleyRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -50,7 +61,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         final String site_url = context.getString(R.string.site_url) + context.getString(R.string.voicemail);
 
 
-        holder.textView.setText(c.num_tell);
+        holder.textView.setText(getContactName(c.num_tell));
         holder.textView1.setText(Html.fromHtml(c.date));
 
         if (c.date.equals("")) {
@@ -94,14 +105,63 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         });
 
 
-        holder.button2.setOnClickListener(v -> {
-            Uri uri = Uri.parse("https://avatars2.githubusercontent.com/u/5260133?s=88&v=4");
+        String requiredPermission = "android.permission.WRITE_EXTERNAL_STORAGE";
+        int checkVal = context.checkCallingOrSelfPermission(requiredPermission);
 
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("image/jpeg");
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            Intent chooserIntent = Intent.createChooser(shareIntent, "Pippo");
-            context.startActivity(chooserIntent);
+        if (checkVal == PackageManager.PERMISSION_GRANTED) {
+            holder.button2.setVisibility(View.VISIBLE);
+        }
+
+
+        holder.button2.setOnClickListener(v -> {
+            holder.button2.setEnabled(false);
+            Toast.makeText(context, "Download in corso...", Toast.LENGTH_LONG).show();
+
+
+            String mUrl= site_url + "?idaudio=" + c.id + "&token=" + c.token;
+
+
+            File file = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));
+
+
+            if (!file.exists()) {
+                file.mkdir();
+            }
+
+
+            InputStreamVolleyRequest request = new InputStreamVolleyRequest(Request.Method.GET, mUrl,
+                    response -> {
+                        try {
+                            if (response != null) {
+
+
+                                FileOutputStream outputStream;
+                                outputStream = new FileOutputStream(file + File.separator + c.id +".wav");
+                                outputStream.write(response);
+                                outputStream.close();
+                                Toast.makeText(context, "Download completato", Toast.LENGTH_LONG).show();
+
+                                holder.button2.setEnabled(true);
+
+
+                                Intent share = new Intent(Intent.ACTION_SEND);
+                                share.setType("audio/*");
+                                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                share.putExtra(Intent.EXTRA_STREAM,
+                                        Uri.parse(file + File.separator + c.id +".wav"));
+                                context.startActivity(Intent.createChooser(share, "Share voicemail"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }, error -> {
+                    }, null);
+            RequestQueue mRequestQueue = Volley.newRequestQueue(context.getApplicationContext(), new HurlStack());
+            mRequestQueue.add(request);
+
+
+
+
         });
 
 
@@ -180,6 +240,34 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         });
 
 
+    }
+
+    private String getContactName(String number) {
+        String name = "";
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+
+        ContentResolver contentResolver = context.getContentResolver();
+        try {
+            Cursor contactLookup = contentResolver.query(uri, null, null, null, null);
+            try {
+                if (contactLookup != null && contactLookup.getCount() > 0) {
+                    contactLookup.moveToNext();
+                    name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
+                }else{
+                    name = number;
+                }
+            } finally {
+                if (contactLookup != null) {
+                    contactLookup.close();
+                }
+            }
+        }
+        catch (Exception ignored){ name = number;}
+
+
+
+
+        return name;
     }
 
 
