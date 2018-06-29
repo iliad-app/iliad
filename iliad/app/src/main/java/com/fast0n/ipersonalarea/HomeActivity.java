@@ -364,7 +364,6 @@ public class HomeActivity extends AppCompatActivity {
                                                                 Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
                                                                 startActivity(mainActivity);
                                                             } else {
-
                                                                 editor.putString("checkbox", "false");
                                                                 editor.putString("account", null);
                                                                 editor.apply();

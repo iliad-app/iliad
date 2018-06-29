@@ -17,6 +17,7 @@ const ILIAD_OPTION_URL = {
     recover: 'forget'
 }
 const CURRENT_APP_VERSION = '13';
+ 
 app.get('/', function (req, res) {
     res.set('text/html; charset=utf-8');
     res.send("<script>window.location.replace('https://github.com/Fast0n/iliad');</script>");
@@ -742,7 +743,7 @@ app.get('/credit', function (req, res) {
                     for (var x = 0; x < type.length; x++) {
                         if ($('div.table-details').find(type[x]) != '') {
                             $('div.table-details').find(type[x]).each(function (i, result) {
-                                data_store["iliad"]["title"][x] = $('div.table-details').find(type[x]).text().replace(/^\s+|\s+$/gm, '');;
+                                data_store["iliad"]["title"][x] = $('div.table-details').find(type[x]).text().replace(/^\s+|\s+$/gm, '');
                             });
                         } else {
                             data_store["iliad"]["title"][x] = title_text[x];
@@ -764,12 +765,18 @@ app.get('/credit', function (req, res) {
                                 for (var x = 0; x < data[z].length / i; x++) {
                                     data_store["iliad"][z][x] = {}
                                     for (var y = 0; y < i; y++) {
-                                        if (y == t) {
-                                            data_store["iliad"][z][x][y] = data[z][y + add] + ': ' + data[z][y + add + 1]
-                                        } else if (y == t + 1) { } else if (y == t + 2) {
-                                            data_store["iliad"][z][x][t + 1] = data[z][y + add]
-                                        } else {
+                                        if (y == 5) {
+                                            data_store["iliad"][z][x][y - 1] = data[z][y + add] + ': ' + data[z][y + add + 1]
+                                        }else if (y == 1) {
+                                            data_store["iliad"][z][x][y] = data[z][y + add] + ' ' + data[z][y + add + 1]
+                                        }else if(y == 2){ } else if (y == 3) {
+                                            data_store["iliad"][z][x][2] = data[z][y + add]
+                                        } else if (y == 6) { } else if (y == 7) {
+                                            data_store["iliad"][z][x][5] = data[z][y + add]
+                                        } else if (y == 0){
                                             data_store["iliad"][z][x][y] = data[z][y + add]
+                                        }else {
+                                            data_store["iliad"][z][x][y - 1] = data[z][y + add]
                                         }
                                     }
                                     add = add + i;
@@ -783,9 +790,8 @@ app.get('/credit', function (req, res) {
                         data_store["iliad"] = $('div.no-conso').text();
                     }
                     res.send(data_store);
-                    console.log(data_store);
                 } catch (exeption) {
-                    res.sendStatus(exeption);
+                    res.sendStatus(503);
                 }
             }
         });
@@ -825,10 +831,11 @@ app.get('/services', function (req, res) {
                     var status = [];
                     var text = [];
                     var array3 = [];
+                    var query = [];
                     results.each(function (i, result) {
 
-                        var title_service = $(result).find('h1').text().split('\n')[1].replace(/^\s+|\s+$/gm, '');
-
+                        var title_option = $(result).find('h1').text().split('\n')[1].replace(/^\s+|\s+$/gm, '');
+                        //as__status--off
                         $(result)
                             .find('div.as__status--active')
                             .each(function (index, element) {
@@ -836,51 +843,48 @@ app.get('/services', function (req, res) {
                                 status = status.concat([$(element).find('i').attr('class')]);
                             });
                         $(result)
+                            .find('div.grid-l.as__item')
+                            .find('div.grid-c.w-2.w-desktop-2.w-tablet-4.as__cell.as__status')
+                            .each(function (index, element) {
+                              if ($(element).find('a').attr('href') != undefined){
+                                query = query.concat([$(element).find('a').attr('href').split('=')[1].split('&')[0]]);
+                              }
+
+                            });
+                        $(result)
                             .find('div.bold')
                             .each(function (index, element) {
-                                if ($(element).find('a').text().replace(/^\s+|\s+$/gm, '') != '')
-                                    array3 = array3.concat([$(element).find('a').text().replace(/^\s+|\s+$/gm, '')]);
+                                array3 = array3.concat([$(element).find('a').text()]);
                             });
+                      
+                        var option = {};
+                      
+                        var num = query.length;
+                        //console.log(query)
 
-                        var query = [
-                            "block_anonymous",
-                            "voicemail_roaming",
-                            "block_redirect",
-                            "absent_subscriber",
-                            "speed_dial",
-                            "filter_rules"
-                        ];
-
-                        var service = {};
-
-                        for (var x = 0; x < 7; x++) {
-                            service[x] = [];
-                        }
-
-                        for (var x = 0; x < Object.keys(service).length - 1; x++) {
-                            service[x][0] = array3[x];
-                            service[x][1] = text[x];
-                            if (status[x] == 'icon i-check') {
-                                service[x][2] = 'true';
-                            } else {
-                                service[x][2] = 'false';
-                            }
-                            service[x][3] = query[x];
-                        }
-
-                        for (var x = 0; x < 7; x++) {
+                        for (var x = 0; x <= num; x++) {
+                            option[x] = [];
                             data_store["iliad"][x] = {};
                         }
 
-                        data_store["iliad"][0][0] = title_service;
+                        for (var x = 0; x < Object.keys(option).length - 1; x++) {
+                            option[x][0] = array3[x + 4].split('\n')[2].replace(/^\s+|\s+$/gm, '');
+                            option[x][1] = text[x];
+                            if (status[x] == 'icon i-check') {
+                                option[x][2] = 'true';
+                            } else {
+                                option[x][2] = 'false';
+                            }
+                            option[x][3] = query[x];
+                        }
+                        data_store["iliad"][0][0] = title_option;
 
-                        for (var x = 0; x < Object.keys(service).length - 1; x++) {
-                            for (var y = 0; y < service[x].length; y++) {
-                                data_store["iliad"][x + 1][y] = service[x][y];
+                        for (var x = 0; x <= num; x++) {
+                            for (var y = 0; y < option[x].length; y++) {
+                                data_store["iliad"][x + 1][y] = option[x][y];
                             }
                         }
                         res.send(data_store);
-
                     });
                 } catch (exeption) {
                     res.sendStatus(503);
@@ -962,15 +966,12 @@ app.get('/document', function (req, res) {
                                 array = array.concat([$(element).find('div.conso__text').text()]);
                                 array2 = array2.concat([$(element).find('div.conso__text').find('a').attr('href')]);
                             });
-
-                        data_store["iliad"][0] = {};
-                        data_store["iliad"][1] = {};
-                        data_store["iliad"][0][0] = array[0].split('\n')[1].replace(/^\s+|\s+$/gm, ''); //condition title
-                        data_store["iliad"][0][1] = array[0].split('\n')[2].replace(/^\s+|\s+$/gm, ''); //condition text
-                        data_store["iliad"][0][2] = 'https://www.iliad.it' + array2[0];; //condition doc
-                        data_store["iliad"][1][0] = array[1].split('\n')[1].replace(/^\s+|\s+$/gm, ''); //price title
-                        data_store["iliad"][1][1] = array[1].split('\n')[2].replace(/^\s+|\s+$/gm, ''); //price text
-                        data_store["iliad"][1][2] = 'https://www.iliad.it' + array2[1]; //price doc
+                        for (var x = 0; x < array.length; x++){
+                            data_store["iliad"][x] = {};
+                            data_store["iliad"][x][0] = array[x].split('\n')[1].replace(/^\s+|\s+$/gm, ''); //condition title
+                            data_store["iliad"][x][1] = array[x].split('\n')[2].replace(/^\s+|\s+$/gm, ''); //condition text
+                            data_store["iliad"][x][2] = 'https://www.iliad.it' + array2[x]; //condition doc
+                        }
                         res.send(data_store);
                     });
                 } catch (exeption) {
@@ -1013,10 +1014,11 @@ app.get('/options', function (req, res) {
                     var status = [];
                     var text = [];
                     var array3 = [];
+                    var query = [];
                     results.each(function (i, result) {
 
                         var title_option = $(result).find('h1').text().split('\n')[1].replace(/^\s+|\s+$/gm, '');
-
+                        //as__status--off
                         $(result)
                             .find('div.as__status--active')
                             .each(function (index, element) {
@@ -1024,20 +1026,22 @@ app.get('/options', function (req, res) {
                                 status = status.concat([$(element).find('i').attr('class')]);
                             });
                         $(result)
+                            .find('div.as__item')
+                            .each(function (index, element) {
+                                if (element == $(element).find('div.as__status--active')){
+                                }else {
+                                    query = query.concat([$(element).find('a').attr('href').split('/')[3]]);
+                                }
+                            });
+                        $(result)
                             .find('div.bold')
                             .each(function (index, element) {
                                 array3 = array3.concat([$(element).find('a').text()]);
                             });
-                        var query = [
-                            "",
-                            "blocage_premium",
-                            "blocage_data",
-                            "blocage_data_etranger",
-                        ];
-
+                      
                         var option = {};
                       
-                        var num = 4;
+                        var num = query.length;
 
                         for (var x = 0; x <= num; x++) {
                             option[x] = [];
@@ -1579,11 +1583,12 @@ app.get('/donations', function (req, res) {
         "Miranda Seassaro",
         "Gianluca Spano'",
         "Emanuele De Carlo",
-        "Emilio Filiardi"
+        "Emilio Filiardi",
+        "Luca Calio'"
     ];
     data_store["iliad"][0] = donors;
     res.send(data_store);
 
 });
 
-const server = app.listen(process.env.PORT || 1331, function () { });
+const server = app.listen(process.env.PORT || 1332, function () { });

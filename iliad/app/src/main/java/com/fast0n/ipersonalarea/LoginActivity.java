@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoadingButton btn_login;
     private EditText edt_id, edt_password;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,18 +142,23 @@ public class LoginActivity extends AppCompatActivity {
                 String getAllData = helper.getAllData();
                 String[] arrayData = getAllData.split("\n");
 
+                Boolean found = false;
+
 
                 for (String anArrayData : arrayData) {
                     String onlyname = anArrayData.split("&")[0];
                     if (onlyname.equals(userid1)) {
+                        found = true;
                         btn_login.loadingFailed();
                         Toasty.info(LoginActivity.this, "Account già in uso", Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    else{
-                        getObject(url, token, npassword.replaceAll("\\s+", ""));
-                        btn_login.setEnabled(false);
-                    }
+                }
+
+                if (!found){
+                    getObject(url, token, npassword.replaceAll("\\s+", ""));
+                    btn_login.setEnabled(false);
+
                 }
 
 

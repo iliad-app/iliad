@@ -100,7 +100,7 @@ public class InfoFragments extends Fragment {
 
                         switch (position) {
                             case 1:
-
+/*
                                 TextView getNome = arg1.findViewById(R.id.textView3);
                                 String type = getNome.getText().toString();
 
@@ -111,6 +111,7 @@ public class InfoFragments extends Fragment {
                                     intent1.putExtra("token", token);
                                     startActivity(intent1);
                                 }
+                                */
                                 break;
                             case 2:
                                 Intent intent2 = new Intent(context, ChangeEmailActivity.class);
