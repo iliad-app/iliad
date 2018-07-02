@@ -101,7 +101,6 @@ public class CreditFragment extends Fragment {
 
                             String c = json_strings.getString("0");
                             String b = json_strings.getString("1");
-                            String a = json_strings.getString("2");
                             String d = json_strings.getString("3");
 
                             creditList.add(new DataCreditFragments(b, c, d));

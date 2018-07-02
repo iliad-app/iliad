@@ -239,7 +239,7 @@ public class LoginActivity extends AppCompatActivity {
                             btn_login.setEnabled(true);
                         }
                     } catch (Exception ignored) {
-                        if (i <= 20) {
+                        if (i <= 15) {
                             getObject(url, token, password);
                             i++;
                         } else {

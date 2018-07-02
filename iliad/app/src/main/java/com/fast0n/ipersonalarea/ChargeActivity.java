@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,12 +38,13 @@ import es.dmoral.toasty.Toasty;
 
 public class ChargeActivity extends AppCompatActivity {
 
-    private EditText nCard;
-    private EditText nExpiration;
-    private EditText ncvv;
+    private EditText ncvv,nCard,nExpiration;
     private CreditCardView creditCardView;
     private Boolean touch = true;
     private Spinner spinner;
+    TextInputLayout edt_password_visibility;
+    String typecard = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class ChargeActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button);
         creditCardView = findViewById(R.id.card);
         spinner = findViewById(R.id.spinner);
+        edt_password_visibility = findViewById(R.id.edt_password_visibility);
 
 
         SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
@@ -73,12 +76,13 @@ public class ChargeActivity extends AppCompatActivity {
 
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
-        final String token = extras.getString("token");
-        final String name = extras.getString("name");
-        final String price_spinner = extras.getString("price");
+        final String token = extras.getString("token", null);
+        final String name = extras.getString("name", null);
+        String price_spinner = extras.getString("price", null);
 
         if (price_spinner.equals("false")){
             spinner.setVisibility(View.INVISIBLE);
+            edt_password_visibility.setVisibility(View.VISIBLE);
         }
 
         creditCardView.setCardHolderName(name);
@@ -233,28 +237,25 @@ public class ChargeActivity extends AppCompatActivity {
             }
         });
 
+        String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
+        for (String p : listOfPattern) {
+            if (ccNum.matches(p)) {
+                switch (p) {
+                    case "^4[0-9]{6,}$":
+                        typecard = "visa";
+                        break;
+                    case "^5[1-5][0-9]{5,}$":
+                        typecard = "mastercard";
+                        break;
+                    default:
+                        typecard = "";
+                        break;
+                }
+                break;
+            }
+        }
 
         button.setOnClickListener(v -> {
-
-            String typecard = null;
-            String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
-            for (String p : listOfPattern) {
-                if (ccNum.matches(p)) {
-                    switch (p) {
-                        case "^4[0-9]{6,}$":
-                            typecard = "visa";
-                            break;
-                        case "^5[1-5][0-9]{5,}$":
-                            typecard = "mastercard";
-                            break;
-                        default:
-                            typecard = "";
-                            break;
-                    }
-                    break;
-                }
-            }
-
             String montant = spinner.getSelectedItem().toString();
             if (montant.equals("Importo") || price_spinner.equals("false"))
                 Toasty.warning(ChargeActivity.this, montant + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
@@ -267,7 +268,9 @@ public class ChargeActivity extends AppCompatActivity {
             else if (ncvv.getText().toString().length() == 0)
                 Toasty.warning(ChargeActivity.this, getString(R.string.edtCvv) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
             else {
-                if (price_spinner.equals("false")) {
+                if (!montant.equals("Importo") && price_spinner.equals("true")) {
+                    System.out.println(price_spinner);
+                    button.setEnabled(false);
                     RequestQueue queue1 = Volley.newRequestQueue(ChargeActivity.this);
                     JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url + "?phonecharge=true&montant=" + montant.replace("€", "") + "&cbtype=" + typecard + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "") + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0] + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1] + "&cbcrypto=" + ncvv.getText().toString() + "&token=" + token, null,
                             response -> {
@@ -284,8 +287,11 @@ public class ChargeActivity extends AppCompatActivity {
                                         Toasty.success(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(ChargeActivity.this, LoginActivity.class);
                                         startActivity(intent);
+                                        button.setEnabled(true);
                                     } else {
                                         Toasty.error(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
+                                        button.setEnabled(true);
+
                                     }
 
 

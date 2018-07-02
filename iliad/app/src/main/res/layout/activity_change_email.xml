@@ -30,5 +30,4 @@
 
     <include layout="@layout/content_change_email" />
 
-
 </android.support.design.widget.CoordinatorLayout>

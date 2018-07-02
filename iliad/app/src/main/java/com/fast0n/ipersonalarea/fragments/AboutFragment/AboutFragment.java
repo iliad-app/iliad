@@ -7,15 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fast0n.ipersonalarea.BuildConfig;
 import com.fast0n.ipersonalarea.R;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class AboutFragment extends Fragment {
@@ -30,75 +31,68 @@ public class AboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        ArrayList<DataAboutFragment> DataAboutFragments;
-        ListView listView;
-        CustomAdapterAboutFragment adapter;
         final Context context;
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         // java adresses
-        listView = view.findViewById(R.id.list_info);
-        DataAboutFragments = new ArrayList<>();
+        TextView tv_version = view.findViewById(R.id.tv_version);
+        TextView tv_author = view.findViewById(R.id.tv_author);
+        TextView tv_author2 = view.findViewById(R.id.tv_author2);
+        TextView tv_author3 = view.findViewById(R.id.tv_author3);
+        TextView tv_author4 = view.findViewById(R.id.tv_author4);
+        TextView tv_author5 = view.findViewById(R.id.tv_author5);
+
+        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
+        LinearLayout linearLayout2 = view.findViewById(R.id.linearLayout2);
+        LinearLayout linearLayout3 = view.findViewById(R.id.linearLayout3);
+        LinearLayout linearLayout4 = view.findViewById(R.id.linearLayout4);
+        LinearLayout linearLayout5 = view.findViewById(R.id.linearLayout5);
+        LinearLayout linearLayout6 = view.findViewById(R.id.linearLayout6);
+        LinearLayout linearLayout7 = view.findViewById(R.id.linearLayout7);
+        LinearLayout linearLayout8 = view.findViewById(R.id.linearLayout8);
 
 
-        // add data element in listview
-        DataAboutFragments
-                .add(new DataAboutFragment(
-                        getString(R.string.version) + "<br><small>" + BuildConfig.VERSION_NAME + " ("
-                                + BuildConfig.VERSION_CODE + ") (" + BuildConfig.APPLICATION_ID + ")</small>",
-                        R.drawable.ic_info_outline));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.source_code), R.drawable.ic_github));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.donate), R.drawable.ic_credit));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Massimiliano Montaleone (Fast0n)</small>",
-                R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Matteo Monteleone (MattVoid)</small>",
-                R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Domenico Majorana (Nicuz)</small>",
-                R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Luca Stefani (luca020400)</small>",
-                R.drawable.ic_user));
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.author) + "<br><small>Andrea Crescentini (ElCresh)</small>",
-                R.drawable.ic_user));
-
-        DataAboutFragments.add(new DataAboutFragment(getString(R.string.content), R.drawable.ic_warning));
-
-        // set data to Adapter
-        adapter = new CustomAdapterAboutFragment(DataAboutFragments, context);
-        listView.setAdapter(adapter);
+        tv_version.setText(Html.fromHtml("<b>" + getString(R.string.version) + "</b><br>" + BuildConfig.VERSION_NAME + " ("
+                + BuildConfig.VERSION_CODE + ") (" + BuildConfig.APPLICATION_ID + ")"));
 
 
-        // setOnItemClickListener listview
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
-            switch (position) {
-                case 1:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fast0n/iliad")));
-                    break;
-                case 2:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/Fast0n/1.0")));
-                    break;
-                case 3:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fast0n/")));
-                    break;
-                case 4:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/mattvoid/")));
-                    break;
-                case 5:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Nicuz/")));
-                    break;
-                case 6:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/luca020400/")));
-                    break;
-                case 7:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ElCresh/")));
-                    break;
-                case 8:
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Fast0n/iliad/blob/master/LICENSE")));
-                    break;
+        tv_author.setText(Html.fromHtml("<b><font color='#c00000'>" + getString(R.string.author) + "</fond></b><br>Massimiliano Montaleone (Fast0n)"));
+        tv_author2.setText(Html.fromHtml("<b><font color='#c00000'>" + getString(R.string.author) + "</fond></b><br>Matteo Monteleone (MattVoid)"));
+        tv_author3.setText(Html.fromHtml("<b><font color='#c00000'>" + getString(R.string.author) + "</fond></b><br>Domenico Majorana (Nicuz)"));
+        tv_author4.setText(Html.fromHtml("<b><font color='#c00000'>" + getString(R.string.author) + "</fond></b><br>Luca Stefani (luca020400)"));
+        tv_author5.setText(Html.fromHtml("<b><font color='#c00000'>" + getString(R.string.author) + "</fond></b><br>Andrea Crescentini (ElCresh)"));
 
-            }
-
+        linearLayout.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Fast0n/iliad/blob/master/LICENSE")));
         });
 
+        linearLayout2.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fast0n/iliad")));
+        });
+
+        linearLayout3.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/Fast0n/1.0")));
+        });
+
+        linearLayout4.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fast0n/")));
+        });
+
+        linearLayout5.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/mattvoid/")));
+        });
+
+        linearLayout6.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Nicuz/")));
+        });
+
+        linearLayout7.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/luca020400/")));
+        });
+
+        linearLayout8.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ElCresh/")));
+        });
 
         return view;
     }

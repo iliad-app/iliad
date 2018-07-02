@@ -56,7 +56,6 @@ public class MasterCreditFragment extends Fragment {
         TextView description = view.findViewById(R.id.descriptionText);
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
 
-
         SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
         String token = settings.getString("token", null);
         SharedPreferences.Editor editor = settings.edit();
@@ -110,8 +109,6 @@ public class MasterCreditFragment extends Fragment {
         });
 
         queue.add(getRequest);
-
-
         setupViewPager(viewPager);
         TabLayout tabs = view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);

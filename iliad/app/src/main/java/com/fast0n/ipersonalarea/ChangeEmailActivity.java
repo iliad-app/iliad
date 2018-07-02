@@ -38,10 +38,8 @@ import es.dmoral.toasty.Toasty;
 public class ChangeEmailActivity extends AppCompatActivity {
 
     private myDbAdapter helper;
-    private String account;
-    private String pwd;
-    private EditText edt_email;
-    private EditText edt_password;
+    private String pwd, account;
+    private EditText edt_email, edt_password;
     private Button btn_change_email;
 
     private static boolean isEmail(String email) {

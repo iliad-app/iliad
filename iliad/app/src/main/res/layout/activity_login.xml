@@ -30,5 +30,4 @@
 
     <include layout="@layout/content_login" />
 
-
 </android.support.design.widget.CoordinatorLayout>

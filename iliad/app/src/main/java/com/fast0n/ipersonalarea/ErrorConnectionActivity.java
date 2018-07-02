@@ -17,8 +17,8 @@ import es.dmoral.toasty.Toasty;
 
 public class ErrorConnectionActivity extends AppCompatActivity {
 
-    private TextView textView;
-    private TextView textView1;
+    TextView title;
+    TextView desc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,8 @@ public class ErrorConnectionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 
         Button button = findViewById(R.id.button);
-        textView = findViewById(R.id.textView1);
-        textView1 = findViewById(R.id.textView);
+        title = findViewById(R.id.title);
+        desc = findViewById(R.id.desc);
 
         try {
             Bundle extras = getIntent().getExtras();
@@ -36,37 +36,33 @@ public class ErrorConnectionActivity extends AppCompatActivity {
             String errorAPI = extras.getString("errorAPI", null);
 
             if (errorAPI.equals("true")) {
-                textView.setText(R.string.old_version_title);
-                textView1.setText(R.string.old_version);
+                title.setText(R.string.old_version);
+                desc.setText(R.string.old_version_title);
                 button.setText(R.string.update);
 
                 button.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID))));
-            } else {
-                button.setOnClickListener(v -> {
-
-                    if (isOnline()) {
-
-                        Intent mStartActivity = new Intent(ErrorConnectionActivity.this, LoginActivity.class);
-                        int mPendingIntentId = 123456;
-                        PendingIntent mPendingIntent = PendingIntent.getActivity(ErrorConnectionActivity.this,
-                                mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                        AlarmManager mgr = (AlarmManager) ErrorConnectionActivity.this
-                                .getSystemService(Context.ALARM_SERVICE);
-                        assert mgr != null;
-                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                        System.exit(0);
-
-                    } else {
-                        Toasty.info(ErrorConnectionActivity.this, textView.getText(), Toast.LENGTH_SHORT, true)
-                                .show();
-                        Toasty.info(ErrorConnectionActivity.this, textView1.getText(), Toast.LENGTH_SHORT, true)
-                                .show();
-                    }
-
-                });
             }
         } catch (Exception ignored) {
+            button.setOnClickListener(v -> {
+
+                if (isOnline()) {
+                    Intent mStartActivity = new Intent(ErrorConnectionActivity.this, LoginActivity.class);
+                    int mPendingIntentId = 123456;
+                    PendingIntent mPendingIntent = PendingIntent.getActivity(ErrorConnectionActivity.this,
+                            mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                    AlarmManager mgr = (AlarmManager) ErrorConnectionActivity.this
+                            .getSystemService(Context.ALARM_SERVICE);
+                    assert mgr != null;
+                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                    System.exit(0);
+
+                } else {
+                    Toasty.info(ErrorConnectionActivity.this, desc.getText(), Toast.LENGTH_SHORT, true)
+                            .show();
+                }
+
+            });
         }
 
     }

@@ -37,11 +37,9 @@ import es.dmoral.toasty.Toasty;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private myDbAdapter helper;
-    private String account;
-    private String pwd;
-    private EditText edt_newpassword;
-    private EditText edt_password;
-    private Button btn_password;
+    private String pwd, account;
+    private EditText edt_newpassword, edt_password;
+    private Button btn_change_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
         edt_newpassword = findViewById(R.id.edt_newpassword);
         edt_password = findViewById(R.id.edt_oldpassword);
-        btn_password = findViewById(R.id.btn_password);
+        btn_change_password = findViewById(R.id.btn_password);
         helper = new myDbAdapter(this);
 
         // prendere le SharedPreferences
@@ -76,7 +74,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         final String token = extras.getString("token", null);
         final String site_url = getString(R.string.site_url) + getString(R.string.infomation);
 
-        btn_password.setOnClickListener(v -> {
+        btn_change_password.setOnClickListener(v -> {
 
 
             if (edt_password.getText().toString().length() != 0
@@ -117,14 +115,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
                     changePassword(url, oldpassword.replaceAll("\\s+", ""), newpassword.replaceAll("\\s+", ""));
-                    btn_password.setEnabled(false);
+                    btn_change_password.setEnabled(false);
                 } else {
-                    btn_password.setEnabled(true);
+                    btn_change_password.setEnabled(true);
                     Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                             true).show();
                 }
             } else {
-                btn_password.setEnabled(true);
+                btn_change_password.setEnabled(true);
                 Toasty.warning(ChangePasswordActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                         true).show();
             }

@@ -43,6 +43,7 @@ public class DataModel extends ChildViewHolder {
 
     private String getContactName(String number) {
         String name = "";
+
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
 
         ContentResolver contentResolver = itemView.getContext().getContentResolver();
@@ -50,7 +51,7 @@ public class DataModel extends ChildViewHolder {
             Cursor contactLookup = contentResolver.query(uri, null, null, null, null);
 
             try {
-                if (contactLookup != null && contactLookup.getCount() > 0) {
+                if (contactLookup.getCount() > 0) {
                     contactLookup.moveToNext();
                     name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
                 }else{

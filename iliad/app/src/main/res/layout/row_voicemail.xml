@@ -19,7 +19,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        card_view:cardBackgroundColor="@android:color/black"
         card_view:cardElevation="2dp">
 
         <android.support.constraint.ConstraintLayout

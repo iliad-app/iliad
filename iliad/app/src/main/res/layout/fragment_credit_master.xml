@@ -27,7 +27,7 @@
             app:tabIndicatorColor="@color/colorPrimary" />
 
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/linearLayout"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/ll_master_height"
@@ -45,17 +45,26 @@
                 android:layout_gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tv_master_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/descriptionText"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/tv1_master_size" />
+                android:textSize="@dimen/tv1_master_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/creditText" />
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

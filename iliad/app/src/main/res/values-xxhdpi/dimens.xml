@@ -6,7 +6,7 @@
     <dimen name="rv_credit_height">100dp</dimen>
     <dimen name="ll_master_height">150dp</dimen>
     <dimen name="tv_master_size">48dp</dimen>
-    <dimen name="tv1_master_size">18sp</dimen>
+    <dimen name="tv1_master_size">16sp</dimen>
 
     <dimen name="row_info_padding">12dp</dimen>
     <dimen name="row_info_img">30dp</dimen>

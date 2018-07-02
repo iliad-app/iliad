@@ -447,6 +447,34 @@ public class HomeActivity extends AppCompatActivity {
                                     .show();
                             Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
                             startActivity(mainActivity);
+
+                            String getAllData = helper.getAllData();
+                            String[] arrayData = getAllData.split("\n");
+
+                            for (String anArrayData : arrayData) {
+                                String onlyname = anArrayData.split("&")[0];
+                                if (onlyname.equals(account)) {
+                                    if (arrayData.length > 1) {
+                                        editor.putString("account", onlyname);
+                                        editor.apply();
+                                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        editor.putString("checkbox", "false");
+                                        editor.putString("account", null);
+                                        editor.apply();
+
+                                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    helper.delete(account);
+
+                                    break;
+                                }
+                            }
+
+
+
                         }
                     } catch (Exception ignored) {
                         Toasty.warning(HomeActivity.this, getString(R.string.error_login), Toast.LENGTH_LONG, true)

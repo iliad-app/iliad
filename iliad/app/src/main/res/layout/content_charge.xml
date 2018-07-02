@@ -66,7 +66,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:hint="@string/edtExpiration"
-
                     android:inputType="number"
                     android:maxLength="5" />
 
@@ -80,8 +79,32 @@
                     android:inputType="number"
                     android:maxLength="4" />
 
+
             </LinearLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:visibility="gone"
+                android:id="@+id/edt_password_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edt_password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints="password"
+                    android:ems="10"
+                    android:hint="@string/edt_password"
+                    android:inputType="textPassword"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_id" />
+            </android.support.design.widget.TextInputLayout>
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
