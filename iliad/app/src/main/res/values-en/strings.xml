@@ -58,7 +58,12 @@
     <string name="no">No</string>
     <string name="dialog_exit">Are you sure you want to quit?</string>
     <string name="press_back">Press again to exit</string>
-    <!-- link request -->
+
+    <!-- MasterCreditFragment Activity -->
+    <string name="residual_credit">RESIDUAL CREDIT</string>
+    <string name="days_renewal">DAYS UNTIL NEXT RENEWAL</string>
+    <string name="day_renewal">DAY UNTIL NEXT RENEWAL</string>
+
     <string name="loading">Loading…</string>
     <string name="updatedat">Update at</string>
     <string name="consumptiondetail">Consumption detail</string>
@@ -83,4 +88,6 @@
     <string name="done_forget">Confirmation</string>
     <string name="tv_forget_id">Don\'t know your user ID?</string>
     <string name="tv_forget_password">Have you forgotten your password or lost your user ID?</string>
+    <string name="account_already_use">Account already in use</string>
+
 </resources>

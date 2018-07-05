@@ -1,47 +1,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="1dp"
     app:ignore="NamespaceTypo">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         card_view:cardBackgroundColor="@android:color/black"
-        card_view:cardElevation="2dp">
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/row_credit_padding"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:paddingTop="@dimen/row_credit_padding">
 
 
             <LinearLayout
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:padding="5dp">
 
                 <ImageView
                     android:id="@+id/icon_info"
@@ -57,13 +52,16 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black" />
 
 
@@ -71,7 +69,9 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black" />
 
 

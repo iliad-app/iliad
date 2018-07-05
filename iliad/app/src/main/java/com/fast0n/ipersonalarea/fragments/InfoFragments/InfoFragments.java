@@ -102,7 +102,6 @@ public class InfoFragments extends Fragment {
                             case 1:
                                 TextView getNome = arg1.findViewById(R.id.textView3);
                                 String type = getNome.getText().toString();
-/*
                                 if (type.equals("Manuale")){
                                     Intent intent1 = new Intent(context, ChargeActivity.class);
                                     intent1.putExtra("name", "Cambio metodo...");
@@ -110,7 +109,6 @@ public class InfoFragments extends Fragment {
                                     intent1.putExtra("token", token);
                                     startActivity(intent1);
                                 }
-                                */
                                 break;
                             case 2:
                                 Intent intent2 = new Intent(context, ChangeEmailActivity.class);
@@ -125,7 +123,6 @@ public class InfoFragments extends Fragment {
                                 startActivity(intent);
                                 break;
                             case 4:
-
                                 RequestQueue queue = Volley.newRequestQueue(context);
                                 JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + "?puk=true&token=" + token, null,
                                         response -> {

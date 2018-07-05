@@ -47,13 +47,28 @@
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="@dimen/row_info_img"
-                    android:layout_height="@dimen/row_info_img"
+                <RelativeLayout
                     android:layout_gravity="center"
-                    android:backgroundTint="@color/colorAccent"
-                    android:src="@drawable/ic_info" />
+                    android:layout_width="@dimen/row_credit_animation"
+                    android:layout_height="@dimen/row_credit_animation">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        card_view:srcCompat="@drawable/ic_info"
+                        android:layout_width="@dimen/row_info_img"
+                        android:layout_height="@dimen/row_info_img"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="@dimen/row_credit_animation"
+                        android:layout_height="@dimen/row_credit_animation"
+                        android:layout_centerInParent="true"
+                        android:visibility="invisible"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.cooltechworks.creditcarddesign.CreditCardView;
+import com.fast0n.ipersonalarea.java.myDbAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,13 +40,13 @@ import es.dmoral.toasty.Toasty;
 
 public class ChargeActivity extends AppCompatActivity {
 
-    private EditText ncvv,nCard,nExpiration;
+    myDbAdapter helper;
+    TextInputLayout edt_password_visibility;
+    String typecard = null, account;
+    private EditText ncvv, nCard, nExpiration, edt_password;
     private CreditCardView creditCardView;
     private Boolean touch = true;
     private Spinner spinner;
-    TextInputLayout edt_password_visibility;
-    String typecard = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +64,19 @@ public class ChargeActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
+        helper = new myDbAdapter(this);
 
         // java adresses
         Button button = findViewById(R.id.button);
         creditCardView = findViewById(R.id.card);
         spinner = findViewById(R.id.spinner);
         edt_password_visibility = findViewById(R.id.edt_password_visibility);
-
+        edt_password = findViewById(R.id.edt_password);
 
         SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.apply();
+
+        // prendere le SharedPreferences
+        account = settings.getString("account", null);
 
         final Bundle extras = getIntent().getExtras();
         assert extras != null;
@@ -80,17 +84,17 @@ public class ChargeActivity extends AppCompatActivity {
         final String name = extras.getString("name", null);
         String price_spinner = extras.getString("price", null);
 
-        if (price_spinner.equals("false")){
+        if (price_spinner.equals("false")) {
             spinner.setVisibility(View.INVISIBLE);
             edt_password_visibility.setVisibility(View.VISIBLE);
         }
 
         creditCardView.setCardHolderName(name);
 
-        // prendi gli importi
-        final String site_url = getString(R.string.site_url) + getString(R.string.recharge);
+        // prende gli importi
+        final String site_url = getString(R.string.site_url);
         RequestQueue queue = Volley.newRequestQueue(ChargeActivity.this);
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + "?payinfoprice=true&&token=" + token, null,
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url +getString(R.string.recharge)+ "?payinfoprice=true&&token=" + token, null,
                 response -> {
                     try {
 
@@ -237,42 +241,48 @@ public class ChargeActivity extends AppCompatActivity {
             }
         });
 
-        String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
-        for (String p : listOfPattern) {
-            if (ccNum.matches(p)) {
-                switch (p) {
-                    case "^4[0-9]{6,}$":
-                        typecard = "visa";
-                        break;
-                    case "^5[1-5][0-9]{5,}$":
-                        typecard = "mastercard";
-                        break;
-                    default:
-                        typecard = "";
-                        break;
-                }
-                break;
-            }
-        }
-
         button.setOnClickListener(v -> {
             String montant = spinner.getSelectedItem().toString();
-            if (montant.equals("Importo") || price_spinner.equals("false"))
-                Toasty.warning(ChargeActivity.this, montant + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
-            else if (nCard.getText().toString().length() == 0)
-                Toasty.warning(ChargeActivity.this, getString(R.string.edtCard) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
-            if (typecard == null)
-                Toasty.warning(ChargeActivity.this, getString(R.string.wrong_credit_card), Toast.LENGTH_SHORT).show();
-            else if (nExpiration.getText().toString().length() == 0)
-                Toasty.warning(ChargeActivity.this, getString(R.string.edtExpiration) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
-            else if (ncvv.getText().toString().length() == 0)
-                Toasty.warning(ChargeActivity.this, getString(R.string.edtCvv) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
-            else {
-                if (!montant.equals("Importo") && price_spinner.equals("true")) {
-                    System.out.println(price_spinner);
+
+            if (price_spinner.equals("true")) {
+                if (montant.equals("Importo") || price_spinner.equals("false"))
+                    Toasty.warning(ChargeActivity.this, montant + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else if (nCard.getText().toString().length() < 19)
+                    Toasty.warning(ChargeActivity.this, getString(R.string.edtCard) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else if (nExpiration.getText().toString().length() == 0)
+                    Toasty.warning(ChargeActivity.this, getString(R.string.edtExpiration) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else if (ncvv.getText().toString().length() == 0)
+                    Toasty.warning(ChargeActivity.this, getString(R.string.edtCvv) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else {
+
+                    String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
+                    for (String p : listOfPattern) {
+                        if (ccNum.matches(p)) {
+                            switch (p) {
+                                case "^4[0-9]{6,}$":
+                                    typecard = "visa";
+                                    break;
+                                case "^5[1-5][0-9]{5,}$":
+                                    typecard = "mastercard";
+                                    break;
+                                default:
+                                    typecard = "";
+                                    break;
+                            }
+                            break;
+                        }
+                    }
+
                     button.setEnabled(false);
                     RequestQueue queue1 = Volley.newRequestQueue(ChargeActivity.this);
-                    JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url + "?phonecharge=true&montant=" + montant.replace("€", "") + "&cbtype=" + typecard + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "") + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0] + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1] + "&cbcrypto=" + ncvv.getText().toString() + "&token=" + token, null,
+                    JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url +getString(R.string.recharge) + "?phonecharge=true&montant="
+                            + montant.replace("€", "")
+                            + "&cbtype=" + typecard
+                            + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "")
+                            + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0]
+                            + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1]
+                            + "&cbcrypto=" + ncvv.getText().toString()
+                            + "&token=" + token, null,
                             response -> {
                                 try {
 
@@ -304,9 +314,99 @@ public class ChargeActivity extends AppCompatActivity {
 
                     queue1.add(getRequest1);
                 }
+            } else {
+                //cambio metodo
+                if (nCard.getText().toString().length() < 19)
+                    Toasty.warning(ChargeActivity.this, getString(R.string.edtCard) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else if (nExpiration.getText().toString().length() == 0)
+                    Toasty.warning(ChargeActivity.this, getString(R.string.edtExpiration) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else if (ncvv.getText().toString().length() == 0)
+                    Toasty.warning(ChargeActivity.this, getString(R.string.edtCvv) + " " + getString(R.string.missing), Toast.LENGTH_SHORT).show();
+                else if (edt_password.getText().toString().length() == 0) {
+                    String getAllData = helper.getAllData();
+                    String[] arrayData = getAllData.split("\n");
+                    String pwd = null;
+                    for (String anArrayData : arrayData) {
+                        String onlyname = anArrayData.split("&")[0];
+                        String onlypassword = anArrayData.split("&")[1];
+                        if (onlyname.equals(account)) {
+                            pwd = onlypassword;
+                            break;
+                        }
+                    }
 
-                else{
-                    //cambio metodo
+                    byte[] decodeValue1 = Base64.decode(pwd, Base64.DEFAULT);
+                    String ppassword = new String(decodeValue1);
+
+                    if (!edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))){
+                        Toasty.warning(ChargeActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
+                                true).show();
+                    }
+                }
+                else {
+
+                    String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
+                    for (String p : listOfPattern) {
+                        if (ccNum.matches(p)) {
+                            switch (p) {
+                                case "^4[0-9]{6,}$":
+                                    typecard = "visa";
+                                    break;
+                                case "^5[1-5][0-9]{5,}$":
+                                    typecard = "mastercard";
+                                    break;
+                                default:
+                                    typecard = "";
+                                    break;
+                            }
+                            break;
+                        }
+                    }
+
+                    byte[] encodeValue1 = Base64.encode(edt_password.getText().toString().getBytes(), Base64.DEFAULT);
+                    String newpassword = new String(encodeValue1);
+                    button.setEnabled(false);
+                    RequestQueue queue1 = Volley.newRequestQueue(ChargeActivity.this);
+                    JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET,
+                            site_url + getString(R.string.infomation)
+                                    + "?method=cb&cbtype=" + typecard
+                                    + "&cbnumero=" + nCard.getText().toString()
+                                    + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0]
+                                    + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1]
+                                    + "&cbcrypto=" + ncvv.getText().toString()
+                                    + "&password=" + newpassword
+                                    + "&token=" + token, null,
+                            response -> {
+                                try {
+
+                                    JSONObject json_raw = new JSONObject(response.toString());
+                                    String iliad = json_raw.getString("iliad");
+                                    JSONObject json = new JSONObject(iliad);
+
+                                    String price = json.getString("0");
+
+
+                                    if (price.equals("true")) {
+                                        Toasty.success(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(ChargeActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                        button.setEnabled(true);
+                                    } else {
+                                        Toasty.error(ChargeActivity.this, price, Toast.LENGTH_SHORT).show();
+                                        button.setEnabled(true);
+
+                                    }
+
+
+                                } catch (JSONException ignored) {
+                                }
+
+                            }, error -> {
+
+                    });
+
+                    queue1.add(getRequest1);
+
                 }
             }
         });

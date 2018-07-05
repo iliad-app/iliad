@@ -72,7 +72,6 @@
     <string name="press_back">Premere ancora una volta per uscire</string>
 
     <!-- link request -->
-    <!-- <string name="site_url">https://iliad-api-beta.glitch.me/</string> -->
     <string name="alert" translatable="false">alert/</string>
     <string name="login" translatable="false">login/</string>
     <string name="recover" translatable="false">recover/</string>
@@ -84,7 +83,12 @@
     <string name="options" translatable="false">options/</string>
     <string name="recharge" translatable="false">recharge/</string>
     <string name="voicemail" translatable="false">voicemail/</string>
-    <string name="site_url" translatable="false">http://51.15.222.184:1331/</string>
+    <string name="site_url" translatable="false">http://51.15.222.184:1332</string>
+
+    <!-- MasterCreditFragment Activity -->
+    <string name="residual_credit">CREDITO RESIDUO</string>
+    <string name="days_renewal">GIORNI AL PROSSIMO RINNOVO</string>
+    <string name="day_renewal">GIORNO AL PROSSIMO RINNOVO</string>
 
     <string name="loading">Caricamento…</string>
     <string name="updatedat">Aggiornato alle</string>
@@ -112,4 +116,6 @@
     <string name="done_forget">Conferma</string>
     <string name="tv_forget_id">Non conosci il tuo ID utente?</string>
     <string name="tv_forget_password">Hai dimenticato la tua password o perso il tuo ID utente?</string>
+    <string name="account_already_use">Account già in uso</string>
+
 </resources>

@@ -150,17 +150,16 @@ public class LoginActivity extends AppCompatActivity {
                     if (onlyname.equals(userid1)) {
                         found = true;
                         btn_login.loadingFailed();
-                        Toasty.info(LoginActivity.this, "Account già in uso", Toast.LENGTH_SHORT).show();
+                        Toasty.info(LoginActivity.this, getString(R.string.account_already_use), Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
 
-                if (!found){
+                if (!found) {
                     getObject(url, token, npassword.replaceAll("\\s+", ""));
                     btn_login.setEnabled(false);
 
                 }
-
 
 
             } else {

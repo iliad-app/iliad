@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -30,9 +31,14 @@ import com.fast0n.ipersonalarea.fragments.CreditRoamingFragment.CreditRoamingFra
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class MasterCreditFragment extends Fragment {
 
@@ -47,14 +53,16 @@ public class MasterCreditFragment extends Fragment {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         final Context context;
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
-        BottomNavigationView bottomNavigationView;
+
 
         // java adresses
         View view = inflater.inflate(R.layout.fragment_credit_master, container, false);
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         TextView credit = view.findViewById(R.id.creditText);
         TextView description = view.findViewById(R.id.descriptionText);
-        bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+        TextView description2 = view.findViewById(R.id.descriptionText2);
+
+        Button button = view.findViewById(R.id.button);
 
         SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
         String token = settings.getString("token", null);
@@ -79,27 +87,28 @@ public class MasterCreditFragment extends Fragment {
                         String stringCredit = json_strings1.getString("0");
 
                         credit.setText(stringCredit.split("&")[0]);
-                        description.setText(stringCredit.split("&")[1]);
 
-                        bottomNavigationView.setOnNavigationItemSelectedListener(
-                                item -> {
-                                    switch (item.getItemId()) {
-                                        case R.id.button:
-                                            Intent intent1 = new Intent(context, ChargeActivity.class);
-                                            intent1.putExtra("name", "Ricarica");
-                                            intent1.putExtra("price", "true");
-                                            intent1.putExtra("token", token);
-                                            startActivity(intent1);
+                        String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 
-                                            break;
-                                        case R.id.button1:
-                                            Intent intent = new Intent(context, ConsumptionDetailsActivity.class);
-                                            intent.putExtra("token", token);
-                                            startActivity(intent);
-                                            break;
-                                    }
-                                    return true;
-                                });
+
+                        int dateDifference = (int) getDateDiff(new SimpleDateFormat("dd/MM/yyyy"), timeStamp, stringCredit.split("&")[1].replaceAll("\\s+", ""));
+                        description.setText(String.valueOf(dateDifference -1));
+
+                        if (dateDifference-1 > 1)
+                            description2.setText(context.getString(R.string.days_renewal));
+                        else
+                            description2.setText(context.getString(R.string.day_renewal));
+
+
+                        button.setOnClickListener(v -> {
+                            Intent intent1 = new Intent(context, ChargeActivity.class);
+                            intent1.putExtra("name", "Ricarica");
+                            intent1.putExtra("price", "true");
+                            intent1.putExtra("token", token);
+                            startActivity(intent1);
+                        });
+
+
 
                     } catch (JSONException ignored) {
                     }
@@ -115,6 +124,15 @@ public class MasterCreditFragment extends Fragment {
 
         return view;
 
+    }
+
+    public static long getDateDiff(SimpleDateFormat format, String oldDate, String newDate) {
+        try {
+            return TimeUnit.DAYS.convert(format.parse(newDate).getTime() - format.parse(oldDate).getTime(), TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {

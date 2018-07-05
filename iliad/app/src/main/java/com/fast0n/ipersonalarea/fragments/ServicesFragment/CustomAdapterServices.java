@@ -2,11 +2,13 @@ package com.fast0n.ipersonalarea.fragments.ServicesFragment;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
     private final String token;
     private final List<DataServicesFragments> ServicesList;
 
+
     CustomAdapterServices(Context context, List<DataServicesFragments> ServicesList, String token) {
         this.context = context;
         this.ServicesList = ServicesList;
@@ -42,60 +45,125 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
         holder.textView.setText(c.textView);
 
 
+        final String site_url = context.getString(R.string.site_url) + context.getString(R.string.services);
+
+
+        holder.imageView.setOnClickListener(v -> {
+
+            holder.progressBar.setVisibility(View.VISIBLE);
+            holder.imageView.setEnabled(false);
+            switch (position) {
+                case 1:
+                case 2:
+                case 3:
+                    String[] name_url = {"voicemail_roaming", "block_redirect", "absent_subscriber"};
+
+                    String URL = context.getString(R.string.site_url) + context.getString(R.string.services) + "?info=true&type=" + name_url[position - 1] + "&token=" + token;
+                    RequestQueue queue = Volley.newRequestQueue(context);
+
+                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                            response -> {
+                                try {
+
+                                    JSONObject json_raw = new JSONObject(response.toString());
+                                    String iliad = json_raw.getString("iliad");
+
+                                    JSONObject json = new JSONObject(iliad);
+                                    String title = json.getString("0");
+                                    String description = json.getString("1");
+                                    int isEnabled = json.getInt("2");
+
+                                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+
+
+                                    alertDialog.setTitle(title);
+                                    alertDialog.setMessage(description);
+
+                                    if (isEnabled == 1) {
+                                        alertDialog.setPositiveButton(
+                                                "Attiva",
+                                                (dialog, which) -> {
+                                                    holder.toggle.setChecked(true);
+                                                }
+                                        );
+                                    } else {
+                                        alertDialog.setNegativeButton(
+                                                "Disattiva",
+                                                (dialog, which) -> {
+                                                    holder.toggle.setChecked(false);
+                                                }
+                                        );
+                                    }
+
+
+                                    alertDialog.show();
+                                    holder.progressBar.setVisibility(View.INVISIBLE);
+                                    holder.imageView.setEnabled(true);
+
+
+
+                                } catch (JSONException ignored) {
+                                }
+
+                            }, error -> {
+
+                    });
+
+                    queue.add(getRequest);
+
+
+                    break;
+
+            }
+        });
+
         if (c.toggle.equals("false"))
             holder.toggle.setChecked(false);
         else
             holder.toggle.setChecked(true);
 
-        holder.toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        holder.toggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) {
+                String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token
+                        + "&activate=0";
+                request_options_services(url, holder.textView.getText() + " " + "disattivato");
+            } else {
 
-                final String site_url = context.getString(R.string.site_url) + context.getString(R.string.services);
-
-                if (!isChecked) {
-                    String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token
-                            + "&activate=0";
-                    request_options_services(url, holder.textView.getText() + " " + "disattivato");
-                } else {
-
-                    String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token
-                            + "&activate=1";
-                    request_options_services(url, holder.textView.getText() + " " + "attivo");
-                }
-
-            }
-
-            private void request_options_services(String url, final String labelOn) {
-
-                RequestQueue queue = Volley.newRequestQueue(context);
-
-                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                        response -> {
-                            try {
-                                JSONObject json_raw = new JSONObject(response.toString());
-                                String iliad = json_raw.getString("iliad");
-
-                                JSONObject json = new JSONObject(iliad);
-                                String string_response = json.getString("0");
-
-                                if (string_response.equals("true")) {
-
-                                    Toasty.warning(context, labelOn, Toast.LENGTH_SHORT, true).show();
-                                }
-
-                            } catch (JSONException ignored) {
-                            }
-
-                        }, error -> {
-
-                });
-
-                queue.add(getRequest);
-
+                String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token
+                        + "&activate=1";
+                request_options_services(url, holder.textView.getText() + " " + "attivo");
             }
 
         });
+    }
+
+    private void request_options_services(String url, final String labelOn) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        JSONObject json_raw = new JSONObject(response.toString());
+                        String iliad = json_raw.getString("iliad");
+
+                        JSONObject json = new JSONObject(iliad);
+                        String string_response = json.getString("0");
+
+                        if (string_response.equals("true")) {
+
+                            Toasty.warning(context, labelOn, Toast.LENGTH_SHORT, true).show();
+                        }
+
+                    } catch (JSONException ignored) {
+                    }
+
+                }, error -> {
+
+        });
+
+        queue.add(getRequest);
+
     }
 
     @Override
@@ -111,13 +179,17 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView textView;
-        final Switch toggle;
+        TextView textView;
+        Switch toggle;
+        ImageView imageView;
+        ProgressBar progressBar;
 
         MyViewHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.textView1);
             toggle = view.findViewById(R.id.toggle);
+            imageView = view.findViewById(R.id.imageView);
+            progressBar = view.findViewById(R.id.progressBar);
 
         }
     }
