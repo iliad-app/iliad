@@ -264,9 +264,6 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
         }
         catch (Exception ignored){ name = number;}
 
-
-
-
         return name;
     }
 

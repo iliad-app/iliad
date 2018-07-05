@@ -21,6 +21,7 @@ const CURRENT_APP_VERSION = '26';
 app.get('/', function (req, res) {
     res.set('text/html; charset=utf-8');
     res.send("<script>window.location.replace('https://github.com/Fast0n/iliad');</script>");
+    //https://iliad-api-beta.glitch.me
 });
 
 // Alert
@@ -425,14 +426,15 @@ app.get('/information', function (req, res) {
                 }
             }
         }); //site_url + "?phonecharge=true&montant=" + montant.replace("€", "") + "&cbtype=" + typecard + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "") + "&cbexpmois=" + nExpiration.getText().toString().split("/")[0] + "&cbexpannee=20" + nExpiration.getText().toString().split("/")[1] + "&cbcrypto=" + ncvv.getText().toString() + "&token=" + token
-    } else if (password != undefined && method != undefined) {
+    } else if (password != undefined && method != undefined && token != undefined) {
+        var formData = {};
         if (method == 'aucun') {
-            var formData = {
+            formData = {
                 'mode-paiement': method,
                 password: Buffer.from(password + '', 'base64').toString('utf8')
             };
         } else if (method == 'cb') {
-            var formData = {
+            formData = {
                 'mode-paiement': method,
                 'cb-type': cbtype,
                 'cb-numero': cbnumero,
@@ -442,7 +444,7 @@ app.get('/information', function (req, res) {
                 password: Buffer.from(password + '', 'base64').toString('utf8')
             };
         } else if (method == 'seba') {
-            var formData = {
+            formData = {
                 'mode-paiement': method,
                 'sepa-titulaire': sepatitulaire,
                 'sepa-bic': sepabic,
@@ -463,11 +465,11 @@ app.get('/information', function (req, res) {
                     var results = $('body');
                     var array = [];
                     results.each(function (i, result) {
-                        var error = $(result).find('div.flash-error').text();
-                        if(error != undefined || error != null){
+                        var error = $(result).find('div.flash.flash-error').text().replace(/^\s+|\s+$/gm, '').split('\n')[0];
+                        if(error == null){
                             data_store["iliad"][0] = "true";
                         }else{
-                            data_store["iliad"][0] = "false";
+                            data_store["iliad"][0] = error;
                         }
                         res.send(data_store)
                     })
@@ -685,8 +687,12 @@ app.get('/credit', function (req, res) {
                                 title2 = $(element).text().replace(/^\s+|\s+$/gm, '')
                         });
 
-                        var title3 = $(result).find('div.end_offerta').text().replace(/^\s+|\s+$/gm, '')
+                        var title3 = $(result).find('div.end_offerta').text().replace(/^\s+|\s+$/gm, '').match( /\d{2}\/\d{2}\/\d{4}/)
 
+                       var date1 = new Date("08/09/2017");
+                       var date2 = new Date("08/10/2017");
+                       var diffDays = parseInt((date2 - date1) / (1000 * 60 * 60 * 30));
+                        
                         data_store["iliad"][0] = {};
 
                         data_store["iliad"][0][0] = title + '&\n' + title3; //titole credito
@@ -773,32 +779,35 @@ app.get('/credit', function (req, res) {
                             data[x] = undefined;
                         }
                     }
+                    
                     if ($('div.no-conso').attr('style') == 'display:none;') {
 
                         for (var z = 0; z < 4; z++) {
                             data_store["iliad"][z] = {};
                             var add = 0
-                            if (data[z] != null) {
-                                var i = 8;
+                            if (data[z] != '') {
+                                var i = 9;
                                 var t = 5;
                                 for (var x = 0; x < data[z].length / i; x++) {
                                     data_store["iliad"][z][x] = {}
                                     for (var y = 0; y < i; y++) {
-                                        if (y == 5) {
+                                        if (y == 6) {
                                             data_store["iliad"][z][x][y - 1] = data[z][y + add] + ': ' + data[z][y + add + 1]
                                         } else if (y == 1) {
                                             data_store["iliad"][z][x][y] = data[z][y + add] + ' ' + data[z][y + add + 1]
-                                        } else if (y == 2) {} else if (y == 3) {
-                                            data_store["iliad"][z][x][2] = data[z][y + add]
-                                        } else if (y == 6) {} else if (y == 7) {
-                                            data_store["iliad"][z][x][5] = data[z][y + add]
+                                        } else if (y == 2) {
+                                        } else if (y == 3) {
+                                            data_store["iliad"][z][x][y - 1] = data[z][y + add]
+                                        } else if (y == 7) {
+                                        } else if (y == 8) {
+                                            data_store["iliad"][z][x][y - 2] = data[z][y + add]
                                         } else if (y == 0) {
                                             data_store["iliad"][z][x][y] = data[z][y + add]
-                                        } else {
+                                        }else {
                                             data_store["iliad"][z][x][y - 1] = data[z][y + add]
                                         }
                                     }
-                                    add = add + i;
+                                    add += + i;
                                 }
                             } else {
                                 data_store["iliad"][z] = {};
@@ -940,7 +949,16 @@ app.get('/services', function (req, res) {
                     const $ = cheerio.load(body);
                     var results = $('body');
                     results.each(function (i, result) {
-                        data_store["iliad"][0] = $(result).find("div.service-description").text().replace(/^\s+|\s+$/gm, '');
+                        var title = $(result).find('div.grid-c.w-desktop-8.as__item__name.as__cell').find('div.inner.bold').text().replace(/^\s+|\s+$/gm, '');
+                        var info = $(result).find("div.service-description").text().replace(/^\s+|\s+$/gm, '');
+                        var status = '1';
+                        if ($(result).find('div.as__status--on').find('a').attr('href') == undefined){
+                            status = '0';
+                        }
+                        data_store["iliad"][0] = title;
+                        data_store["iliad"][1] = info;
+                        data_store["iliad"][2] = status;
+                      
                     });
                     res.send(data_store);
                 } catch (exeption) {
@@ -1622,11 +1640,19 @@ app.get('/donors', function (req, res) {
         "Giancarlo De Simone",
         "Carmelo Rizzo Spurna",
         "Vito Muolo",
-        "Alessandro Leonardi"
+        "Alessandro Leonardi",
+        "Paola Brasca"
     ];
     data_store["iliad"][0] = donors;
-    res.send(data_store);
+    //res.send(data_store);
+    var html = '<!DOCTYPE html><html><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"><div class="modal-body"> <div class="row"><div class="col-lg-4 col-sm-12"><div class="list-group"><div class="list-group-item active">Donors</div>'
+    for (var x = 0; x < donors.length; x++){
+        html += '<div class="list-group-item">' + donors[x] + '</div>'
+    }
+    html += "</div></div></div></div></html>"
+
+    res.send(html)
 
 });
 
-const server = app.listen(process.env.PORT || 1331, function () {});
+const server = app.listen(process.env.PORT || 1332, function () {});

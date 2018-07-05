@@ -83,7 +83,7 @@
     <string name="options" translatable="false">options/</string>
     <string name="recharge" translatable="false">recharge/</string>
     <string name="voicemail" translatable="false">voicemail/</string>
-    <string name="site_url" translatable="false">http://51.15.222.184:1332</string>
+    <string name="site_url" translatable="false">http://51.15.222.184:1331/</string>
 
     <!-- MasterCreditFragment Activity -->
     <string name="residual_credit">CREDITO RESIDUO</string>

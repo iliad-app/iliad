@@ -32,37 +32,39 @@ public class DataModel extends ChildViewHolder {
     }
 
     public void onBind(ModelChildren modelChildren) {
-        a.setText(modelChildren.getA());
+
+
+        a.setText(modelChildren.getA().replaceAll("\\s+", ""));
         b.setText(modelChildren.getB());
-        c.setText(modelChildren.getC());
-        d.setText(modelChildren.getD().split(": ")[0] +": " + getContactName(modelChildren.getD().split(": ")[1].replace("***","")));
-        e.setText(modelChildren.getE());
-        f.setText(modelChildren.getF());
+        c.setText(modelChildren.getC().replaceAll("\\s+", ""));
+        d.setText(getContactName(modelChildren.getD().replaceAll("\\s+", "")));
+        e.setText(modelChildren.getE().replaceAll("\\s+", ""));
+        f.setText(modelChildren.getF().replaceAll("\\s+", ""));
+
 
     }
 
     private String getContactName(String number) {
         String name = "";
-
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
 
         ContentResolver contentResolver = itemView.getContext().getContentResolver();
-        try{
+        try {
             Cursor contactLookup = contentResolver.query(uri, null, null, null, null);
-
             try {
-                if (contactLookup.getCount() > 0) {
+                if (contactLookup != null && contactLookup.getCount() > 0) {
                     contactLookup.moveToNext();
                     name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
                 }else{
-                    name = number + "***";
+                    name = number;
                 }
             } finally {
                 if (contactLookup != null) {
                     contactLookup.close();
                 }
             }
-        }catch (Exception ignored){name = number + "***";}
+        }
+        catch (Exception ignored){ name = number;}
 
         return name;
     }

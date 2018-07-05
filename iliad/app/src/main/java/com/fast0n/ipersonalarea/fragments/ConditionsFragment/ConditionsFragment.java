@@ -105,21 +105,10 @@ public class ConditionsFragment extends Fragment {
                             String b = json_strings.getString("1");
                             String c = json_strings.getString("2");
 
-                            recyclerView.addOnItemTouchListener(
-                                    new RecyclerItemListener(context, recyclerView, new RecyclerItemListener.RecyclerTouchListener() {
-                                        public void onClickItem(View arg1, int position) {
-                                            Intent i = new Intent(Intent.ACTION_VIEW);
-                                            i.setData(Uri.parse(c));
-                                            startActivity(i);
-                                        }
-
-                                        public void onLongClickItem(View v, int position) {
-                                        }
-                                    }));
-
-                            conditionList.add(new DataConditionsFragments(a, b));
-                            CustomAdapterConditions ca = new CustomAdapterConditions(conditionList);
+                            conditionList.add(new DataConditionsFragments(a, b, c));
+                            CustomAdapterConditions ca = new CustomAdapterConditions(conditionList, context);
                             recyclerView.setAdapter(ca);
+
                         }
 
                         linearLayout.setVisibility(View.VISIBLE);

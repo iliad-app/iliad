@@ -29,7 +29,7 @@ public class CustomAdapterNotification extends RecyclerView.Adapter<CustomAdapte
     private final String token;
     private final List<DataNotificationFragments> modelList;
 
-    public CustomAdapterNotification(Context context, List<DataNotificationFragments> modelList, String token) {
+    CustomAdapterNotification(Context context, List<DataNotificationFragments> modelList, String token) {
         this.context = context;
         this.modelList = modelList;
         this.token = token;

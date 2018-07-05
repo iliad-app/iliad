@@ -1,5 +1,6 @@
 package com.fast0n.ipersonalarea.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -25,8 +27,6 @@ import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.LoginActivity;
 import com.fast0n.ipersonalarea.R;
 import com.github.ybq.android.spinkit.style.CubeGrid;
-
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,7 +88,11 @@ public class SimFragments extends Fragment {
                 Toasty.error(context, getString(R.string.error_iccid), Toast.LENGTH_SHORT).show();
         });
 
-        edt_iccid.setOnClickListener(v -> updateKeyboardStatusText(KeyboardVisibilityEvent.isKeyboardVisible(getActivity()), view));
+        edt_iccid.setOnClickListener(v -> {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        });
+
 
         return view;
     }
