@@ -13,12 +13,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/ConstraintLayout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="15dp">
+        android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/imageView"
@@ -60,6 +59,35 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linearLayout99"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:gravity="center"
+                app:srcCompat="@drawable/ic_info" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="@string/licence"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView"
@@ -70,7 +98,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout99"
             card_view:cardElevation="2dp">
 
             <LinearLayout
@@ -189,9 +217,11 @@
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
@@ -200,7 +230,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -339,6 +368,7 @@
                     android:id="@+id/linearLayout8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -369,4 +399,4 @@
         </android.support.v7.widget.CardView>
 
     </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+</ScrollView>

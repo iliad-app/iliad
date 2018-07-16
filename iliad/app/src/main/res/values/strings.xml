@@ -65,6 +65,8 @@
     <string name="old_version_title">Versione obsoleta</string>
     <string name="old_version">Aggiorna l\'applicazione e riprova…</string>
     <string name="update">Aggiorna</string>
+    <string name="licence">Termini e condizioni</string>
+
 
     <string name="yes">Si</string>
     <string name="no">No</string>
@@ -118,4 +120,15 @@
     <string name="tv_forget_password">Hai dimenticato la tua password o perso il tuo ID utente?</string>
     <string name="account_already_use">Account già in uso</string>
 
+    <string name="notification_channel_id" translatable="false">default</string>
+    <!-- SettingsActivity -->
+    <string name="one_title">Recupero elenco contatti</string>
+    <string name="one_description">Visualizzare i nomi dei contatti</string>
+    <string name="two_title">Salvare i file sul dispositivo</string>
+    <string name="two_description">Condividere i messaggi in segreteria</string>
+    <string name="three_title">Fotocamera</string>
+    <string name="three_description">Scansiona il ICCID per attivare la sim</string>
+    <string name="four_title">Notifiche</string>
+    <string name="four_description">Attiva/Disattiva le notifiche</string>
+    <string name="toast_notification">Notifiche: %s</string>
 </resources>

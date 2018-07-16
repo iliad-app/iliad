@@ -88,4 +88,16 @@
     <string name="tv_forget_id">No Conoces tu Id de Usuario??</string>
     <string name="tv_forget_password">Olvidaste tu ID de Usuario y tu Contraseña?</string>
 
+
+    <!-- SettingsActivity -->
+    <string name="one_title">Recupero elenco contatti</string>
+    <string name="one_description">Visualizzare i nomi dei contatti</string>
+    <string name="two_title">Salvare i file sul dispositivo</string>
+    <string name="two_description">Condividere i messaggi in segreteria</string>
+    <string name="three_title">Fotocamera</string>
+    <string name="three_description">Scansiona il ICCID per attivare la sim</string>
+    <string name="four_title">Notifiche</string>
+    <string name="four_description">Attiva/Disattiva le notifiche</string>
+    <string name="toast_notification">Notifications: %s</string>
+
 </resources>

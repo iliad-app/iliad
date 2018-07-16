@@ -8,11 +8,11 @@
 
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
 
@@ -56,10 +56,10 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:textSize="@dimen/tv1_master_size"
                     android:layout_marginTop="4dp"
                     android:text=""
                     android:textColor="@android:color/black"
+                    android:textSize="@dimen/tv1_master_size"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
@@ -134,10 +134,10 @@
                 android:drawableLeft="@drawable/ic_credit_card"
                 android:drawablePadding="5dp"
                 android:paddingEnd="20dp"
-                android:textSize="@dimen/tv1_master_size"
                 android:paddingStart="20dp"
                 android:text="@string/reload"
                 android:textColor="@color/primary"
+                android:textSize="@dimen/tv1_master_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

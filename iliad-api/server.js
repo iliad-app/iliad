@@ -466,14 +466,14 @@ app.get('/information', function (req, res) {
                     var array = [];
                     results.each(function (i, result) {
                         var error = $(result).find('div.flash.flash-error').text().replace(/^\s+|\s+$/gm, '').split('\n')[0];
-                        if(error == null){
+                        if (error == null) {
                             data_store["iliad"][0] = "true";
-                        }else{
+                        } else {
                             data_store["iliad"][0] = error;
                         }
                         res.send(data_store)
                     })
-                }catch(e){
+                } catch (e) {
                     res.sendStatus(503)
                 }
             }
@@ -687,12 +687,13 @@ app.get('/credit', function (req, res) {
                                 title2 = $(element).text().replace(/^\s+|\s+$/gm, '')
                         });
 
-                        var title3 = $(result).find('div.end_offerta').text().replace(/^\s+|\s+$/gm, '').match( /\d{2}\/\d{2}\/\d{4}/)
+                        var title3 = $(result).find('div.end_offerta').text().replace(/^\s+|\s+$/gm, '').match(/\d{2}\/\d{2}\/\d{4}/)
 
-                       var date1 = new Date("08/09/2017");
-                       var date2 = new Date("08/10/2017");
-                       var diffDays = parseInt((date2 - date1) / (1000 * 60 * 60 * 30));
-                        
+                        var date1 = new Date("08/09/2017");
+                        var date2 = new Date("08/10/2017");
+                        var diffDays = parseInt((date2 - date1) / (1000 * 60 * 60 * 30));
+                        console.log(diffDays)
+
                         data_store["iliad"][0] = {};
 
                         data_store["iliad"][0][0] = title + '&\n' + title3; //titole credito
@@ -779,7 +780,7 @@ app.get('/credit', function (req, res) {
                             data[x] = undefined;
                         }
                     }
-                    
+
                     if ($('div.no-conso').attr('style') == 'display:none;') {
 
                         for (var z = 0; z < 4; z++) {
@@ -795,19 +796,17 @@ app.get('/credit', function (req, res) {
                                             data_store["iliad"][z][x][y - 1] = data[z][y + add] + ': ' + data[z][y + add + 1]
                                         } else if (y == 1) {
                                             data_store["iliad"][z][x][y] = data[z][y + add] + ' ' + data[z][y + add + 1]
-                                        } else if (y == 2) {
-                                        } else if (y == 3) {
+                                        } else if (y == 2) {} else if (y == 3) {
                                             data_store["iliad"][z][x][y - 1] = data[z][y + add]
-                                        } else if (y == 7) {
-                                        } else if (y == 8) {
+                                        } else if (y == 7) {} else if (y == 8) {
                                             data_store["iliad"][z][x][y - 2] = data[z][y + add]
                                         } else if (y == 0) {
                                             data_store["iliad"][z][x][y] = data[z][y + add]
-                                        }else {
+                                        } else {
                                             data_store["iliad"][z][x][y - 1] = data[z][y + add]
                                         }
                                     }
-                                    add += + i;
+                                    add += +i;
                                 }
                             } else {
                                 data_store["iliad"][z] = {};
@@ -817,6 +816,7 @@ app.get('/credit', function (req, res) {
                     } else {
                         data_store["iliad"][0] = $('div.no-conso').text();
                     }
+                    console.log(data[2].length / 9)
                     res.send(data_store);
                 } catch (exeption) {
                     res.sendStatus(503);
@@ -952,13 +952,13 @@ app.get('/services', function (req, res) {
                         var title = $(result).find('div.grid-c.w-desktop-8.as__item__name.as__cell').find('div.inner.bold').text().replace(/^\s+|\s+$/gm, '');
                         var info = $(result).find("div.service-description").text().replace(/^\s+|\s+$/gm, '');
                         var status = '1';
-                        if ($(result).find('div.as__status--on').find('a').attr('href') == undefined){
+                        if ($(result).find('div.as__status--on').find('a').attr('href') == undefined) {
                             status = '0';
                         }
                         data_store["iliad"][0] = title;
                         data_store["iliad"][1] = info;
                         data_store["iliad"][2] = status;
-                      
+
                     });
                     res.send(data_store);
                 } catch (exeption) {
@@ -1646,7 +1646,7 @@ app.get('/donors', function (req, res) {
     data_store["iliad"][0] = donors;
     //res.send(data_store);
     var html = '<!DOCTYPE html><html><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"><div class="modal-body"> <div class="row"><div class="col-lg-4 col-sm-12"><div class="list-group"><div class="list-group-item active">Donors</div>'
-    for (var x = 0; x < donors.length; x++){
+    for (var x = 0; x < donors.length; x++) {
         html += '<div class="list-group-item">' + donors[x] + '</div>'
     }
     html += "</div></div></div></div></html>"
@@ -1655,4 +1655,4 @@ app.get('/donors', function (req, res) {
 
 });
 
-const server = app.listen(process.env.PORT || 1332, function () {});
+const server = app.listen(process.env.PORT || 1331, function () {});

@@ -40,6 +40,7 @@ import com.fast0n.ipersonalarea.java.myDbAdapter;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.github.ybq.android.spinkit.style.CubeGrid;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -65,9 +66,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final int PROFILE_SETTING = 100000;
     private int pos = 0;
     private myDbAdapter helper;
-    private String account;
-    private String userid;
-    private String password;
+    private String account, toggleState, userid, password;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private ProgressBar loading;
@@ -89,6 +88,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // java adresses
         SharedPreferences settings = getSharedPreferences("sharedPreferences", 0);
+        toggleState = settings.getString("toggleState", null);
         editor = settings.edit();
         drawer = findViewById(R.id.drawer_layout);
         loading = findViewById(R.id.progressBar);
@@ -97,6 +97,18 @@ public class HomeActivity extends AppCompatActivity {
         cubeGrid.setColor(getResources().getColor(R.color.colorPrimary));
         helper = new myDbAdapter(this);
 
+
+        try {
+            if (toggleState.equals("0"))
+                FirebaseMessaging.getInstance().subscribeToTopic("news");
+            else
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+        } catch (Exception ignored) {
+            FirebaseMessaging.getInstance().subscribeToTopic("news");
+            editor.putString("toggleState", "0");
+            editor.apply();
+
+        }
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
@@ -472,7 +484,6 @@ public class HomeActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-
 
 
                         }

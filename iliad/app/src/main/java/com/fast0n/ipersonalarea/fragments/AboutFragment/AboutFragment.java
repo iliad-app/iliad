@@ -51,6 +51,8 @@ public class AboutFragment extends Fragment {
         LinearLayout linearLayout7 = view.findViewById(R.id.linearLayout7);
         LinearLayout linearLayout8 = view.findViewById(R.id.linearLayout8);
 
+        LinearLayout linearLayout99 = view.findViewById(R.id.linearLayout99);
+
 
         tv_version.setText(Html.fromHtml("<b>" + getString(R.string.version) + "</b><br>" + BuildConfig.VERSION_NAME + " ("
                 + BuildConfig.VERSION_CODE + ") (" + BuildConfig.APPLICATION_ID + ")"));
@@ -92,6 +94,10 @@ public class AboutFragment extends Fragment {
 
         linearLayout8.setOnClickListener(v -> {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ElCresh/")));
+        });
+
+        linearLayout99.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://android12.altervista.org/privacy.html")));
         });
 
         return view;

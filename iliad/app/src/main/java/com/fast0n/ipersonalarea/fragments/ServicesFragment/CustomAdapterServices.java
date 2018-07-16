@@ -49,13 +49,12 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
 
 
         holder.imageView.setOnClickListener(v -> {
-
-            holder.progressBar.setVisibility(View.VISIBLE);
-            holder.imageView.setEnabled(false);
             switch (position) {
                 case 1:
                 case 2:
                 case 3:
+                    holder.progressBar.setVisibility(View.VISIBLE);
+                    holder.imageView.setEnabled(false);
                     String[] name_url = {"voicemail_roaming", "block_redirect", "absent_subscriber"};
 
                     String URL = context.getString(R.string.site_url) + context.getString(R.string.services) + "?info=true&type=" + name_url[position - 1] + "&token=" + token;
@@ -101,7 +100,6 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
                                     holder.imageView.setEnabled(true);
 
 
-
                                 } catch (JSONException ignored) {
                                 }
 
@@ -112,6 +110,8 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
                     queue.add(getRequest);
 
 
+                    break;
+                default:
                     break;
 
             }

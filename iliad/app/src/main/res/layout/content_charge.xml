@@ -83,11 +83,11 @@
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:visibility="gone"
                 android:id="@+id/edt_password_visibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/TextLabel"
+                android:visibility="gone"
                 app:passwordToggleEnabled="true">
 
                 <EditText
@@ -105,6 +105,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edt_id" />
             </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"

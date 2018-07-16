@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +22,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.ChargeActivity;
-import com.fast0n.ipersonalarea.ConsumptionDetailsActivity.ConsumptionDetailsActivity;
 import com.fast0n.ipersonalarea.R;
 import com.fast0n.ipersonalarea.fragments.CreditFragment.CreditFragment;
 import com.fast0n.ipersonalarea.fragments.CreditRoamingFragment.CreditRoamingFragment;
@@ -31,16 +29,23 @@ import com.fast0n.ipersonalarea.fragments.CreditRoamingFragment.CreditRoamingFra
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MasterCreditFragment extends Fragment {
+
+    public static long getDateDiff(SimpleDateFormat format, String oldDate, String newDate) {
+        try {
+            return TimeUnit.DAYS.convert(format.parse(newDate).getTime() - format.parse(oldDate).getTime(), TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,9 +97,9 @@ public class MasterCreditFragment extends Fragment {
 
 
                         int dateDifference = (int) getDateDiff(new SimpleDateFormat("dd/MM/yyyy"), timeStamp, stringCredit.split("&")[1].replaceAll("\\s+", ""));
-                        description.setText(String.valueOf(dateDifference -1));
+                        description.setText(String.valueOf(dateDifference - 1));
 
-                        if (dateDifference-1 > 1)
+                        if (dateDifference - 1 > 1)
                             description2.setText(context.getString(R.string.days_renewal));
                         else
                             description2.setText(context.getString(R.string.day_renewal));
@@ -107,7 +112,6 @@ public class MasterCreditFragment extends Fragment {
                             intent1.putExtra("token", token);
                             startActivity(intent1);
                         });
-
 
 
                     } catch (JSONException ignored) {
@@ -124,15 +128,6 @@ public class MasterCreditFragment extends Fragment {
 
         return view;
 
-    }
-
-    public static long getDateDiff(SimpleDateFormat format, String oldDate, String newDate) {
-        try {
-            return TimeUnit.DAYS.convert(format.parse(newDate).getTime() - format.parse(oldDate).getTime(), TimeUnit.MILLISECONDS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
     }
 
     private void setupViewPager(ViewPager viewPager) {

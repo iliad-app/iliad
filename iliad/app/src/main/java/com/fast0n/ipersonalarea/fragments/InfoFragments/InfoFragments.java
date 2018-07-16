@@ -102,7 +102,7 @@ public class InfoFragments extends Fragment {
                             case 1:
                                 TextView getNome = arg1.findViewById(R.id.textView3);
                                 String type = getNome.getText().toString();
-                                if (type.equals("Manuale")){
+                                if (type.equals("Manuale")) {
                                     Intent intent1 = new Intent(context, ChargeActivity.class);
                                     intent1.putExtra("name", "Cambio metodo...");
                                     intent1.putExtra("price", "false");

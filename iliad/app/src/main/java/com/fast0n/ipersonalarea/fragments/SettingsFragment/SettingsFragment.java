@@ -47,9 +47,11 @@ public class SettingsFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
 
 
-        String list[] = {"<b><font color='#c00000'>Recupero elenco contatti</fond></b><br><small>Visualizzare i nomi dei contatti</small>",
-                "<b><font color='#c00000'>Salvare i file sul dispositivo</font></b><br><small>Condividere i messaggi in segreteria</small>",
-                "<b><font color='#c00000'>Fotocamera</font></b><br><small>Attivare la sim</small>"};
+        String list[] = {
+                "<b><font color='#c00000'>" + getString(R.string.one_title) + "</fond></b><br><small>" + getString(R.string.one_description) + "</small>",
+                "<b><font color='#c00000'>" + getString(R.string.two_title) + "</font></b><br><small>" + getString(R.string.two_description) + "</small>",
+                "<b><font color='#c00000'>" + getString(R.string.three_title) + "</font></b><br><small>" + getString(R.string.three_description) + "</small>",
+                "<b><font color='#c00000'>" + getString(R.string.four_title) + "</font></b><br><small>" + getString(R.string.four_description) + "</small>"};
 
 
         for (String a : list) {

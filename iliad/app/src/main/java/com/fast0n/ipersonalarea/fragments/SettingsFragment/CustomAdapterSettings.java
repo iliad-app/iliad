@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -58,7 +59,14 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
 
         String [] permission = {"android.permission.READ_CONTACTS", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
 
-        for (int i = 0; i< permission.length; i++){
+
+        if (position == 3 && holder.toggleState.equals("0"))
+            holder.toggle.setChecked(true);
+        else
+            holder.toggle.setChecked(false);
+
+
+        for (int i = 0; i< permission.length-1; i++){
             int permission1 = context.checkCallingOrSelfPermission(permission[i]);
             if (position == i && permission1==PackageManager.PERMISSION_GRANTED)
                 holder.toggle.setChecked(true);
@@ -82,7 +90,6 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
 
             switch (position) {
                 case 0:
-
                     if (holder.toggle.isChecked())
                         TedPermission.with(context)
                                 .setPermissionListener(permissionlistener)
@@ -118,6 +125,20 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
                     }
                     break;
 
+                case 3:
+                    if (holder.toggle.isChecked()) {
+                        holder.editor.putString("toggleState", "0");
+                        holder.editor.apply();
+                        String toasty = context.getString(R.string.toast_notification, String.valueOf(context.getString(R.string.toggle_enable)));
+                        Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
+                    }else{
+                        holder.editor.putString("toggleState", "1");
+                        holder.editor.apply();
+                        String toasty = context.getString(R.string.toast_notification, String.valueOf(context.getString(R.string.toggle_disable)));
+                        Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
+                    }
+                    break;
+
 
             }
 
@@ -143,12 +164,19 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
         final TextView textView;
         ImageView imageView;
         final Switch toggle;
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        String toggleState;
 
         MyViewHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.textView1);
             toggle = view.findViewById(R.id.toggle);
             imageView = view.findViewById(R.id.imageView);
+            settings = context.getSharedPreferences("sharedPreferences", 0);
+            editor = settings.edit();
+            toggleState = settings.getString("toggleState", null);
+
 
         }
     }

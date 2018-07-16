@@ -48,17 +48,17 @@
                 card_view:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
-                    android:layout_gravity="center"
                     android:layout_width="@dimen/row_credit_animation"
-                    android:layout_height="@dimen/row_credit_animation">
+                    android:layout_height="@dimen/row_credit_animation"
+                    android:layout_gravity="center">
 
                     <ImageView
                         android:id="@+id/imageView"
-                        card_view:srcCompat="@drawable/ic_info"
                         android:layout_width="@dimen/row_info_img"
                         android:layout_height="@dimen/row_info_img"
                         android:layout_centerInParent="true"
-                        android:adjustViewBounds="true"/>
+                        android:adjustViewBounds="true"
+                        card_view:srcCompat="@drawable/ic_info" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
@@ -66,7 +66,7 @@
                         android:layout_width="@dimen/row_credit_animation"
                         android:layout_height="@dimen/row_credit_animation"
                         android:layout_centerInParent="true"
-                        android:visibility="invisible"/>
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 

@@ -23,8 +23,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -118,7 +116,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
             Toast.makeText(context, "Download in corso...", Toast.LENGTH_LONG).show();
 
 
-            String mUrl= site_url + "?idaudio=" + c.id + "&token=" + c.token;
+            String mUrl = site_url + "?idaudio=" + c.id + "&token=" + c.token;
 
 
             File file = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));
@@ -136,7 +134,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
 
 
                                 FileOutputStream outputStream;
-                                outputStream = new FileOutputStream(file + File.separator + c.id +".wav");
+                                outputStream = new FileOutputStream(file + File.separator + c.id + ".wav");
                                 outputStream.write(response);
                                 outputStream.close();
                                 Toast.makeText(context, "Download completato", Toast.LENGTH_LONG).show();
@@ -148,18 +146,16 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
                                 share.setType("audio/*");
                                 share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                 share.putExtra(Intent.EXTRA_STREAM,
-                                        Uri.parse(file + File.separator + c.id +".wav"));
+                                        Uri.parse(file + File.separator + c.id + ".wav"));
                                 context.startActivity(Intent.createChooser(share, "Share voicemail"));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }, error -> {
-                    }, null);
+            }, null);
             RequestQueue mRequestQueue = Volley.newRequestQueue(context.getApplicationContext(), new HurlStack());
             mRequestQueue.add(request);
-
-
 
 
         });
@@ -253,7 +249,7 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
                 if (contactLookup != null && contactLookup.getCount() > 0) {
                     contactLookup.moveToNext();
                     name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
-                }else{
+                } else {
                     name = number;
                 }
             } finally {
@@ -261,8 +257,9 @@ public class CustomAdapterVoicemail extends RecyclerView.Adapter<CustomAdapterVo
                     contactLookup.close();
                 }
             }
+        } catch (Exception ignored) {
+            name = number;
         }
-        catch (Exception ignored){ name = number;}
 
         return name;
     }

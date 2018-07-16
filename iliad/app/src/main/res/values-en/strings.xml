@@ -58,6 +58,8 @@
     <string name="no">No</string>
     <string name="dialog_exit">Are you sure you want to quit?</string>
     <string name="press_back">Press again to exit</string>
+    <string name="licence">@string/nav_conditions</string>
+
 
     <!-- MasterCreditFragment Activity -->
     <string name="residual_credit">RESIDUAL CREDIT</string>
@@ -89,5 +91,17 @@
     <string name="tv_forget_id">Don\'t know your user ID?</string>
     <string name="tv_forget_password">Have you forgotten your password or lost your user ID?</string>
     <string name="account_already_use">Account already in use</string>
+
+
+    <!-- SettingsActivity -->
+    <string name="one_title">Recupero elenco contatti</string>
+    <string name="one_description">Visualizzare i nomi dei contatti</string>
+    <string name="two_title">Salvare i file sul dispositivo</string>
+    <string name="two_description">Condividere i messaggi in segreteria</string>
+    <string name="three_title">Fotocamera</string>
+    <string name="three_description">Scansiona il ICCID per attivare la sim</string>
+    <string name="four_title">Notifiche</string>
+    <string name="four_description">Attiva/Disattiva le notifiche</string>
+    <string name="toast_notification">Notifications: %s</string>
 
 </resources>

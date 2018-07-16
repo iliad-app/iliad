@@ -94,7 +94,7 @@ public class ChargeActivity extends AppCompatActivity {
         // prende gli importi
         final String site_url = getString(R.string.site_url);
         RequestQueue queue = Volley.newRequestQueue(ChargeActivity.this);
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url +getString(R.string.recharge)+ "?payinfoprice=true&&token=" + token, null,
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, site_url + getString(R.string.recharge) + "?payinfoprice=true&&token=" + token, null,
                 response -> {
                     try {
 
@@ -275,7 +275,7 @@ public class ChargeActivity extends AppCompatActivity {
 
                     button.setEnabled(false);
                     RequestQueue queue1 = Volley.newRequestQueue(ChargeActivity.this);
-                    JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url +getString(R.string.recharge) + "?phonecharge=true&montant="
+                    JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, site_url + getString(R.string.recharge) + "?phonecharge=true&montant="
                             + montant.replace("€", "")
                             + "&cbtype=" + typecard
                             + "&cbnumero=" + nCard.getText().toString().replaceAll("\\s+", "")
@@ -338,12 +338,11 @@ public class ChargeActivity extends AppCompatActivity {
                     byte[] decodeValue1 = Base64.decode(pwd, Base64.DEFAULT);
                     String ppassword = new String(decodeValue1);
 
-                    if (!edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))){
+                    if (!edt_password.getText().toString().equals(ppassword.replaceAll("\\s+", ""))) {
                         Toasty.warning(ChargeActivity.this, getString(R.string.wrong_password), Toast.LENGTH_LONG,
                                 true).show();
                     }
-                }
-                else {
+                } else {
 
                     String ccNum = nCard.getText().toString().replaceAll("\\s+", "");
                     for (String p : listOfPattern) {

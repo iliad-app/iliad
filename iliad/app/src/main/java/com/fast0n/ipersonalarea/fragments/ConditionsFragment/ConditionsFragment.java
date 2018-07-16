@@ -2,7 +2,6 @@ package com.fast0n.ipersonalarea.fragments.ConditionsFragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -20,7 +19,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fast0n.ipersonalarea.LoginActivity;
 import com.fast0n.ipersonalarea.R;
-import com.fast0n.ipersonalarea.java.RecyclerItemListener;
 import com.github.ybq.android.spinkit.style.CubeGrid;
 
 import org.json.JSONException;

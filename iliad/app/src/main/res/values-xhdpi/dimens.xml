@@ -12,8 +12,7 @@
     <dimen name="row_info_padding">12dp</dimen>
     <dimen name="row_info_img">30dp</dimen>
 
-
-    <dimen name="cardview_sim_padding">120dp</dimen>
+    <dimen name="cardview_sim_padding">140dp</dimen>
     <dimen name="cardview_credit_roaming_marginTop">115dp</dimen>
     <dimen name="constaintlayout_credit_marginTop">8dp</dimen>
 

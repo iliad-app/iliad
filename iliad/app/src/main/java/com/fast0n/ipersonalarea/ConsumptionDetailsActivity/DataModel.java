@@ -55,7 +55,7 @@ public class DataModel extends ChildViewHolder {
                 if (contactLookup != null && contactLookup.getCount() > 0) {
                     contactLookup.moveToNext();
                     name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
-                }else{
+                } else {
                     name = number;
                 }
             } finally {
@@ -63,8 +63,9 @@ public class DataModel extends ChildViewHolder {
                     contactLookup.close();
                 }
             }
+        } catch (Exception ignored) {
+            name = number;
         }
-        catch (Exception ignored){ name = number;}
 
         return name;
     }
