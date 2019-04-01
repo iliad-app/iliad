@@ -237,7 +237,7 @@ public class HomeActivity extends AppCompatActivity {
                         String iliad = json_raw.getString("iliad");
                         JSONObject json = new JSONObject(iliad);
 
-                        String stringSim = json.getString("sim");
+                        //String stringSim = json.getString("sim");
 
 
                         result = new DrawerBuilder()
@@ -410,6 +410,7 @@ public class HomeActivity extends AppCompatActivity {
                         PrimaryDrawerItem menuConditions = new PrimaryDrawerItem().withName(R.string.nav_conditions).withTextColor(getResources().getColor(android.R.color.black)).withIcon(R.drawable.ic_conditions).withIdentifier(7).withSelectable(true);
 
 
+                        String stringSim = "true";
                         if (stringSim.equals("false")) {
 
                             Fragment fragment;
@@ -430,8 +431,7 @@ public class HomeActivity extends AppCompatActivity {
                             result.addItemAtPosition(menuConditions, 7);
 
 
-                            if (android.os.Build.VERSION.SDK_INT >= 23)
-                                result.addItemAtPosition(menuSetting, 11);
+                            result.addItemAtPosition(menuSetting, 11);
 
 
                             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -455,6 +455,8 @@ public class HomeActivity extends AppCompatActivity {
                         int error_code = error.networkResponse.statusCode;
 
                         if (error_code == 503) {
+
+                            /*
                             Toasty.warning(HomeActivity.this, getString(R.string.error_login), Toast.LENGTH_LONG, true)
                                     .show();
                             Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);
@@ -485,9 +487,11 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                             }
 
+*/
 
                         }
                     } catch (Exception ignored) {
+
                         Toasty.warning(HomeActivity.this, getString(R.string.error_login), Toast.LENGTH_LONG, true)
                                 .show();
                         Intent mainActivity = new Intent(HomeActivity.this, LoginActivity.class);

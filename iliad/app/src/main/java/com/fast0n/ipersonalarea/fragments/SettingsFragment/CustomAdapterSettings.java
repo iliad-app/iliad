@@ -80,11 +80,12 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
                 }
 
                 @Override
-                public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                public void onPermissionDenied(List<String> deniedPermissions) {
                     Toasty.error(context, "Permission Denied", Toast.LENGTH_SHORT).show();
                     holder.toggle.setChecked(false);
-
                 }
+
+
             };
 
 
