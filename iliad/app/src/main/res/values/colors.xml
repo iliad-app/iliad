@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Light Color -->
+
     <color name="colorPrimary">#c00</color>
     <color name="colorPrimaryDark">#c00</color>
     <color name="colorAccent">#000</color>
+
+    <color name="color_background">#EEE</color>
+    <color name="color_text">#fff</color>
+    <color name="color_desc">#fff</color>
+    <color name="color_toolbar">#c00</color>
+    <color name="color_object">#fff</color>
+
+
+    <!-- Dark Color -->
+
+    <!--
+   <color name="colorPrimary">#212121</color>
+   <color name="colorPrimaryDark">#212121</color>
+   <color name="colorAccent">#000</color>
+
+
+       <color name="color_background">#000</color>
+       <color name="color_text">#fff</color>
+       <color name="color_desc">#fff</color>
+       <color name="color_toolbar">#141414</color>
+
+        -->
 </resources>

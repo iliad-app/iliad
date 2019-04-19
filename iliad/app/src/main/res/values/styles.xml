@@ -1,17 +1,71 @@
 <resources>
-
     <!-- Base application theme. -->
+    <!-- Light/Day Mode Theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="color_background">#eee</item>
+        <item name="color_text">#000</item>
+        <item name="color_desc">#fff</item>
+        <item name="color_toolbar">#c00</item>
+        <item name="color_object">#fff</item>
+
+        <item name="android:colorControlActivated">#c00</item>
+
     </style>
+
+    <!-- Night/Dark Mode Theme -->
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryDark">#212121</item>
+        <item name="colorAccent">#000</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="color_background">#000</item>
+        <item name="color_text">#fff</item>
+        <item name="color_desc">#fff</item>
+        <item name="color_toolbar">#141414</item>
+        <item name="color_object">#141414</item>
+
+        <item name="android:colorControlActivated">#fff</item>
+
+
+        <item name="material_drawer_background">#141414</item>
+        <item name="material_drawer_selected">#4f4f4f</item>
+        <item name="material_drawer_selected_text">#bfbfbf</item>
+        <item name="material_drawer_primary_text">#fff</item>
+        <item name="material_drawer_secondary_text">#fff</item>
+        <item name="alertDialogTheme">@style/DialogDark</item>
+    </style>
+
+
+    <style name="DialogDark" parent="MaterialBaseTheme.AlertDialog">
+        <item name="android:colorPrimary">#fff</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:colorAccent">#fff</item>
+        <item name="colorPrimaryDark">#fff</item>
+        <item name="android:background">#232323</item>
+    </style>
+
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="colorAccent">@color/primary</item>
+        <item name="colorControlNormal">@color/primary_dark</item>
+        <item name="colorControlActivated">@color/primary</item>
+    </style>
+
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -20,29 +74,5 @@
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="TextLabel" parent="TextAppearance.AppCompat">
-        <!-- Hint color and label color in FALSE state -->
-        <item name="android:textColorHint">@color/colorAccent</item>
-        <item name="android:textSize">18sp</item>
-        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-        <item name="colorAccent">@color/colorPrimary</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
-    </style>
-
-    <style name="Theme.ToogleTheme" parent="Theme.AppCompat.Light">
-        <!-- colorPrimary is used for the default action bar background -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <!-- colorPrimaryDark is used for the status bar -->
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <!-- colorAccent is used as the default value for colorControlActivated,
-             which is used to tint widgets -->
-        <item name="colorAccent">@color/colorPrimary</item>
-        <!-- You can also set colorControlNormal, colorControlActivated
-             colorControlHighlight, and colorSwitchThumbNormal. -->
-    </style>
-
 
 </resources>

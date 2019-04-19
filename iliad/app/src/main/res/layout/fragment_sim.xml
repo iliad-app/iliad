@@ -20,7 +20,7 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimary"
             android:minHeight="0dp"
             android:paddingBottom="60dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,9 +31,9 @@
                 android:id="@+id/offer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -45,34 +45,34 @@
             android:id="@+id/cardView1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/cardview_sim_padding"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout2"
-            card_view:cardBackgroundColor="@android:color/black"
+            card_view:cardBackgroundColor="?attr/color_text"
             card_view:cardElevation="2dp">
 
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="?attr/color_object"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
+                android:paddingTop="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="top"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/ic_sim_card" />
 
 
@@ -86,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
 
                     <TextView
@@ -94,14 +94,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
                     <TextView
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="?attr/colorPrimary" />
 
                 </LinearLayout>
 
@@ -114,34 +114,34 @@
             android:id="@+id/cardView2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView1"
-            card_view:cardBackgroundColor="@android:color/black"
+            card_view:cardBackgroundColor="?attr/color_text"
             card_view:cardElevation="2dp">
 
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="?attr/color_object"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
+                android:paddingTop="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="top"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/ic_sim_card_alert" />
 
 
@@ -155,14 +155,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
                     <TextView
                         android:id="@+id/title_activation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
                     <EditText
                         android:id="@+id/edt_iccid"
@@ -173,7 +173,7 @@
                         android:inputType="number"
                         android:maxLength="19"
                         android:singleLine="true"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -186,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:backgroundTint="@color/colorPrimary"
+                            android:backgroundTint="?attr/colorPrimary"
                             android:hint="@string/active"
                             android:textColor="@android:color/white" />
 
@@ -203,15 +203,15 @@
             android:id="@+id/cardView3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            card_view:cardBackgroundColor="@android:color/black"
+            card_view:cardBackgroundColor="?attr/color_text"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp">
 
@@ -219,19 +219,19 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="?attr/color_object"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
+                android:paddingTop="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="top"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/ic_tracking" />
 
 
@@ -245,21 +245,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
                     <TextView
                         android:id="@+id/order_shipped"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/color_text" />
 
                     <TextView
                         android:id="@+id/tracking"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="?attr/colorPrimary" />
 
 
                 </LinearLayout>

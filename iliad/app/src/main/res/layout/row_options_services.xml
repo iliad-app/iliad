@@ -11,26 +11,26 @@
         android:id="@+id/cardView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        card_view:cardBackgroundColor="@android:color/black"
+        card_view:cardBackgroundColor="?attr/color_text"
         card_view:cardElevation="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="?attr/color_object"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/row_info_padding"
             android:paddingLeft="5dp"
+            android:paddingTop="@dimen/row_info_padding"
             android:paddingRight="5dp"
-            android:paddingTop="@dimen/row_info_padding">
+            android:paddingBottom="@dimen/row_info_padding">
 
 
             <LinearLayout
@@ -39,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp"
                 android:paddingTop="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent">
@@ -58,7 +58,7 @@
                         android:layout_height="@dimen/row_info_img"
                         android:layout_centerInParent="true"
                         android:adjustViewBounds="true"
-                        card_view:srcCompat="@drawable/ic_info" />
+                        android:background="@drawable/ic_info" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
@@ -79,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/color_text"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toStartOf="@+id/toggle"
                 card_view:layout_constraintHorizontal_bias="0.0"
@@ -93,7 +93,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_marginStart="2dp"
-                android:theme="@style/Theme.ToogleTheme"
                 app:ignore="UnknownIdInLayout"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"

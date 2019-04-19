@@ -1,5 +1,5 @@
 <resources>
-
+    <string name="site_url" translatable="false">http://51.15.222.184:1335/</string>
     <string name="app_name" translatable="false">Area Personale</string>
     <string name="btn_login">Accedi</string>
     <string name="edt_password" translatable="false">Password</string>
@@ -85,7 +85,8 @@
     <string name="options" translatable="false">options/</string>
     <string name="recharge" translatable="false">recharge/</string>
     <string name="voicemail" translatable="false">voicemail/</string>
-    <string name="site_url" translatable="false">http://51.15.222.184:1335/</string>
+    <string name="support" translatable="false">support/</string>
+
 
     <!-- MasterCreditFragment Activity -->
     <string name="residual_credit">CREDITO RESIDUO</string>
@@ -101,6 +102,8 @@
     <string name="warning">Attenzione</string>
     <string name="accept">Accetto</string>
     <string name="read">Dichiaro di aver letto</string>
+    <string name="show">Non mostrare più</string>
+
     <string name="chargeNumber">Ricarica il tuo numero</string>
     <string name="edtCvv" translatable="false">CVV</string>
     <string name="edtExpiration">Data di scadenza</string>
@@ -117,7 +120,7 @@
     <string name="edt_email_forget">La tua email</string>
     <string name="done_forget">Conferma</string>
     <string name="tv_forget_id">Non conosci il tuo ID utente?</string>
-    <string name="tv_forget_password">Hai dimenticato la tua password o perso il tuo ID utente?</string>
+    <string name="tv_forget_password">Recupera le tue credenziali</string>
     <string name="account_already_use">Account già in uso</string>
 
     <string name="notification_channel_id" translatable="false">default</string>
@@ -131,4 +134,6 @@
     <string name="four_title">Notifiche</string>
     <string name="four_description">Attiva/Disattiva le notifiche</string>
     <string name="toast_notification">Notifiche: %s</string>
+    <string name="toast_theme">Tema Scuro: %s</string>
+    <string name="five_title">Tema Scuro</string>
 </resources>

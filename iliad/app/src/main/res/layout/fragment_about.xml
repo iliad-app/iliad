@@ -14,10 +14,10 @@
         android:id="@+id/ConstraintLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp">
 
         <ImageView
             android:id="@+id/imageView"
@@ -34,9 +34,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,16 +56,16 @@
                 android:gravity="center"
                 android:text="@string/content"
                 android:textAlignment="viewStart"
-                android:textColor="@android:color/black" />
+                android:textColor="?attr/color_text" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout99"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
                 android:gravity="center"
                 android:text="@string/licence"
                 android:textAlignment="viewStart"
-                android:textColor="@android:color/black" />
+                android:textColor="?attr/color_text" />
         </LinearLayout>
 
 
@@ -93,9 +93,10 @@
             android:id="@+id/cardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            app:cardBackgroundColor="?attr/color_object"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout99"
@@ -113,7 +114,7 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
                     android:text="Info"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/color_text"
                     android:textStyle="bold" />
 
 
@@ -121,9 +122,9 @@
                     android:id="@+id/linearLayout1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -144,7 +145,7 @@
                         android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
 
@@ -152,9 +153,9 @@
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +175,7 @@
                         android:gravity="center"
                         android:text="@string/source_code"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         android:textStyle="bold"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
@@ -184,9 +185,9 @@
                     android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +207,7 @@
                         android:gravity="center"
                         android:text="@string/donate"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         android:textStyle="bold"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
@@ -217,14 +218,16 @@
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="?attr/color_object"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
+
             card_view:cardElevation="2dp">
 
             <LinearLayout
@@ -238,7 +241,7 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
                     android:text="Autori"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/color_text"
                     android:textStyle="bold" />
 
 
@@ -246,9 +249,9 @@
                     android:id="@+id/linearLayout4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -269,7 +272,7 @@
                         android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
 
@@ -277,9 +280,9 @@
                     android:id="@+id/linearLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -299,7 +302,7 @@
                         android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
 
@@ -308,9 +311,9 @@
                     android:id="@+id/linearLayout6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -330,17 +333,19 @@
                         android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/linearLayout7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -360,38 +365,7 @@
                         android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
-                        tools:ignore="RtlCompat" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="8dp"
-                        android:gravity="center"
-                        app:srcCompat="@drawable/ic_user" />
-
-                    <TextView
-                        android:id="@+id/tv_author5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:gravity="center"
-                        android:textAlignment="viewStart"
-                        android:textColor="@android:color/black"
+                        android:textColor="?attr/color_text"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
             </LinearLayout>

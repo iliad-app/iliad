@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:715465921306:android:20cb139b4422cf08",
         "android_client_info": {
-          "package_name": "com.fast0n.ipersonalarea"
+          "package_name": "com.fast0n.ap"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "715465921306-g7hb3hg9d7jfi060vn1biac88d3r8qcr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fast0n.ipersonalarea",
+            "package_name": "com.fast0n.ap",
             "certificate_hash": "2d9ed74733b3ebeb5973f224cf45123cd04a495d"
           }
         },
