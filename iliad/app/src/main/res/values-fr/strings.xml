@@ -95,4 +95,14 @@
     <string name="four_title">Notifiche</string>
     <string name="four_description">Attiva/Disattiva le notifiche</string>
     <string name="toast_notification">Notifications: %s</string>
+    <string name="account_already_use">Compte déjà utilisé</string>
+    <string name="day_renewal">JOUR AU PROCHAIN RENOUVELLEMENT</string>
+    <string name="days_renewal">JOURS AU PROCHAIN RENOUVELLEMENT</string>
+    <string name="five_title">Thème sombre</string>
+    <string name="licence">Termes et conditions</string>
+    <string name="read">Je déclare avoir lu</string>
+    <string name="residual_credit">CRÉDIT RESTANT</string>
+    <string name="show">Ne plus montrer</string>
+    <string name="snackbar">Vous êtes hors ligne. Vos données seront mises à jour lors de votre connexion</string>
+    <string name="toast_theme">Thème sombre: %s</string>
 </resources>

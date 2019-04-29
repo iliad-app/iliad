@@ -179,15 +179,26 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp">
+
+                        <Button
+                            android:id="@+id/btn_scan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/button_round_red"
+                            android:drawableLeft="@android:drawable/ic_menu_camera"
+                            android:text="Scansiona ICCID"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:id="@+id/btn_activatesim"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:backgroundTint="?attr/colorPrimary"
-                            android:hint="@string/active"
+                            android:background="@drawable/button_round_red"
+                            android:text="@string/active"
                             android:textColor="@android:color/white" />
 
                     </LinearLayout>

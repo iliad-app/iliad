@@ -42,7 +42,7 @@
     <!-- ErrorConnectionActivity -->
     <string name="errorconnection">No hay conexion a Internet</string>
     <string name="errorconnection_one">Conecta de nuevo el dispositivo y prueba de nuevo</string>
-    <string name="italy">Italia</string>
+    <string name="italy">Spanish</string>
     <string name="estero">Extranjero</string>
 
     <!-- AboutActivity -->
@@ -99,5 +99,18 @@
     <string name="four_title">Notifiche</string>
     <string name="four_description">Attiva/Disattiva le notifiche</string>
     <string name="toast_notification">Notifications: %s</string>
+    <string name="account_already_use">Cuenta ya en uso</string>
+    <string name="day_renewal">DIA EN LA PRÓXIMA RENOVACIÓN</string>
+    <string name="days_renewal">DÍAS A LA PRÓXIMA RENOVACIÓN</string>
+    <string name="five_title">Tema oscuro</string>
+    <string name="licence">Términos y condiciones</string>
+    <string name="nav_settings">ajustes</string>
+    <string name="read">Declaro que he leído</string>
+    <string name="residual_credit">RESTO DE CRÉDITO</string>
+    <string name="snackbar">Usted está fuera de línea. Tus datos serán actualizados cuando te conectes.</string>
+    <string name="show">No mostrar mas</string>
+    <string name="toast_theme">Tema oscuro: %s</string>
+    <string name="tv_email" translatable="false">Email</string>
+    <string name="updatedat">Actualizado a las</string>
 
 </resources>

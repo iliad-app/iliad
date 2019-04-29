@@ -116,7 +116,7 @@ public class VoicemailFragment extends Fragment {
         spinner = view.findViewById(R.id.spinner);
 
 
-        String list[] = {"Notifica inviata via email", "File audio inviato in allegato"};
+        String[] list = {"Notifica inviata via email", "File audio inviato in allegato"};
 
 
         button.setOnClickListener(v -> {

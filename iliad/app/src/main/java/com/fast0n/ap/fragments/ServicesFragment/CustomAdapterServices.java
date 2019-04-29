@@ -81,17 +81,13 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
 
                                     if (isEnabled == 1) {
                                         alertDialog.setPositiveButton(
-                                                "Attiva",
-                                                (dialog, which) -> {
-                                                    holder.toggle.setChecked(true);
-                                                }
+                                                context.getString(R.string.enable),
+                                                (dialog, which) -> holder.toggle.setChecked(true)
                                         );
                                     } else {
                                         alertDialog.setNegativeButton(
-                                                "Disattiva",
-                                                (dialog, which) -> {
-                                                    holder.toggle.setChecked(false);
-                                                }
+                                                context.getString(R.string.disable),
+                                                (dialog, which) -> holder.toggle.setChecked(false)
                                         );
                                     }
 

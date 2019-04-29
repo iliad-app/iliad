@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
@@ -15,13 +14,10 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.fast0n.ap.HomeActivity;
 import com.fast0n.ap.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -35,18 +31,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         Map<String, String> data = remoteMessage.getData();
-        Log.d("FROM", remoteMessage.getFrom());
         sendNotification(notification, data);
+
     }
 
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
         Bundle bundle = new Bundle();
-        bundle.putString(FCM_PARAM, data.get(FCM_PARAM));
+        String url_link = data.get("url_link");
+        bundle.putString("url_link", String.valueOf(url_link));
 
-        Intent intent = new Intent(this, HomeActivity.class);
+        String click_action = notification.getClickAction();
+        Intent intent = new Intent(click_action);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtras(bundle);
+        makeNotification(intent, notification);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void makeNotification(Intent intent, RemoteMessage.Notification notification) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, getString(R.string.notification_channel_id))
                 .setContentTitle(notification.getTitle())
@@ -60,20 +64,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setLights(Color.RED, 1000, 300)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setNumber(++numMessages)
-                .setSmallIcon(R.drawable.ic_sim_card);
+                .setSmallIcon(R.drawable.ic_notification);
 
-        try {
-            String picture = data.get(FCM_PARAM);
-            if (picture != null && !"".equals(picture)) {
-                URL url = new URL(picture);
-                Bitmap bigPicture = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                notificationBuilder.setStyle(
-                        new NotificationCompat.BigPictureStyle().bigPicture(bigPicture).setSummaryText(notification.getBody())
-                );
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -95,5 +87,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         assert notificationManager != null;
         notificationManager.notify(0, notificationBuilder.build());
+
     }
 }

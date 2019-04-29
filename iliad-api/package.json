@@ -7,7 +7,9 @@
   "dependencies": {
     "express": "^4.16.3",
     "request": "^2.87.0",
-    "cheerio": "^0.22.0"
+    "cheerio": "^0.22.0",
+    "sendmail": "^1.4.1",
+    "compression": "^1.7.3"
   },
   "engines": {
     "node": "9.x"

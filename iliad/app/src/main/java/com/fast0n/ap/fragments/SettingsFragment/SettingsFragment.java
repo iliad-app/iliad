@@ -54,12 +54,9 @@ public class SettingsFragment extends Fragment {
             color = "#ffffff";
 
 
-
-
-        String list[] = {
+        String[] list = {
                 "<b><font color=" + color + ">" + getString(R.string.one_title) + "</fond></b><br><small>" + getString(R.string.one_description) + "</small>",
                 "<b><font color=" + color + ">" + getString(R.string.two_title) + "</font></b><br><small>" + getString(R.string.two_description) + "</small>",
-                "<b><font color=" + color + ">" + getString(R.string.three_title) + "</font></b><br><small>" + getString(R.string.three_description) + "</small>",
                 "<b><font color=" + color + ">" + getString(R.string.four_title) + "</font></b><br><small>" + getString(R.string.four_description) + "</small>",
                 "<b><font color=" + color + ">" + getString(R.string.five_title) + "</font></b><br><small>"};
 

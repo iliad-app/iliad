@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.dx.dxloadingbutton.lib.LoadingButton;
 import com.fast0n.ap.java.GenerateToken;
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -67,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // java adresses
-
         btn_login = findViewById(R.id.btn_login);
         edt_id = findViewById(R.id.edt_id);
         edt_password = findViewById(R.id.edt_password);
@@ -84,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // se la checkbox è uguale a true va alla home activity
         if (checkbox_preference != null && checkbox_preference.equals("true"))
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra("token", token));
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra("token", token).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
 
 
         // azione tasto login
@@ -149,10 +150,10 @@ public class LoginActivity extends AppCompatActivity {
     private void getObject(String url, String token, String password) {
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
 
-        CustomPriorityRequest customPriorityRequest = new CustomPriorityRequest(
-                Request.Method.GET, url, null,
-                response -> {
 
+        queue.getCache().clear();
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
                     try {
                         JSONObject json_raw = new JSONObject(response.toString());
                         String iliad = json_raw.getString("iliad");
@@ -195,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.apply();
                             startActivity(intent);
 
-                        }, 1000);
+                        }, 000);
 
 
                     } catch (JSONException ignored) {
@@ -228,8 +229,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-        customPriorityRequest.setPriority(Request.Priority.IMMEDIATE);
-        queue.add(customPriorityRequest);
+        queue.add(getRequest);
     }
 
     private boolean isOnline() {

@@ -156,7 +156,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                 String e = "";
                 String f = "";
                 ConsumptionDetails[0].add(new ModelChildren(a, b, c, d, e, f));
-                model.add(new Model("Nessun consumo", ConsumptionDetails[0]));
+                model.add(new Model(getString(R.string.no_consumption), ConsumptionDetails[0]));
                 loading.setVisibility(View.INVISIBLE);
                 adapter = new CustomAdapter(ConsumptionDetailsActivity.this, model);
                 recyclerView.setAdapter(adapter);

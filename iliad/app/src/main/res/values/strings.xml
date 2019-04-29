@@ -1,5 +1,5 @@
 <resources>
-    <string name="site_url" translatable="false">http://51.15.222.184:1335/</string>
+    <string name="site_url" translatable="false">http://51.15.222.184:1336/</string>
     <string name="app_name" translatable="false">Area Personale</string>
     <string name="btn_login">Accedi</string>
     <string name="edt_password" translatable="false">Password</string>
@@ -21,7 +21,7 @@
     <!-- ChangeEmailActivity -->
     <string name="change_email_title">Cambio Email</string>
     <string name="btn_change_email">Cambia Email</string>
-    <string name="tv_email" translatable="false">Email</string>
+    <string name="tv_email">Email</string>
     <string name="new_email">Nuova Email</string>
     <string name="email_wrong">Inserire una email valida</string>
     <string name="email_change_success">Il tuo indirizzo email è stato modificato con successo.</string>
@@ -136,4 +136,9 @@
     <string name="toast_notification">Notifiche: %s</string>
     <string name="toast_theme">Tema Scuro: %s</string>
     <string name="five_title">Tema Scuro</string>
+    <string name="snackbar">Sei offline. I tuoi dati saranno aggiornati quando ti connetti</string>
+    <string name="no_consumption">Nessun consumo</string>
+
+    <string name="enable">Attiva</string>
+    <string name="disable">Disattiva</string>
 </resources>

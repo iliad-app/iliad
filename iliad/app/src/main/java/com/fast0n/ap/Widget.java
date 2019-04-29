@@ -207,7 +207,7 @@ public class Widget extends AppWidgetProvider {
                                     JSONObject json_Mms = new JSONObject(stringMms);
                                     String mms = json_Mms.getString("0");
                                     views.setTextViewText(R.id.mms, mms);
-                                    views.setTextViewText(R.id.percentage, String.valueOf(result1) + "%");
+                                    views.setTextViewText(R.id.percentage, result1 + "%");
 
                                     appWidgetManager.updateAppWidget(appWidgetId, views);
 

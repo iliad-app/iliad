@@ -26,6 +26,8 @@ import com.fast0n.ap.LoginActivity;
 import com.fast0n.ap.R;
 import com.fast0n.ap.java.CubeLoading;
 import com.fast0n.ap.java.DialogError;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,12 +41,15 @@ public class SimFragments extends Fragment {
     public SimFragments() {
     }
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         final View view = inflater.inflate(R.layout.fragment_sim, container, false);
         final ProgressBar loading;
         final CardView cardView1, cardView2, cardView3;
-        final Button btn_activatesim;
+        final Button btn_activatesim, scan;
         final EditText edt_iccid;
         final Context context;
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
@@ -62,6 +67,7 @@ public class SimFragments extends Fragment {
         cardView1 = view.findViewById(R.id.cardView1);
         cardView2 = view.findViewById(R.id.cardView2);
         cardView3 = view.findViewById(R.id.cardView3);
+        scan = view.findViewById(R.id.btn_scan);
 
         cardView1.setVisibility(View.GONE);
         cardView2.setVisibility(View.GONE);
@@ -80,6 +86,20 @@ public class SimFragments extends Fragment {
         settings = context.getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         editor = settings.edit();
         editor.apply();
+
+
+        scan.setOnClickListener(view1 -> {
+
+
+            IntentIntegrator integrator = new IntentIntegrator(getActivity());
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.CODE_128);
+            integrator.setPrompt("");
+            integrator.setOrientationLocked(false);
+            integrator.setCameraId(0);
+            integrator.setBeepEnabled(false);
+            integrator.setBarcodeImageEnabled(false);
+            IntentIntegrator.forSupportFragment(SimFragments.this).initiateScan();
+        });
 
         btn_activatesim.setOnClickListener(v -> {
             if (edt_iccid.getText().toString().length() == 19)
@@ -125,14 +145,15 @@ public class SimFragments extends Fragment {
 
                         }
                     } catch (JSONException e) {
-                        new DialogError(getActivity(), String.valueOf(e)).alertbox();
                     }
-                }, e -> new DialogError(getActivity(), String.valueOf(e)).alertbox());
+                }, e -> {
+        });
 
         // add it to the RequestQueue
         queue.add(getRequest);
 
     }
+
 
     private void getObject(String url, final Context context, View view) {
 
@@ -141,7 +162,7 @@ public class SimFragments extends Fragment {
         final TextView tvvalidation, tvorder_date, tvdate, tvtracking, tvshipping, tvorder_shipped, tvactivation,
                 tvtitle_activation, tvoffer;
         final EditText edt_iccid;
-        final Button btn_activatesim;
+        final Button btn_activatesim, btn_scan;
 
         // java adresses
         tvvalidation = view.findViewById(R.id.validation);
@@ -155,6 +176,8 @@ public class SimFragments extends Fragment {
         tvoffer = view.findViewById(R.id.offer);
         edt_iccid = view.findViewById(R.id.edt_iccid);
         btn_activatesim = view.findViewById(R.id.btn_activatesim);
+        btn_scan = view.findViewById(R.id.btn_scan);
+
         cardView1 = view.findViewById(R.id.cardView1);
         cardView2 = view.findViewById(R.id.cardView2);
         cardView3 = view.findViewById(R.id.cardView3);
@@ -210,6 +233,7 @@ public class SimFragments extends Fragment {
                             tvtitle_activation.setTextColor(getResources().getColor(R.color.colorPrimary));
                             edt_iccid.setVisibility(View.GONE);
                             btn_activatesim.setVisibility(View.GONE);
+                            btn_scan.setVisibility(View.GONE);
                         }
 
 
@@ -240,5 +264,17 @@ public class SimFragments extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        EditText edt_iccid = getView().findViewById(R.id.edt_iccid);
+        Button btn_activatesim = getView().findViewById(R.id.btn_activatesim);
+
+        edt_iccid.setText(result.getContents());
+        btn_activatesim.performClick();
+
+
+    }
 
 }

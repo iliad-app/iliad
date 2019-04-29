@@ -3,7 +3,9 @@ package com.fast0n.ap.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -74,60 +76,110 @@ public class MasterCreditFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         editor.apply();
 
-        String site_url = getString(R.string.site_url) + getString(R.string.credit);
-        String url = site_url + "?credit=true&token=" + token;
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> {
-                    try {
-
-                        JSONObject json_raw = new JSONObject(response.toString());
-                        String iliad = json_raw.getString("iliad");
-
-                        JSONObject json = new JSONObject(iliad);
-                        String string1 = json.getString("0");
-                        JSONObject json_strings1 = new JSONObject(string1);
-                        String stringCredit = json_strings1.getString("0");
-
-                        credit.setText(stringCredit.split("&")[0]);
-
-                        String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+        if (!isOnline())
+            button.setVisibility(View.GONE);
 
 
-                        int dateDifference = (int) getDateDiff(new SimpleDateFormat("dd/MM/yyyy"), timeStamp, stringCredit.split("&")[1].replaceAll("\\s+", ""));
-                        description.setText(String.valueOf(dateDifference - 1));
+        if (isOnline()) {
 
-                        if (dateDifference - 1 > 1)
-                            description2.setText(context.getString(R.string.days_renewal));
-                        else
-                            description2.setText(context.getString(R.string.day_renewal));
+            String site_url = getString(R.string.site_url) + getString(R.string.credit);
+            String url = site_url + "?credit=true&token=" + token;
+
+            RequestQueue queue = Volley.newRequestQueue(context);
+            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    response -> {
+                        try {
+
+                            PreferenceManager.getDefaultSharedPreferences(context).edit()
+                                    .putString("master", response.toString()).apply();
+
+                            JSONObject json_raw = new JSONObject(response.toString());
+                            String iliad = json_raw.getString("iliad");
+
+                            JSONObject json = new JSONObject(iliad);
+                            String string1 = json.getString("0");
+                            JSONObject json_strings1 = new JSONObject(string1);
+                            String stringCredit = json_strings1.getString("0");
+
+                            credit.setText(stringCredit.split("&")[0]);
+
+                            String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 
 
-                        button.setOnClickListener(v -> {
-                            Intent intent1 = new Intent(context, ChargeActivity.class);
-                            intent1.putExtra("name", "Ricarica");
-                            intent1.putExtra("price", "true");
-                            intent1.putExtra("token", token);
-                            startActivity(intent1);
-                        });
+                            int dateDifference = (int) getDateDiff(new SimpleDateFormat("dd/MM/yyyy"), timeStamp, stringCredit.split("&")[1].replaceAll("\\s+", ""));
+                            description.setText(String.valueOf(dateDifference - 1));
+
+                            if (dateDifference - 1 > 1)
+                                description2.setText(context.getString(R.string.days_renewal));
+                            else
+                                description2.setText(context.getString(R.string.day_renewal));
 
 
-                    } catch (JSONException ignored) {
-                    }
+                            button.setOnClickListener(v -> {
+                                Intent intent1 = new Intent(context, ChargeActivity.class);
+                                intent1.putExtra("name", "Ricarica");
+                                intent1.putExtra("price", "true");
+                                intent1.putExtra("token", token);
+                                startActivity(intent1);
+                            });
 
-                }, error -> {
 
-        });
+                        } catch (JSONException ignored) {
+                        }
 
-        queue.add(getRequest);
+                    }, error -> {
+
+            });
+
+            queue.add(getRequest);
+        } else {
+            String jsonMaster = PreferenceManager.
+                    getDefaultSharedPreferences(context).getString("master", null);
+
+
+            try {
+                JSONObject response = new JSONObject(jsonMaster);
+                PreferenceManager.getDefaultSharedPreferences(context).edit()
+                        .putString("master", response.toString()).apply();
+
+                JSONObject json_raw = new JSONObject(response.toString());
+                String iliad = json_raw.getString("iliad");
+
+                JSONObject json = new JSONObject(iliad);
+                String string1 = json.getString("0");
+                JSONObject json_strings1 = new JSONObject(string1);
+                String stringCredit = json_strings1.getString("0");
+
+                credit.setText(stringCredit.split("&")[0]);
+
+                String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+
+
+                int dateDifference = (int) getDateDiff(new SimpleDateFormat("dd/MM/yyyy"), timeStamp, stringCredit.split("&")[1].replaceAll("\\s+", ""));
+                description.setText(String.valueOf(dateDifference - 1));
+
+                if (dateDifference - 1 > 1)
+                    description2.setText(context.getString(R.string.days_renewal));
+                else
+                    description2.setText(context.getString(R.string.day_renewal));
+
+            } catch (JSONException ignored) {
+            }
+
+
+        }
         setupViewPager(viewPager);
         TabLayout tabs = view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
         return view;
 
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (cm != null ? cm.getActiveNetworkInfo() : null) != null
+                && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     private void setupViewPager(ViewPager viewPager) {

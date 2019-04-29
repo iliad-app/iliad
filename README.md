@@ -11,13 +11,15 @@ L'app prende le informazioni dal sito, di conseguenza se una sezione/testo/ogget
 
 Di seguito le feature implementate:
 * Login
-* attivazione SIM
-* controllo del tracking di spedizione
-* cambio password
-* cambio email
-* ricarica credito
-* visualizzazione costi e dettagli
-* visualizzazione offerte
+* Attivazione SIM
+* Controllo del tracking di spedizione
+* Cambio password
+* Cambio email
+* Ricarica credito
+* Visualizzazione costi e dettagli
+* Visualizzazione offerte
+* Tema scuro
+* Modalità offline
 
 <hr>
 

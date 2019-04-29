@@ -14,7 +14,6 @@
     <!-- ChangeEmailActivity -->
     <string name="change_email_title">Change Email</string>
     <string name="btn_change_email">Change Email</string>
-    <string name="tv_email">Email</string>
     <string name="new_email">New Email</string>
     <string name="email_wrong">Insert a valid email</string>
     <string name="email_change_success">Your email address has been changed successfully.</string>
@@ -58,7 +57,7 @@
     <string name="no">No</string>
     <string name="dialog_exit">Are you sure you want to quit?</string>
     <string name="press_back">Press again to exit</string>
-    <string name="licence">@string/nav_conditions</string>
+    <string name="licence">Terms and conditions</string>
 
 
     <!-- MasterCreditFragment Activity -->
@@ -103,5 +102,11 @@
     <string name="four_title">Notifiche</string>
     <string name="four_description">Attiva/Disattiva le notifiche</string>
     <string name="toast_notification">Notifications: %s</string>
+    <string name="five_title">Dark Theme</string>
+    <string name="read">I declare that I have read</string>
+    <string name="show">Don\'t show anymore</string>
+    <string name="snackbar">You\'re offline. Your data will be updated when you\'re connected</string>
+    <string name="toast_theme">Dark Theme: %s</string>
+    <string name="tv_email" translatable="false">Email</string>
 
 </resources>

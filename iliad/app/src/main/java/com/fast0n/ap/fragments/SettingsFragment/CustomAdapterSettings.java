@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.fast0n.ap.BuildConfig;
 import com.fast0n.ap.LoginActivity;
 import com.fast0n.ap.R;
+import com.fast0n.ap.notifications.CheckNotification;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -46,15 +48,11 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
         Glide.with(context).load(R.drawable.ic_settings).into(holder.imageView);
         Handler handler = new Handler();
 
-        String[] permission = {"android.permission.READ_CONTACTS", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
+        String[] permission = {"android.permission.READ_CONTACTS", "android.permission.WRITE_EXTERNAL_STORAGE"};
 
-
-        if (position == 3 && holder.toggleState.equals("0"))
+        if (position == 3 && holder.toggleTheme.equals("1"))
             holder.toggle.setChecked(true);
-        else
-            holder.toggle.setChecked(false);
-
-        if (position == 4 && holder.toggleTheme.equals("1"))
+        else if (position == 2 && holder.toggleNotification.equals("0"))
             holder.toggle.setChecked(true);
         else
             holder.toggle.setChecked(false);
@@ -109,52 +107,39 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
                     break;
 
                 case 2:
+                    if (holder.toggle.isChecked()) {
+                        holder.editor.putString("toggleNotification", "0");
+                        holder.editor.apply();
+                        String toasty = context.getString(R.string.toast_notification, context.getString(R.string.toggle_enable));
+                        Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
+                        FirebaseMessaging.getInstance().subscribeToTopic("notification");
 
-                    if (holder.toggle.isChecked())
-                        TedPermission.with(context)
-                                .setPermissionListener(permissionlistener)
-                                .setPermissions(Manifest.permission.CAMERA)
-                                .check();
-                    else {
-                        Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
-                        context.startActivity(i);
+                    } else {
+                        holder.editor.putString("toggleNotification", "1");
+                        holder.editor.apply();
+                        String toasty = context.getString(R.string.toast_notification, context.getString(R.string.toggle_disable));
+                        Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("notification");
+
                     }
                     break;
 
                 case 3:
-                    if (holder.toggle.isChecked()) {
-                        holder.editor.putString("toggleState", "1");
-                        holder.editor.apply();
-                        String toasty = context.getString(R.string.toast_notification, String.valueOf(context.getString(R.string.toggle_enable)));
-                        Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
-                    } else {
-                        holder.editor.putString("toggleState", "0");
-                        holder.editor.apply();
-                        String toasty = context.getString(R.string.toast_notification, String.valueOf(context.getString(R.string.toggle_disable)));
-                        Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
-                    }
-                    break;
+                    final Runnable runnable = () -> context.startActivity(new Intent(context.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-                case 4:
                     if (holder.toggle.isChecked()) {
                         holder.editor.putString("toggleTheme", "1");
                         holder.editor.apply();
-                        String toasty = context.getString(R.string.toast_theme, String.valueOf(context.getString(R.string.toggle_enable)));
+                        String toasty = context.getString(R.string.toast_theme, context.getString(R.string.toggle_enable));
                         Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
-
-                        handler.postDelayed(() -> {
-                            context.startActivity(new Intent(context.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }, 500);
-
+                        handler.postDelayed(runnable, 500);
 
                     } else {
                         holder.editor.putString("toggleTheme", "0");
                         holder.editor.apply();
-                        String toasty = context.getString(R.string.toast_theme, String.valueOf(context.getString(R.string.toggle_disable)));
+                        String toasty = context.getString(R.string.toast_theme, context.getString(R.string.toggle_disable));
                         Toasty.info(context, toasty, Toast.LENGTH_SHORT, true).show();
-                        handler.postDelayed(() -> {
-                            context.startActivity(new Intent(context.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }, 500);
+                        handler.postDelayed(runnable, 500);
                     }
                     break;
 
@@ -185,7 +170,7 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
         ImageView imageView;
         SharedPreferences settings;
         SharedPreferences.Editor editor;
-        String toggleState, toggleTheme;
+        String toggleNotification, toggleTheme;
 
         MyViewHolder(View view) {
             super(view);
@@ -194,8 +179,9 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
             imageView = view.findViewById(R.id.imageView);
             settings = context.getSharedPreferences("sharedPreferences", 0);
             editor = settings.edit();
-            toggleState = settings.getString("toggleState", null);
+            toggleNotification = settings.getString("toggleNotification", null);
             toggleTheme = settings.getString("toggleTheme", null);
+            new CheckNotification(toggleNotification, editor);
 
 
         }

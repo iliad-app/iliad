@@ -45,11 +45,11 @@ public class ChargeActivity extends AppCompatActivity {
     String typecard = null, account;
     SharedPreferences settings;
     String theme;
+    Button button;
     private EditText ncvv, nCard, nExpiration, edt_password;
     private CreditCardView creditCardView;
     private Boolean touch = true;
     private Spinner spinner;
-    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +179,7 @@ public class ChargeActivity extends AppCompatActivity {
                 StringBuilder formatted = new StringBuilder();
                 for (int i = 0; i < numbersOnly.length(); i += 4)
                     if (i + 4 < numbersOnly.length())
-                        formatted.append(numbersOnly.substring(i, i + 4)).append(space);
+                        formatted.append(numbersOnly, i, i + 4).append(space);
                     else
                         formatted.append(numbersOnly.substring(i));
                 nCard.setText(formatted.toString());
@@ -236,7 +236,7 @@ public class ChargeActivity extends AppCompatActivity {
                 StringBuilder formatted = new StringBuilder();
                 for (int i = 0; i < numbersOnly.length(); i += 2)
                     if (i + 2 < numbersOnly.length())
-                        formatted.append(numbersOnly.substring(i, i + 2)).append(space);
+                        formatted.append(numbersOnly, i, i + 2).append(space);
                     else
                         formatted.append(numbersOnly.substring(i));
                 nExpiration.setText(formatted.toString());

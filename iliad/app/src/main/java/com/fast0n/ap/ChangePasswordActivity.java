@@ -165,13 +165,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         String string_response = json.getString("0");
 
                         if (string_response.equals("true")) {
-
-                            SharedPreferences prefs = getSharedPreferences("sharedPreferences", 0);
-                            String userid = prefs.getString("userid", null);
-
                             String token = GenerateToken.randomString(20);
-
-
                             Intent intent = new Intent(ChangePasswordActivity.this, HomeActivity.class);
                             helper.updatePassword(oldPassword, newpassword);
                             intent.putExtra("token", token);
