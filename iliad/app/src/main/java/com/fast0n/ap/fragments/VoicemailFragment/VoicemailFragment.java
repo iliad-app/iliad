@@ -79,16 +79,14 @@ public class VoicemailFragment extends Fragment {
 
         final String site_url = getString(R.string.site_url) + getString(R.string.voicemail);
         String url = site_url + "?voicemail=true&token=" + token;
-        String url1 = site_url + "?voicemailoptions=true&token=" + token;
-        String url2 = site_url + "?voicemailreport=true&token=" + token;
 
 
-        getObject(url, url1, url2, context, view, token);
+        getObject(url, context, view, token);
 
         return view;
     }
 
-    private void getObject(String url, String url1, String url2, Context context, View view, String token) {
+    private void getObject(String url, Context context, View view, String token) {
 
         final ProgressBar loading;
         final RecyclerView recyclerView, recyclerView1, recyclerView2, recyclerView3;
@@ -149,6 +147,7 @@ public class VoicemailFragment extends Fragment {
                         true).show();
             }
         });
+
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_item, list);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(spinnerArrayAdapter);
@@ -177,22 +176,29 @@ public class VoicemailFragment extends Fragment {
 
 
         RequestQueue queue = Volley.newRequestQueue(context);
+
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
 
                         JSONObject json_raw = new JSONObject(response.toString());
                         String iliad = json_raw.getString("iliad");
-                        JSONObject json = new JSONObject(iliad);
+                        JSONObject json_iliad = new JSONObject(iliad);
 
-                        String string1 = json.getString("0");
+                        // message
+
+                        String message = json_iliad.getString("message");
+                        JSONObject json_message = new JSONObject(message);
+
+                        String string1 = json_message.getString("0");
                         JSONObject json_strings1 = new JSONObject(string1);
                         String stringCredit = json_strings1.getString("0");
+
                         textvoicemail.setText(stringCredit);
 
-                        for (int i = 1; i < json.length(); i++) {
+                        for (int i = 1; i < json_message.length(); i++) {
 
-                            String string = json.getString(String.valueOf(i));
+                            String string = json_message.getString(String.valueOf(i));
                             JSONObject json_strings = new JSONObject(string);
 
                             String a = json_strings.getString("0");
@@ -206,39 +212,25 @@ public class VoicemailFragment extends Fragment {
 
                             CustomAdapterVoicemail ca = new CustomAdapterVoicemail(infomail, context);
                             recyclerView.setAdapter(ca);
+
                         }
 
                         textvoicemail.setVisibility(View.VISIBLE);
 
+                        // options
 
-                    } catch (JSONException e) {
-                        startActivity(new Intent(context, LoginActivity.class));
-                    }
-
-                }, error -> {
-
-        });
-
-        queue.add(getRequest);
+                        String options = json_iliad.getString("options");
+                        JSONObject json_options = new JSONObject(options);
 
 
-        RequestQueue queue1 = Volley.newRequestQueue(context);
-        JsonObjectRequest getRequest1 = new JsonObjectRequest(Request.Method.GET, url1, null,
-                response -> {
-                    try {
-                        JSONObject json_raw = new JSONObject(response.toString());
-                        String iliad = json_raw.getString("iliad");
-
-                        JSONObject json = new JSONObject(iliad);
-
-                        String string1 = json.getString("0");
-                        JSONObject json_strings1 = new JSONObject(string1);
-                        String stringCredit = json_strings1.getString("0");
+                        string1 = json_options.getString("0");
+                        json_strings1 = new JSONObject(string1);
+                        stringCredit = json_strings1.getString("0");
                         customization.setText(stringCredit);
 
-                        for (int i = 1; i < json.length(); i++) {
+                        for (int i = 1; i < json_options.length(); i++) {
 
-                            String string = json.getString(String.valueOf(i));
+                            String string = json_options.getString(String.valueOf(i));
                             JSONObject json_strings = new JSONObject(string);
 
                             String a = json_strings.getString("0");
@@ -253,38 +245,21 @@ public class VoicemailFragment extends Fragment {
                         recyclerView1.setAdapter(ca);
                         notification.setVisibility(View.VISIBLE);
 
-
-                    } catch (JSONException e) {
-                        startActivity(new Intent(context, LoginActivity.class));
-                    }
-
-                }, error -> {
-
-        });
-
-        queue1.add(getRequest1);
-
-
-        RequestQueue queue2 = Volley.newRequestQueue(context);
-        JsonObjectRequest getRequest2 = new JsonObjectRequest(Request.Method.GET, url2, null,
-                response -> {
-                    try {
-                        JSONObject json_raw = new JSONObject(response.toString());
-                        String iliad = json_raw.getString("iliad");
-
+                        // report
 
                         try {
-                            JSONObject json = new JSONObject(iliad);
+                            String report = json_iliad.getString("report");
+                            JSONObject json_report = new JSONObject(report);
 
-                            String string1 = json.getString("0");
-                            JSONObject json_strings1 = new JSONObject(string1);
-                            String stringCredit = json_strings1.getString("0");
+                            string1 = json_report.getString("0");
+                            json_strings1 = new JSONObject(string1);
+                            stringCredit = json_strings1.getString("0");
                             notification.setText(stringCredit);
 
 
-                            for (int i = 1; i < json.length(); i++) {
+                            for (int i = 1; i < json_report.length(); i++) {
 
-                                String string = json.getString(String.valueOf(i));
+                                String string = json_report.getString(String.valueOf(i));
                                 JSONObject json_strings = new JSONObject(string);
 
 
@@ -299,17 +274,21 @@ public class VoicemailFragment extends Fragment {
                                     infoList1.add(new DataNotificationFragments(a, "", "0", d));
                                 }
 
-
                             }
 
-                            CustomAdapterNotification ca = new CustomAdapterNotification(context, infoList1, token);
-                            recyclerView2.setAdapter(ca);
+                            CustomAdapterNotification ca1 = new CustomAdapterNotification(context, infoList1, token);
+                            recyclerView2.setAdapter(ca1);
                             loading.setVisibility(View.INVISIBLE);
                             cardView1.setVisibility(View.VISIBLE);
+
+
+
                         } catch (Exception ignored) {
                         }
 
+
                     } catch (JSONException e) {
+                        System.out.println(e);
                         startActivity(new Intent(context, LoginActivity.class));
                     }
 
@@ -317,7 +296,7 @@ public class VoicemailFragment extends Fragment {
 
         });
 
-        queue2.add(getRequest2);
+        queue.add(getRequest);
 
 
     }
