@@ -220,7 +220,8 @@ app.get('/recover', async function (req, res) {
                 res.sendStatus(503);
             }
         })
-    } else if (email && name && surname && token) {
+    }
+    else if (email && name && surname && token) {
         var formData = {
             nom: surname,
             prenom: name,
@@ -246,7 +247,8 @@ app.get('/recover', async function (req, res) {
                 res.sendStatus(503);
             }
         })
-    } else {
+    }
+    else {
         res.sendStatus(400);
     }
 });
@@ -1000,6 +1002,8 @@ app.get('/credit', async function (req, res) {
     var estero = req.query.estero;
     var credit = req.query.credit;
     var details = req.query.details;
+  
+    var history = req.query.history;
 
     var token = req.query.token;
     // set cookies
@@ -1074,8 +1078,8 @@ app.get('/credit', async function (req, res) {
     else if (details == 'true' && token) {
         var options = {
             method: 'GET',
-            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['credit'],
-            //url: ILIAD_BASE_URL + "conso-et-factures?historyId=10",
+            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['credit'] + "?historyId=" + history,
+            // url: ILIAD_BASE_URL + "conso-et-factures?historyId=10",
             headers: {
                 'x-requested-with': 'XMLHttpRequest',
                 cookie: 'ACCOUNT_SESSID=' + token
@@ -1093,7 +1097,7 @@ app.get('/credit', async function (req, res) {
                     
                     if (check_token != CHECK_TOKEN_TEXT){
                         var check = $('div.no-conso.table-montant.color-main.text-center').attr("style");
-                        if (check) {
+                        
 
                             data_store["iliad"]["title"] = {};
 
@@ -1126,22 +1130,56 @@ app.get('/credit', async function (req, res) {
 
                             data_store["iliad"][3] = {};
                             data_store["iliad"][3][0] = "";
+                            data_store["iliad"][0][0];
+                            console.log(data_store["iliad"][0][0][0]);
                             res.send(data_store);
-                        }
-                        else{
-                            res.sendStatus(503);
-                        }
                     }
                     else{ 
                           res.sendStatus(ERROR_TOKEN_STATUS);
-                      }
+                    }
                     
                 } catch (exeption) {
                     res.sendStatus(503);
                 }
             }
         });
-    } 
+    }
+    else if (history == 'true'){
+        
+        var options = {
+            method: 'GET',
+            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['credit'] + "?historyId",
+            headers: headers
+        };
+        request(options, async function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                try{
+                    data_store["iliad"]["date"] = [];
+                    
+                    const $ = cheerio.load(body);
+                  
+                    var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
+                    console.log(check_token);
+                    if (check_token != CHECK_TOKEN_TEXT){
+                        $("select.mdc-select__input")
+                        .find("option")
+                        .each(function (i, element) {
+                            data_store["iliad"]["date"].push($(element).text());
+                        });
+                        
+                        res.send(data_store);
+                    }
+                    else{ 
+                      res.sendStatus(ERROR_TOKEN_STATUS);
+                    }
+                }
+                catch(e){
+                    res.sendStatus(503);
+                }
+            }
+        });
+        
+    }
     else {
         res.sendStatus(400);
     }

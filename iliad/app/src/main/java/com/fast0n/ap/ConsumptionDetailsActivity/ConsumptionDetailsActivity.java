@@ -10,8 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,10 +24,13 @@ import com.android.volley.toolbox.Volley;
 import com.fast0n.ap.R;
 import com.fast0n.ap.java.CubeLoading;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ConsumptionDetailsActivity extends AppCompatActivity {
@@ -37,6 +44,9 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
     private ArrayList<Model> model;
     private CustomAdapter adapter;
     private ProgressBar loading;
+    private TextView no_consumption;
+
+    private Spinner spinner1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +82,18 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
 
         // java adresses
         offer = findViewById(R.id.offer);
+        spinner1 = (Spinner)findViewById(R.id.spinner1); // try
         recyclerView = findViewById(R.id.recycler_view);
         model = new ArrayList<>();
         loading = findViewById(R.id.progressBar);
+        no_consumption = findViewById(R.id.textView5);
         new CubeLoading(this, loading, theme).showLoading();
         loading.setVisibility(View.VISIBLE);
 
         offer.setText(getString(R.string.consumptiondetail));
 
-        String url = site_url + "?details=true&token=" + token;
-        getConsumption(url);
+        String history = site_url + "?history=true&token=" + token;
+        getHistory(history);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -90,19 +102,60 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void getConsumption(String url) {
-
+    /* try */
+    private void getHistory(String url){
         RequestQueue queue = Volley.newRequestQueue(ConsumptionDetailsActivity.this);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
 
+                        JSONObject json_raw = new JSONObject(response.toString());
+                        String iliad = json_raw.getString("iliad");
+
+                        JSONObject json = new JSONObject(iliad);
+
+                        String title = json.getString("date");
+                        JSONArray date = new JSONArray(title);
+
+                        List<String> list = new ArrayList<String>();
+
+                        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
+                        for (int i = 0; i < date.length(); i++){
+                            list.add((String)date.get(i));
+                        }
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        spinner1.setAdapter(dataAdapter);
+
+                    } catch (JSONException ignored) {
+
+                    }
+
+
+                }, error -> {
+
+        });
+
+        queue.add(getRequest);
+    }
+
+    private void getConsumption(String url) {
+
+        RequestQueue queue = Volley.newRequestQueue(ConsumptionDetailsActivity.this);
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+
+                    try {
+
                         ArrayList[] ConsumptionDetails = new ArrayList[]{iphones, nexus, windows};
 
                         JSONObject json_raw = new JSONObject(response.toString());
                         String iliad = json_raw.getString("iliad");
-
 
                         JSONObject json = new JSONObject(iliad);
 
@@ -111,6 +164,9 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
 
                         for (int z = 0; z < json_title.length(); z++) {
                             String x = json_title.getString(String.valueOf(z));
+                            try {
+                                ConsumptionDetails[z].clear();
+                            }catch (Exception e) {}
 
                             try {
                                 String string = json.getString(String.valueOf(z));
@@ -140,6 +196,8 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                         adapter = new CustomAdapter(ConsumptionDetailsActivity.this, model);
                         recyclerView.setAdapter(adapter);
 
+                        recyclerView.setVisibility(View.VISIBLE);
+
                     } catch (JSONException ignored) {
 
                     }
@@ -148,18 +206,8 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                 }, error -> {
             int error_code = error.networkResponse.statusCode;
             if (error_code == 503) {
-                ArrayList[] ConsumptionDetails = new ArrayList[]{iphones, nexus, windows};
-                String a = "";
-                String b = "";
-                String c = "";
-                String d = "";
-                String e = "";
-                String f = "";
-                ConsumptionDetails[0].add(new ModelChildren(a, b, c, d, e, f));
-                model.add(new Model(getString(R.string.no_consumption), ConsumptionDetails[0]));
+                no_consumption.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.INVISIBLE);
-                adapter = new CustomAdapter(ConsumptionDetailsActivity.this, model);
-                recyclerView.setAdapter(adapter);
 
             }
 
@@ -180,6 +228,28 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            final Bundle extras = getIntent().getExtras();
+            assert extras != null;
+            final String token = extras.getString("token", null);
+            final String site_url = getString(R.string.site_url) + getString(R.string.credit);
+            String url = site_url + "?details=true&history=" + pos + "&token=" + token;
+            model.clear();
+            recyclerView.setVisibility(View.GONE);
+            no_consumption.setVisibility(View.GONE);
+            loading.setVisibility(View.VISIBLE);
+            getConsumption(url);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg0) {
+            // TODO Auto-generated method stub
+        }
+
     }
 
 }
