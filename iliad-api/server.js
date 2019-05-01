@@ -898,14 +898,14 @@ app.get('/sim', async function (req, res) {
                         data_store["iliad"]["sim"] = {};
 
                         var sim = $('div.flash-error').text().replace(/^\s+|\s+$/gm, '').split('\n')[1];
+                        
+                        data_store["iliad"]["sim"][0] = sim;
+                      
                         if (sim != 'L\'état actuel de votre SIM ne requiert aucune activation.' && sim != 'Cette SIM a été résiliée et ne peux plus être utilisée.') {
-                            data_store["iliad"]["sim"][0] = sim;
                             data_store["iliad"]["sim"][1] = "false";
                         } else {
-                            data_store["iliad"]["sim"][0] = sim;
                             data_store["iliad"]["sim"][1] = "true";
                         }
-                        // data_store["iliad"]["sim"][1] = "false"; // to delete
 
                         res.send(data_store);
                     }
@@ -915,6 +915,7 @@ app.get('/sim', async function (req, res) {
   
                 }
                 catch (exeption) {
+                    // console.log(exeption);
                     res.sendStatus(503);
                 }
             }
@@ -1249,7 +1250,11 @@ app.get('/services', async function (req, res) {
                     if (check_token != CHECK_TOKEN_TEXT){
                         data_store["iliad"][0] = $('div.grid-c.w-desktop-8.as__item__name.as__cell').text().replace(/^\s+|\s+$/gm, ''); // get service name
                         data_store["iliad"][1] = $('div.service-description').text().replace(/^\s+|\s+$/gm, ''); // get service description
-                        data_store["iliad"][2] = $('div.grid-l.as__item.as__item--main').find('a').first().attr('href').split('=')[1]; // get service description
+                        var update = $('div.grid-l.as__item.as__item--main').find('a').first().attr('href');
+                      
+                        if (update) data_store["iliad"][2] = update.split('=')[1]; // get option activation
+                        else data_store["iliad"][2] = "";
+                      
                         res.send(data_store);
                     }
                     else{ 
@@ -1346,6 +1351,9 @@ app.get('/options', async function (req, res) {
     var update = req.query.update;
     var activate = req.query.activate;
     var change_options = req.query.change_options;
+    // vars get services info
+    var info = req.query.info;
+    var type = req.query.type;
 
     var headers = {
         'cookie': 'ACCOUNT_SESSID=' + token //cookie di accesso
@@ -1366,25 +1374,34 @@ app.get('/options', async function (req, res) {
                     var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
                     if (check_token != CHECK_TOKEN_TEXT){
                         
-                        var title = $('h1.page__title').text().replace(/^\s+|\s+$/gm, '');
+                        var title = $('h1.page__title').text().replace(/^\s+|\s+$/gm, ''); // get page title
                         var status_text;
-                        var link;
+                        var info; // var to store link to get info about option
+                        var update; // var to store link to active or disactive option
 
                         data_store["iliad"][0] = {'0': title};
                         $('div.grid-l.as__item')  
                         .each(function (i, element) {
                             status_text = $(element).find("div.as__status--active").text().replace(/^\s+|\s+$/gm, '');
                             data_store["iliad"][i + 1] = {};
-                            data_store["iliad"][i + 1][0] = $(element).text().replace(/^\s+|\s+$/gm, '').split('\n')[0];
+                            data_store["iliad"][i + 1][0] = $(element).text().replace(/^\s+|\s+$/gm, '').split('\n')[0]; // get option name
+                            /* check activation status option */
                             if (status_text == "Si" || status_text == "Attivo")
                                 data_store["iliad"][i + 1][2] = "true";
                             else
                                 data_store["iliad"][i + 1][2] = "false";
-                            link = $(element).find("a").attr('href').split('/')[3];
-                            if(link)
-                              data_store["iliad"][i + 1][3] = $(element).find("a").attr('href').split('/')[3];
-                            else
-                              data_store["iliad"][i + 1][3] = "";
+                            
+                            /* check and set option information link */
+                            info = $(element).find("a").attr('href').split('/')[3];
+                            if (info) data_store["iliad"][i + 1][4] = info;
+                            else data_store["iliad"][i + 1][4] = "";
+                            
+                            /* check and set option change link */
+                            update = $(element).find("div.as_status--action").find("a").attr("href");
+                            console.log(update);
+                            if (update) data_store["iliad"][i + 1][3] = update.split('=')[1].split('&')[0];
+                            else data_store["iliad"][i + 1][3] = "";
+                            
                         });
                         res.send(data_store);
                     }
@@ -1392,6 +1409,38 @@ app.get('/options', async function (req, res) {
                         res.sendStatus(ERROR_TOKEN_STATUS);
                     }
                     
+                }
+                catch (exeption) {
+                    console.log(exeption);
+                    res.sendStatus(503);
+                }
+            }
+        });
+    }
+    else if (info == 'true' && type && token) {
+        var options = {
+            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['options'] + "/" + type,
+            method: 'GET',
+            headers: headers
+        };
+        request(options, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                try {
+                    const $ = cheerio.load(body);
+                    var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
+                    if (check_token != CHECK_TOKEN_TEXT){
+                        data_store["iliad"][0] = $('div.grid-c.w-desktop-8.as__item__name.as__cell').first().text().replace(/^\s+|\s+$/gm, ''); // get option name
+                        data_store["iliad"][1] = $('div.option-description').text().replace(/^\s+|\s+$/gm, ''); // get option description
+                        var update = $('div.grid-l.as__item.as__item--main').find('a').first().attr('href');
+                        
+                        if (update)data_store["iliad"][2] = update.split('=')[2]; // get option activation
+                        else data_store["iliad"][2] = "";
+                      
+                        res.send(data_store);
+                    }
+                    else{ 
+                        res.sendStatus(ERROR_TOKEN_STATUS);
+                    }
                 }
                 catch (exeption) {
                     res.sendStatus(503);
@@ -1408,6 +1457,9 @@ app.get('/options', async function (req, res) {
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 try {
+                  
+                    const $ = cheerio.load(body);
+                  
                     var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
                     if (check_token != CHECK_TOKEN_TEXT){
                         data_store['iliad'][0] = 'true';
@@ -1417,6 +1469,7 @@ app.get('/options', async function (req, res) {
                         res.sendStauts(ERROR_TOKEN_STATUS);
                     }
                 } catch (exeption) {
+                    console.log(exeption);
                     res.sendStatus(503);
                 }
             }
@@ -1614,7 +1667,10 @@ app.get('/voicemail', async function (req, res) {
                   
                     var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
                     if (check_token != CHECK_TOKEN_TEXT){
-                        data_store["iliad"][0] = {}
+                        
+                        /*
+                        
+                        data_store["iliad"][0] = {};
                         if ($('p.text-center').text().replace(/^\s+|\s+$/gm, '') == '') {
                             
                             data_store["iliad"][0][0] = $('h1').first().text().replace(/^\s+|\s+$/gm, '');
@@ -1627,11 +1683,89 @@ app.get('/voicemail', async function (req, res) {
                                 data_store["iliad"][i + 1][1] = $(element).find('div.msg__details__date').text().replace(/^\s+|\s+$/gm, '').replace('\n', ' ').replace('(', '(<span style="color:#cc0000">').replace(')', '</span>)');
                                 data_store["iliad"][i + 1][2] = $(element).find('source').attr('src').split('=')[1];
                                 //data_store["iliad"][i + 1][2] = 'https://www.iliad.it' + $(element).find('source').attr('src');
-                            })
+                            });
                         } 
                         else {
-                            data_store["iliad"][0][0] = $('p.text-center').text().replace(/^\s+|\s+$/gm, '')
+                            data_store["iliad"][0][0] = $('p.text-center').text().replace(/^\s+|\s+$/gm, '');
                         }
+                        
+                        */
+                         
+                        /**/
+                        
+                        data_store["iliad"]["message"] = {};
+                        data_store["iliad"]["message"][0] = {};
+                        
+                        if ($('p.text-center').text().replace(/^\s+|\s+$/gm, '') == '') {
+                            
+                            data_store["iliad"]["message"][0][0] = $('h1').first().text().replace(/^\s+|\s+$/gm, '');
+                            
+                            $('div.msg')
+                            .each(function (i, element) {
+                                data_store["iliad"][i + 1] = {}
+
+                                data_store["iliad"]["message"][i + 1][0] = $(element).find('div.msg__details__tel').text().replace(/^\s+|\s+$/gm, '');
+                                data_store["iliad"]["message"][i + 1][1] = $(element).find('div.msg__details__date').text().replace(/^\s+|\s+$/gm, '').replace('\n', ' ').replace('(', '(<span style="color:#cc0000">').replace(')', '</span>)');
+                                data_store["iliad"]["message"][i + 1][2] = $(element).find('source').attr('src').split('=')[1];
+                                //data_store["iliad"]["message"][i + 1][2] = 'https://www.iliad.it' + $(element).find('source').attr('src');
+                            });
+                        } 
+                        else {
+                            data_store["iliad"]["message"][0][0] = $('p.text-center').text().replace(/^\s+|\s+$/gm, '');
+                        }
+                        
+                        
+                        // new
+                      
+                        
+                        var title = $('h2.page__title').first().text().replace(/^\s+|\s+$/gm, '');
+                        var status;
+                        
+                        data_store["iliad"]["options"] = {};
+                        data_store["iliad"]["options"][0] = {};
+                        data_store["iliad"]["options"][0][0] = title;
+
+                        $('div.grid-l.as__item')
+                        .each(function (i, element){
+                            data_store["iliad"]["options"][i + 1] = {};
+
+                            status = $(element).find('div.as__status--active');
+
+                            data_store["iliad"]["options"][i + 1][0] = $(element).find('div.inner').first().text().replace(/^\s+|\s+$/gm, '');
+                            data_store["iliad"]["options"][i + 1][1] = status.text().replace(/^\s+|\s+$/gm, '');
+                            
+                            if (status.hasClass('as__status--on'))
+                            
+                                data_store["iliad"]["options"][i + 1][2] = "true";
+                                
+                            else
+                                
+                                data_store["iliad"]["options"][i + 1][2] = "false";
+                                
+                            data_store["iliad"]["options"][i + 1][3] = i.toString();
+                        });
+                      
+                        // new 
+                        
+                        data_store["iliad"]["report"] = {};
+                        data_store["iliad"]["report"][0] = {};
+                        
+                        data_store['iliad']["report"][0][0] = $('h2.page__title').text().replace(/^\s+|\s+$/gm, '').split('\n')[1];
+                        data_store['iliad']["report"][0][1] = $('div.notifs__explain').text().replace(/^\s+|\s+$/gm, '').split('\n')[0]
+                        data_store['iliad']["report"][0][2] = $('div.notifs__explain').text().replace(/^\s+|\s+$/gm, '').split('\n')[1]
+
+                        $('div.notifs__list')
+                        .find('div.grid-l.notifs__item')
+                        .each(function (i, element){
+                            data_store['iliad']["report"][i + 1] = {};
+                            data_store['iliad']["report"][i + 1][0] = $(element).find('span.mdc-text-field__label').text().replace(/^\s+|\s+$/gm, '');
+                            data_store['iliad']["report"][i + 1][1] = $(element).find('input[name="email"]').val();
+                            data_store['iliad']["report"][i + 1][2] = $(element).find('span.mdc-select__label').text().replace(/^\s+|\s+$/gm, '');
+                            data_store['iliad']["report"][i + 1][3] = $(element).find('option[selected="selected"]').text().replace(/^\s+|\s+$/gm, '');
+                        });
+                      
+                        /**/
+                      
                         res.send(data_store);
                     }
                     else{ 
@@ -1713,55 +1847,6 @@ app.get('/voicemail', async function (req, res) {
             }
         });
     }
-    else if (voicemailoptions == 'true' && token) {
-        // Richiesta opzioni segreteria
-        var options = {
-            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['voicemail'],
-            method: 'GET',
-            headers: headers
-        };
-
-        request(options, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                try {
-                    const $ = cheerio.load(body);
-                    
-                    var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
-                    
-                    if (check_token != CHECK_TOKEN_TEXT){  
-                        
-                        var title = $('h2.page__title').first().text().replace(/^\s+|\s+$/gm, '');
-                        var status;
-
-                        data_store["iliad"][0] = {};
-                        data_store["iliad"][0][0] = title;
-
-                        $('div.grid-l.as__item')
-                        .each(function (i, element){
-                            data_store["iliad"][i + 1] = {};
-
-                            status = $(element).find('div.as__status--active');
-
-                            data_store["iliad"][i + 1][0] = $(element).find('div.inner').first().text().replace(/^\s+|\s+$/gm, '');
-                            data_store["iliad"][i + 1][1] = status.text().replace(/^\s+|\s+$/gm, '');
-                            if (status.hasClass('as__status--on'))
-                                data_store["iliad"][i + 1][2] = "true";
-                            else
-                                data_store["iliad"][i + 1][2] = "false";
-                            data_store["iliad"][i + 1][3] = i.toString();
-                        });
-                        res.send(data_store);
-                    }
-                    else{ 
-                        res.sendStatus(ERROR_TOKEN_STATUS);
-                    }
-                }
-                catch (exeption) {
-                    res.sendStatus(503);
-                }
-            }
-        });
-    }
     else if (changevoicemailoptions == 'true' && activate && update && token) {
         var options;
         if (codemessagerie) {
@@ -1810,47 +1895,6 @@ app.get('/voicemail', async function (req, res) {
                         res.sendStatus(ERROR_TOKEN_STATUS);
                     }
                 } catch (exeption) {
-                    res.sendStatus(503);
-                }
-            }
-        });
-    }
-    else if (voicemailreport == 'true' && token) {
-        var options = {
-            url: ILIAD_BASE_URL + ILIAD_OPTION_URL['voicemail'],
-            method: 'GET',
-            headers: headers
-        };
-        request(options, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                try {
-                    const $ = cheerio.load(body);
-                  
-                    var check_token = $('h1.pre-titre.text-center').text().replace(/^\s+|\s+$/gm, '');
-                    if (check_token != CHECK_TOKEN_TEXT){
-                        data_store['iliad'][0] = {};
-                        data_store['iliad'][0][0] = $('h2.page__title').text().replace(/^\s+|\s+$/gm, '').split('\n')[1];
-                        data_store['iliad'][0][1] = $('div.notifs__explain').text().replace(/^\s+|\s+$/gm, '').split('\n')[0]
-                        data_store['iliad'][0][2] = $('div.notifs__explain').text().replace(/^\s+|\s+$/gm, '').split('\n')[1]
-
-                        $('div.notifs__list')
-                        .find('div.grid-l.notifs__item')
-                        .each(function (i, element){
-                            data_store['iliad'][i + 1] = {};
-                            data_store['iliad'][i + 1][0] = $(element).find('span.mdc-text-field__label').text().replace(/^\s+|\s+$/gm, '');
-                            data_store['iliad'][i + 1][1] = $(element).find('input[name="email"]').val();
-                            data_store['iliad'][i + 1][2] = $(element).find('span.mdc-select__label').text().replace(/^\s+|\s+$/gm, '');
-                            data_store['iliad'][i + 1][3] = $(element).find('option[selected="selected"]').text().replace(/^\s+|\s+$/gm, '');
-                        });
-
-                        res.send(data_store);
-                    }
-                    else{ 
-                        res.sendStatus(ERROR_TOKEN_STATUS);
-                    }
-
-                }
-                catch (exeption) {
                     res.sendStatus(503);
                 }
             }

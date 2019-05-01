@@ -1,21 +1,21 @@
 {
   "name": "iliad-api-unofficial",
-  "version": "0.0.8",
+  "version": "0.0.3",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.3",
-    "request": "^2.87.0",
+    "express": "^4.16.4",
+    "request": "^2.88.0",
     "cheerio": "^0.22.0",
     "sendmail": "^1.4.1",
-    "compression": "^1.7.3"
+    "compression": "^1.7.4"
   },
   "engines": {
     "node": "9.x"
   },
   "repository": {
-    "url": "https://www.github.com/fast0n/iliad-api-unofficial"
+    "url": "https://github.com/Fast0n/iliad"
   },
   "license": "GPL"
 }

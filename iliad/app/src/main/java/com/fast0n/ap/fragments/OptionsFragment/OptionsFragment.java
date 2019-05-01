@@ -29,9 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class OptionsFragment extends Fragment {
 
     public OptionsFragment() {
@@ -117,10 +114,14 @@ public class OptionsFragment extends Fragment {
                             String string = json.getString(String.valueOf(i));
                             JSONObject json_strings = new JSONObject(string);
 
-                            String a = json_strings.getString("0");
-                            String b = json_strings.getString("2");
-                            String c = json_strings.getString("3");
-                            infoList.add(new DataOptionsFragments(a, b, c));
+                            String name = json_strings.getString("0"); // nome dell'opzione
+                            String status = json_strings.getString("2"); // parametro per controllare se l'opzione è attiva (quindi anche il toggle)
+                            String update = json_strings.getString("3"); // parametro per attivare o disattivare l'opzione
+                            String info = json_strings.getString("4"); // parametro per ottenere le informazioni dell'opzione
+
+                            infoList.add(new DataOptionsFragments(name, status, update, info));
+
+
                             CustomAdapterOptions ca = new CustomAdapterOptions(context, infoList, token);
                             recyclerView.setAdapter(ca);
 

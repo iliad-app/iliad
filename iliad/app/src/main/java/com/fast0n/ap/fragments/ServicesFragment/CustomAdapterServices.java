@@ -33,7 +33,6 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
     private final String token;
     private final List<DataServicesFragments> ServicesList;
 
-
     CustomAdapterServices(Context context, List<DataServicesFragments> ServicesList, String token) {
         this.context = context;
         this.ServicesList = ServicesList;
@@ -50,69 +49,64 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
 
 
         holder.imageView.setOnClickListener(v -> {
-            switch (position) {
-                case 1:
-                case 2:
-                case 3:
-                    holder.progressBar.setVisibility(View.VISIBLE);
-                    holder.imageView.setEnabled(false);
-                    String[] name_url = {"voicemail_roaming", "block_redirect", "absent_subscriber"};
 
-                    String URL = context.getString(R.string.site_url) + context.getString(R.string.services) + "?info=true&type=" + name_url[position - 1] + "&token=" + token;
-                    RequestQueue queue = Volley.newRequestQueue(context);
+            if (!c.info.isEmpty()) {
 
-                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
-                            response -> {
-                                try {
+                holder.progressBar.setVisibility(View.VISIBLE);
+                holder.imageView.setEnabled(false);
 
-                                    JSONObject json_raw = new JSONObject(response.toString());
-                                    String iliad = json_raw.getString("iliad");
+                String URL = context.getString(R.string.site_url) + context.getString(R.string.services) + "?info=true&type=" + c.info + "&token=" + token;
+                RequestQueue queue = Volley.newRequestQueue(context);
 
-                                    JSONObject json = new JSONObject(iliad);
-                                    String title = json.getString("0");
-                                    String description = json.getString("1");
-                                    int isEnabled = json.getInt("2");
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                        response -> {
+                            try {
 
-                                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                                JSONObject json_raw = new JSONObject(response.toString());
+                                String iliad = json_raw.getString("iliad");
+
+                                JSONObject json = new JSONObject(iliad);
+                                String title = json.getString("0");
+                                String description = json.getString("1");
+                                String isEnabled = json.getString("2");
+
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
 
 
-                                    alertDialog.setTitle(title);
-                                    alertDialog.setMessage(description);
+                                alertDialog.setTitle(title);
+                                alertDialog.setMessage(description);
 
-                                    if (isEnabled == 1) {
-                                        alertDialog.setPositiveButton(
-                                                context.getString(R.string.enable),
-                                                (dialog, which) -> holder.toggle.setChecked(true)
-                                        );
-                                    } else {
-                                        alertDialog.setNegativeButton(
-                                                context.getString(R.string.disable),
-                                                (dialog, which) -> holder.toggle.setChecked(false)
-                                        );
-                                    }
-
-
-                                    alertDialog.show();
-                                    holder.progressBar.setVisibility(View.INVISIBLE);
-                                    holder.imageView.setEnabled(true);
-
-
-                                } catch (JSONException e) {
-                                    new DialogError(context, String.valueOf(e)).alertbox();
+                                if (!isEnabled.isEmpty() && isEnabled.equals("1")) {
+                                    alertDialog.setPositiveButton(
+                                            context.getString(R.string.enable),
+                                            (dialog, which) -> holder.toggle.setChecked(true)
+                                    );
+                                } else if(!isEnabled.isEmpty() && isEnabled.equals("0")) {
+                                    alertDialog.setNegativeButton(
+                                            context.getString(R.string.disable),
+                                            (dialog, which) -> holder.toggle.setChecked(false)
+                                    );
                                 }
 
-                            }, error -> {
 
-                    });
+                                alertDialog.show();
+                                holder.progressBar.setVisibility(View.INVISIBLE);
+                                holder.imageView.setEnabled(true);
 
-                    queue.add(getRequest);
 
+                            } catch (JSONException e) {
+                                holder.progressBar.setVisibility(View.INVISIBLE);
+                                holder.imageView.setEnabled(true);
+                                new DialogError(context, String.valueOf(e)).alertbox();
+                            }
 
-                    break;
-                default:
-                    break;
+                        }, error -> {
 
+                });
+
+                queue.add(getRequest);
             }
+
         });
 
         if (c.toggle.equals("false"))
@@ -122,13 +116,10 @@ public class CustomAdapterServices extends RecyclerView.Adapter<CustomAdapterSer
 
         holder.toggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!isChecked) {
-                String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token
-                        + "&activate=0";
+                String url = site_url + "?change_services=true&update=" + c.update + "&token=" + token + "&activate=0";
                 request_options_services(url, holder.textView.getText() + " " + "disattivato");
             } else {
-
-                String url = site_url + "?change_services=true&update=" + c.name + "&token=" + token
-                        + "&activate=1";
+                String url = site_url + "?change_services=true&update=" + c.update + "&token=" + token + "&activate=1";
                 request_options_services(url, holder.textView.getText() + " " + "attivo");
             }
 

@@ -32,6 +32,7 @@ import java.util.Objects;
 public class ServicesFragment extends Fragment {
 
     public ServicesFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -112,11 +113,12 @@ public class ServicesFragment extends Fragment {
                             String string = json.getString(String.valueOf(i));
                             JSONObject json_strings = new JSONObject(string);
 
-                            String a = json_strings.getString("0");
-                            String b = json_strings.getString("2");
-                            String c = json_strings.getString("3");
+                            String name = json_strings.getString("0"); // nome del servizio
+                            String status = json_strings.getString("2"); // parametro per controllare se il servizio è attivo (quindi anche il toggle)
+                            String update = json_strings.getString("3"); // parametro per attivare o disattivare il servizio
+                            String info = json_strings.getString("4"); // parametro per ottenere le informazioni del servizio
 
-                            infoList.add(new DataServicesFragments(a, b, c));
+                            infoList.add(new DataServicesFragments(name, status, update, info));
                             CustomAdapterServices ca = new CustomAdapterServices(context, infoList, token);
                             recyclerView.setAdapter(ca);
                         }

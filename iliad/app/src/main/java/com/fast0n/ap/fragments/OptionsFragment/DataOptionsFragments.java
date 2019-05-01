@@ -4,11 +4,13 @@ class DataOptionsFragments {
 
     public final String textView;
     public final String toggle;
-    public final String name;
+    public final String update;
+    public final String info;
 
-    DataOptionsFragments(String textView, String toggle, String name) {
+    DataOptionsFragments(String textView, String toggle, String update, String info) {
         this.textView = textView;
         this.toggle = toggle;
-        this.name = name;
+        this.update = update;
+        this.info = info;
     }
 }
