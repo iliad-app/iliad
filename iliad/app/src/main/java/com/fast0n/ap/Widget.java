@@ -1,13 +1,17 @@
 package com.fast0n.ap;
 
+
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
+import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -30,116 +35,153 @@ import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-
 public class Widget extends AppWidgetProvider {
-    private myDbAdapter helper;
-    private String password;
+    public static String CLOCK_WIDGET_UPDATE = "com.fast0n.ap.widget.8BITCLOCK_WIDGET_UPDATE", stringUser_numtell;
+    private static myDbAdapter helper;
+    private static String password, account;
+
+    static void updateAppWidget(Context context,
+                                AppWidgetManager appWidgetManager,
+                                int appWidgetId) {
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+        RequestOptions options = new RequestOptions().override(50, 50);
+
+
+        AppWidgetTarget img = new AppWidgetTarget(context, R.id.img, views, appWidgetId) {
+        };
+        Glide.with(context.getApplicationContext()).asBitmap()
+                .load("http://android12.altervista.org/res/ic_call.png").apply(options).into(img);
+
+
+        AppWidgetTarget img2 = new AppWidgetTarget(context, R.id.img2, views, appWidgetId) {
+        };
+        Glide.with(context.getApplicationContext()).asBitmap()
+                .load("http://android12.altervista.org/res/ic_sms.png").apply(options).into(img2);
+
+
+        AppWidgetTarget img3 = new AppWidgetTarget(context, R.id.img3, views, appWidgetId) {
+        };
+        Glide.with(context.getApplicationContext()).asBitmap()
+                .load("http://android12.altervista.org/res/ic_mms.png").apply(options).into(img3);
+
+        helper = new myDbAdapter(context);
+
+
+        // java adresses
+        SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
+
+        // prendere le SharedPreferences
+        account = settings.getString("account", null);
+
+
+        String getAllData = helper.getAllData();
+        String[] arrayData = getAllData.split("\n");
+        for (String anArrayData : arrayData) {
+            String onlyname = anArrayData.split("&")[0];
+            String onlypassword = anArrayData.split("&")[1];
+
+            if (onlyname.equals(account)) {
+                password = onlypassword;
+                stringUser_numtell = anArrayData.split("&")[2];
+                break;
+            }
+        }
+
+        views.setViewVisibility(R.id.linearLayout, VISIBLE);
+        views.setViewVisibility(R.id.textView, INVISIBLE);
+        views.setViewVisibility(R.id.login, INVISIBLE);
+
+
+        Intent intentUpdate = new Intent(context, Widget.class);
+        intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+
+        int[] idArray = new int[]{appWidgetId};
+        intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idArray);
+        PendingIntent pendingUpdate = PendingIntent.getBroadcast(context, appWidgetId, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_click, pendingUpdate);
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        if (CLOCK_WIDGET_UPDATE.equals(intent.getAction())) {
+            ComponentName thisAppWidget = new ComponentName(context.getPackageName(), getClass().getName());
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
+            for (int appWidgetID : ids) {
+                updateAppWidget(context, appWidgetManager, appWidgetID);
+
+            }
+        }
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds) {
-
-            RequestOptions options = new RequestOptions().override(50, 50);
-            RemoteViews views = new RemoteViews(context.getPackageName(),
-                    R.layout.widget);
+        final int N = appWidgetIds.length;
 
 
-            Intent iSetting = new Intent(context, LoginActivity.class);
-            PendingIntent piSetting = PendingIntent.getActivity(context, 0, iSetting, 0);
-            views.setOnClickPendingIntent(R.id.widget_click, piSetting);
+        // Perform this loop procedure for each App Widget that belongs to this
+        // provider
+        for (int i = 0; i < N; i++) {
+            int appWidgetId = appWidgetIds[i];
 
-
-            AppWidgetTarget img = new AppWidgetTarget(context, R.id.img, views, appWidgetId) {
-            };
-            Glide.with(context.getApplicationContext()).asBitmap()
-                    .load("http://android12.altervista.org/res/ic_call.png").apply(options).into(img);
-
-
-            AppWidgetTarget img2 = new AppWidgetTarget(context, R.id.img2, views, appWidgetId) {
-            };
-            Glide.with(context.getApplicationContext()).asBitmap()
-                    .load("http://android12.altervista.org/res/ic_sms.png").apply(options).into(img2);
-
-
-            AppWidgetTarget img3 = new AppWidgetTarget(context, R.id.img3, views, appWidgetId) {
-            };
-            Glide.with(context.getApplicationContext()).asBitmap()
-                    .load("http://android12.altervista.org/res/ic_mms.png").apply(options).into(img3);
-
-            helper = new myDbAdapter(context);
-            // java adresses
-            SharedPreferences settings = context.getSharedPreferences("sharedPreferences", 0);
-
-            // prendere le SharedPreferences
-            String account = settings.getString("account", null);
-
+            updateAppWidget(context, appWidgetManager, appWidgetId);
             final String site_url = context.getString(R.string.site_url);
+            // String site_url = PreferenceManager.getDefaultSharedPreferences(context).getString("credit", null);
 
-            String getAllData = helper.getAllData();
-            String[] arrayData = getAllData.split("\n");
-            for (String anArrayData : arrayData) {
-                String onlyname = anArrayData.split("&")[0];
-                String onlypassword = anArrayData.split("&")[1];
-                if (onlyname.equals(account)) {
-                    password = onlypassword;
-                    break;
-                }
-            }
-
-
-            Intent intent1 = new Intent(context, Widget.class);
-            intent1.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context,
-                    0, intent1, 0);
-
-            views.setOnClickPendingIntent(R.id.button, pendingIntent1);
-            views.setOnClickPendingIntent(R.id.button1, pendingIntent1);
-
-
-            if (password == null) {
-                views.setViewVisibility(R.id.login, VISIBLE);
-                views.setViewVisibility(R.id.textView, INVISIBLE);
-                views.setViewVisibility(R.id.linearLayout, INVISIBLE);
-
-            } else {
-                views.setViewVisibility(R.id.linearLayout, VISIBLE);
-                views.setViewVisibility(R.id.textView, INVISIBLE);
-                views.setViewVisibility(R.id.login, INVISIBLE);
-
-                loading(site_url, account, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
-
-
-            }
+            loading(site_url, account, context, appWidgetManager, appWidgetId);
 
 
         }
-
     }
 
-    private void loading(String site, String userid, String password, Context context, RemoteViews views, int[] appWidgetIds, AppWidgetManager appWidgetManager, int appWidgetId) {
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(createClockTickIntent(context));
+    }
+
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 1);
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000, createClockTickIntent(context));
+    }
+
+    private PendingIntent createClockTickIntent(Context context) {
+        Intent intent = new Intent(CLOCK_WIDGET_UPDATE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        return pendingIntent;
+    }
+
+    private void loading(String site, String userid, Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        Toast.makeText(context, "Widget aggiornato...", Toast.LENGTH_SHORT).show();
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+
         final String token = GenerateToken.randomString(20);
         String url = (site + "login/?userid=" + userid + "&password=" + password + "&token=" + token).replaceAll("\\s+", "");
         RequestQueue login = Volley.newRequestQueue(context);
         JsonObjectRequest getRequestLogin = new JsonObjectRequest(Request.Method.GET, url, null,
                 (JSONObject response) -> {
 
-
-                    String stringUser_numtell = helper.getPhoneNumber().split("\n")[0];
                     views.setTextViewText(R.id.user_numtell, stringUser_numtell);
-
                     Date date = new Date(System.currentTimeMillis());
                     SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm",
                             Locale.ITALIAN);
                     String var = dateFormat.format(date);
 
                     views.setTextViewText(R.id.update, context.getString(R.string.updatedat) + " " + var);
-
-
-                    Intent intent1 = new Intent(context, Widget.class);
-                    intent1.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-                    intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-                    context.sendBroadcast(intent1);
 
 
                     String url1 = site + "credit/?credit=true&token=" + token;
@@ -152,6 +194,7 @@ public class Widget extends AppWidgetProvider {
 
                                     JSONObject json_raw = new JSONObject(response1.toString());
                                     String iliad = json_raw.getString("iliad");
+
                                     JSONObject json = new JSONObject(iliad);
 
                                     String stringCredit = json.getString("0");
@@ -185,9 +228,8 @@ public class Widget extends AppWidgetProvider {
                                         x = x.substring(0, x.length() - 3);
                                         e = Double.parseDouble(x.replace(",", ".")) * 1000;
 
-
                                     } else {
-                                        x = x.substring(0, x.length() - 3);
+                                        x = x.substring(0, x.length() - 2);
                                         e = Double.parseDouble(x.replace(",", "."));
 
                                     }
@@ -222,7 +264,6 @@ public class Widget extends AppWidgetProvider {
                 }, error1 -> {
 
             try {
-                loading(site, userid, password, context, views, appWidgetIds, appWidgetManager, appWidgetId);
                 views.setViewVisibility(R.id.linearLayout, GONE);
             } catch (Exception ignored) {
 
@@ -233,9 +274,6 @@ public class Widget extends AppWidgetProvider {
         });
 
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> login.add(getRequestLogin), 30000);
-
-
+        login.add(getRequestLogin);
     }
 }

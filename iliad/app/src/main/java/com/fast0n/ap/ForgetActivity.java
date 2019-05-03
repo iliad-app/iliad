@@ -135,7 +135,7 @@ public class ForgetActivity extends AppCompatActivity {
                     CubeGrid cubeGrid = new CubeGrid();
                     loading.setIndeterminateDrawable(cubeGrid);
                     if (theme.equals("0"))
-                        cubeGrid.setColor(Color.parseColor("#c00"));
+                        cubeGrid.setColor(Color.parseColor("#c000000"));
                     else
 
                         cubeGrid.setColor(Color.parseColor("#ffffff"));

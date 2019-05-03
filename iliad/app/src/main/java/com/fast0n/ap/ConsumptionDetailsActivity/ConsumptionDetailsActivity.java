@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,7 +26,6 @@ import com.fast0n.ap.java.CubeLoading;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +43,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
     private CustomAdapter adapter;
     private ProgressBar loading;
     private TextView no_consumption;
-
-    private Spinner spinner1;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +79,11 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
 
         // java adresses
         offer = findViewById(R.id.offer);
-        spinner1 = (Spinner)findViewById(R.id.spinner1); // try
+        spinner = findViewById(R.id.spinner); // try
         recyclerView = findViewById(R.id.recycler_view);
         model = new ArrayList<>();
         loading = findViewById(R.id.progressBar);
-        no_consumption = findViewById(R.id.textView5);
+        no_consumption = findViewById(R.id.textView);
         new CubeLoading(this, loading, theme).showLoading();
         loading.setVisibility(View.VISIBLE);
 
@@ -103,7 +100,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
     }
 
     /* try */
-    private void getHistory(String url){
+    private void getHistory(String url) {
         RequestQueue queue = Volley.newRequestQueue(ConsumptionDetailsActivity.this);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -118,19 +115,17 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                         String title = json.getString("date");
                         JSONArray date = new JSONArray(title);
 
-                        List<String> list = new ArrayList<String>();
+                        List<String> lista = new ArrayList<>();
 
-                        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+                        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
-                        for (int i = 0; i < date.length(); i++){
-                            list.add((String)date.get(i));
+                        for (int i = 0; i < date.length(); i++) {
+                            lista.add((String) date.get(i));
                         }
 
-                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                        spinner1.setAdapter(dataAdapter);
-
+                        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, lista);
+                        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+                        spinner.setAdapter(spinnerArrayAdapter);
                     } catch (JSONException ignored) {
 
                     }
@@ -141,6 +136,7 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
         });
 
         queue.add(getRequest);
+
     }
 
     private void getConsumption(String url) {
@@ -166,7 +162,8 @@ public class ConsumptionDetailsActivity extends AppCompatActivity {
                             String x = json_title.getString(String.valueOf(z));
                             try {
                                 ConsumptionDetails[z].clear();
-                            }catch (Exception e) {}
+                            } catch (Exception e) {
+                            }
 
                             try {
                                 String string = json.getString(String.valueOf(z));

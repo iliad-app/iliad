@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -53,7 +54,6 @@ public class CustomAdapterOptions extends RecyclerView.Adapter<CustomAdapterOpti
             holder.toggle.setVisibility(View.INVISIBLE);
 
 
-
         holder.imageView.setOnClickListener(v -> {
 
             if (!c.info.isEmpty()) {
@@ -86,7 +86,7 @@ public class CustomAdapterOptions extends RecyclerView.Adapter<CustomAdapterOpti
                                             context.getString(R.string.enable),
                                             (dialog, which) -> holder.toggle.setChecked(true)
                                     );
-                                } else if(!isEnabled.isEmpty() && isEnabled.equals("0")) {
+                                } else if (!isEnabled.isEmpty() && isEnabled.equals("0")) {
                                     alertDialog.setNegativeButton(
                                             context.getString(R.string.disable),
                                             (dialog, which) -> holder.toggle.setChecked(false)
@@ -112,7 +112,6 @@ public class CustomAdapterOptions extends RecyclerView.Adapter<CustomAdapterOpti
 
 
         });
-
 
 
         holder.toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -88,6 +88,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean backPressedToExitOnce = false;
     private AccountHeader headerResult = null;
     private Drawer result = null;
+    String[] arrayData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,16 +141,20 @@ public class HomeActivity extends AppCompatActivity {
             snack.show();
         }
 
-        String getAllData = helper.getAllData();
-        String[] arrayData = getAllData.split("\n");
-        for (String anArrayData1 : arrayData) {
-            String onlyname = anArrayData1.split("&")[0];
-            String onlypassword = anArrayData1.split("&")[1];
-            if (onlyname.equals(account)) {
-                userid = onlyname;
-                password = onlypassword;
-                break;
+        try {
+            String getAllData = helper.getAllData();
+            arrayData = getAllData.split("\n");
+            for (String anArrayData1 : arrayData) {
+                String onlyname = anArrayData1.split("&")[0];
+                String onlypassword = anArrayData1.split("&")[1];
+                if (onlyname.equals(account)) {
+                    userid = onlyname;
+                    password = onlypassword;
+                    break;
+                }
             }
+        }catch (Exception e){
+            Log.e(getString(R.string.app_name) + " " + this.getClass().getSimpleName(), String.valueOf(e));
         }
         Bundle extras = getIntent().getExtras();
         assert extras != null;
@@ -811,7 +816,7 @@ public class HomeActivity extends AppCompatActivity {
 
             } else {
                 this.backPressedToExitOnce = true;
-                Toasty.info(HomeActivity.this, getString(R.string.press_back), Toast.LENGTH_SHORT).show();
+                Toasty.error(HomeActivity.this, getString(R.string.press_back), Toast.LENGTH_SHORT).show();
                 new Handler().postDelayed(() -> backPressedToExitOnce = false, 1000);
             }
 

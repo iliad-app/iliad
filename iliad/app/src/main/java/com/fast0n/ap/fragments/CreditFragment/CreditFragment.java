@@ -120,6 +120,10 @@ public class CreditFragment extends Fragment {
                     try {
 
                         PreferenceManager.getDefaultSharedPreferences(context).edit()
+                                .remove("credit").apply();
+
+
+                        PreferenceManager.getDefaultSharedPreferences(context).edit()
                                 .putString("credit", response.toString()).apply();
 
 
@@ -189,7 +193,8 @@ public class CreditFragment extends Fragment {
                     String b = json_strings.getString("1");
                     String d = json_strings.getString("3");
                     creditList.add(new DataCreditFragments(b, c, d));
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
 
             }
             loading.setVisibility(View.INVISIBLE);

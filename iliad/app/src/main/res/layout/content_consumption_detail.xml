@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_consumption_detail">
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,6 +30,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/no_consumption"
         android:textColor="?attr/color_text"
+        android:textSize="30sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/recycler_view"
@@ -74,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1">
+        app:layout_constraintTop_toBottomOf="@+id/spinner">
 
     </android.support.v7.widget.RecyclerView>
 

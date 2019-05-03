@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/widget_margin"
-    android:background="@drawable/round_rect_shape">
+    android:background="@drawable/background_widget">
 
     <TextView
         android:id="@+id/textView"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/loading"
-        android:textColor="?attr/color_text"
+        android:textColor="@android:color/black"
         android:textSize="20dp" />
 
     <LinearLayout
@@ -30,6 +30,16 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="5dp"
+                android:text="BETA"
+                android:textColor="@android:color/black"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+
             <ImageView
                 android:layout_width="@dimen/row_info_img"
                 android:layout_height="@dimen/row_info_img"
@@ -43,7 +53,7 @@
                 android:layout_gravity="center"
                 android:paddingTop="5dp"
                 android:text="100€"
-                android:textColor="?attr/color_text"
+                android:textColor="@android:color/black"
                 android:textSize="10sp"
                 tools:ignore="HardcodedText,SmallSp" />
 
@@ -53,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="3290000000"
-                android:textColor="?attr/color_text"
+                android:textColor="@android:color/black"
                 android:textSize="10sp"
                 tools:ignore="HardcodedText,SpUsage" />
 
@@ -62,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="?attr/color_text"
+                android:textColor="@android:color/black"
                 android:textSize="10sp"
                 tools:ignore="HardcodedText,SpUsage" />
         </LinearLayout>
@@ -101,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="100s"
-                        android:textColor="?attr/color_text"
+                        android:textColor="@android:color/black"
                         android:textSize="10sp"
                         tools:ignore="HardcodedText,SmallSp" />
 
@@ -131,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="100 SMS"
-                        android:textColor="?attr/color_text"
+                        android:textColor="@android:color/black"
                         android:textSize="10sp"
                         tools:ignore="HardcodedText,SmallSp" />
 
@@ -160,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="100 MMS"
-                        android:textColor="?attr/color_text"
+                        android:textColor="@android:color/black"
                         android:textSize="10sp"
                         tools:ignore="HardcodedText,SpUsage" />
 
@@ -187,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="100MB / 30GB"
-                        android:textColor="?attr/color_text"
+                        android:textColor="@android:color/black"
                         android:textSize="10sp"
                         tools:ignore="HardcodedText,SmallSp,SpUsage" />
 
@@ -221,7 +231,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:gravity="center"
-                                android:textColor="?attr/color_text"
+                                android:textColor="@android:color/black"
                                 android:textSize="10sp"
                                 tools:ignore="SmallSp" />
                         </RelativeLayout>
@@ -256,7 +266,7 @@
             android:paddingTop="10dp"
             android:text="Esegui l'accesso"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?attr/color_text"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 

@@ -282,7 +282,6 @@ public class VoicemailFragment extends Fragment {
                             cardView1.setVisibility(View.VISIBLE);
 
 
-
                         } catch (Exception ignored) {
                         }
 
