@@ -22,9 +22,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.fast0n.ap.ConsumptionDetailsActivity.ConsumptionRoamingDetailActivity;
 import com.fast0n.ap.R;
-import com.fast0n.ap.java.CubeLoading;
 import com.fast0n.ap.java.DialogError;
 
 import org.json.JSONException;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 public class CreditRoamingFragment extends Fragment {
 
@@ -45,6 +47,7 @@ public class CreditRoamingFragment extends Fragment {
     private Context context;
     private Button button;
     private RecyclerView recyclerView;
+    private SkeletonScreen skeletonScreen;
 
 
     public CreditRoamingFragment() {
@@ -53,6 +56,7 @@ public class CreditRoamingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_credit_roaming, container, false);
+        int mColor;
 
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
 
@@ -60,7 +64,10 @@ public class CreditRoamingFragment extends Fragment {
         loading = view.findViewById(R.id.progressBar);
         settings = context.getSharedPreferences("sharedPreferences", 0);
         theme = settings.getString("toggleTheme", null);
-        new CubeLoading(context, loading, theme).showLoading();
+        if (theme.equals("0"))
+            mColor = android.R.color.black;
+        else
+            mColor = android.R.color.white;
         recyclerView = view.findViewById(R.id.recycler_view);
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
         button = view.findViewById(R.id.button);
@@ -73,26 +80,38 @@ public class CreditRoamingFragment extends Fragment {
         String url = site_url + "?estero=true&token=" + token;
 
         if (isOnline())
-            getObject(url, context);
+            getObject(url, context, mColor);
         else
-            getOfflineObject(context);
+            getOfflineObject(context, mColor);
 
-        pullToRefresh.setEnabled(false);
+
+        pullToRefresh.setRefreshing(false);
+
         LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
 
         pullToRefresh.setOnRefreshListener(() -> {
+            skeletonScreen = Skeleton.bind(recyclerView)
+                    .load(R.layout.row_credit_roaming_loading)
+                    .duration(2000)
+                    .count(4)
+                    .angle(0)
+                    .frozen(false)
+                    .show();
             recyclerView.setEnabled(false);
             creditEsteroList.clear();
             mRecyclerViewAdapter = new CustomAdapterCreditRoaming(context, creditEsteroList);
             recyclerView.setAdapter(mRecyclerViewAdapter);
 
             if (isOnline())
-                getObject(url, context);
+                getObject(url, context, mColor);
             else
-                getOfflineObject(context);
+                getOfflineObject(context, mColor);
+
+            pullToRefresh.setRefreshing(false);
+
         });
 
         if (!isOnline())
@@ -107,10 +126,18 @@ public class CreditRoamingFragment extends Fragment {
         return view;
     }
 
-    private void getObject(String url, final Context context) {
+    private void getObject(String url, final Context context, int mColor) {
+
+        skeletonScreen = Skeleton.bind(recyclerView)
+                .load(R.layout.row_credit_roaming_loading)
+                .duration(2000)
+                .count(4)
+                .angle(0)
+                .color(mColor)
+                .frozen(false)
+                .show();
 
         // java adresses
-        loading.setVisibility(View.VISIBLE);
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.getCache().clear();
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -144,7 +171,6 @@ public class CreditRoamingFragment extends Fragment {
 
 
                         }
-                        loading.setVisibility(View.INVISIBLE);
 
                     } catch (JSONException e) {
                         new DialogError(this.getActivity(), String.valueOf(e)).alertbox();
@@ -156,8 +182,16 @@ public class CreditRoamingFragment extends Fragment {
 
     }
 
-    private void getOfflineObject(final Context context) {
-        loading.setVisibility(View.VISIBLE);
+    private void getOfflineObject(final Context context, int mColor) {
+        skeletonScreen = Skeleton.bind(recyclerView)
+                .load(R.layout.row_credit_roaming_loading)
+                .duration(2000)
+                .count(4)
+                .angle(0)
+                .color(mColor)
+                .frozen(false)
+                .show();
+
 
         String jsonCredit = PreferenceManager.
                 getDefaultSharedPreferences(context).getString("creditEstero", null);
@@ -182,7 +216,6 @@ public class CreditRoamingFragment extends Fragment {
                 } catch (Exception ignored) {
                 }
             }
-            loading.setVisibility(View.INVISIBLE);
 
 
         } catch (JSONException e) {

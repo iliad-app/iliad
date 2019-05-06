@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="10dp"
+    card_view:cardBackgroundColor="?attr/color_text"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="5dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/color_object"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/row_credit_padding"
+        android:paddingRight="@dimen/row_credit_padding">
+
+        <View
+            android:layout_width="@dimen/row_credit_img"
+            android:layout_height="@dimen/row_credit_img"
+            android:layout_marginTop="16dp"
+            android:background="@color/light_transparent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/light_transparent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/light_transparent" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

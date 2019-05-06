@@ -19,13 +19,12 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        card_view:cardBackgroundColor="@android:color/black"
         card_view:cardElevation="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
+            android:background="?attr/color_object"
             android:orientation="horizontal"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
@@ -54,7 +53,7 @@
                     android:layout_marginBottom="2dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/color_text"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -66,7 +65,7 @@
                     android:layout_marginBottom="2dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/color_text"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -79,7 +78,7 @@
                     android:layout_marginBottom="2dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/color_text"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -91,7 +90,7 @@
                     android:layout_marginBottom="2dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/color_text"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
 

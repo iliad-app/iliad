@@ -129,12 +129,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
 
-                    if (!found) {
+                    if (!found)
                         getObject(url, token, npassword.replaceAll("\\s+", ""));
-                        btn_login.setEnabled(false);
-
-                    }
-
+                    btn_login.setEnabled(false);
 
                 } else {
                     btn_login.setEnabled(true);
@@ -240,11 +237,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (account == null && checkbox_preference.equals("false"))
-            finishAffinity();
-        else {
-            editor.putString("checkbox", "true");
-            editor.apply();
+        try {
+            if (account == null && checkbox_preference.equals("false"))
+                finishAffinity();
+            else {
+                editor.putString("checkbox", "true");
+                editor.apply();
+                finish();
+            }
+        } catch (Exception e) {
             finish();
         }
 

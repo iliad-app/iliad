@@ -9,7 +9,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -75,22 +74,29 @@ public class Widget extends AppWidgetProvider {
         account = settings.getString("account", null);
 
 
-        String getAllData = helper.getAllData();
-        String[] arrayData = getAllData.split("\n");
-        for (String anArrayData : arrayData) {
-            String onlyname = anArrayData.split("&")[0];
-            String onlypassword = anArrayData.split("&")[1];
+        try {
+            String getAllData = helper.getAllData();
+            String[] arrayData = getAllData.split("\n");
+            for (String anArrayData : arrayData) {
+                String onlyname = anArrayData.split("&")[0];
+                String onlypassword = anArrayData.split("&")[1];
 
-            if (onlyname.equals(account)) {
-                password = onlypassword;
-                stringUser_numtell = anArrayData.split("&")[2];
-                break;
+                if (onlyname.equals(account)) {
+                    password = onlypassword;
+                    stringUser_numtell = anArrayData.split("&")[2];
+                    break;
+                }
             }
+            views.setViewVisibility(R.id.linearLayout, VISIBLE);
+            views.setViewVisibility(R.id.textView, INVISIBLE);
+        } catch (Exception ignored) {
+            views.setTextViewText(R.id.textView, "Esegui il login...");
         }
 
-        views.setViewVisibility(R.id.linearLayout, VISIBLE);
-        views.setViewVisibility(R.id.textView, INVISIBLE);
-        views.setViewVisibility(R.id.login, INVISIBLE);
+
+        Intent iSetting = new Intent(context, LoginActivity.class);
+        PendingIntent piSetting = PendingIntent.getActivity(context, 0, iSetting, 0);
+        views.setOnClickPendingIntent(R.id.widget_click, piSetting);
 
 
         Intent intentUpdate = new Intent(context, Widget.class);
@@ -100,7 +106,8 @@ public class Widget extends AppWidgetProvider {
         int[] idArray = new int[]{appWidgetId};
         intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idArray);
         PendingIntent pendingUpdate = PendingIntent.getBroadcast(context, appWidgetId, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_click, pendingUpdate);
+        views.setOnClickPendingIntent(R.id.refresh, pendingUpdate);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
@@ -241,7 +248,6 @@ public class Widget extends AppWidgetProvider {
 
                                     Double ef = (e / f) * 100;
                                     int result1 = ef.intValue();
-
 
                                     views.setProgressBar(R.id.progressbar, 100, result1, false);
 

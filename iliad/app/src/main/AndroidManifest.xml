@@ -18,6 +18,8 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustPan">
+
+
         <receiver
             android:name=".Widget"
             android:hardwareAccelerated="false">
@@ -107,6 +109,9 @@
             android:name=".ForgetActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.NoActionBar" />
+
+
     </application>
+
 
 </manifest>

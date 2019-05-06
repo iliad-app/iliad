@@ -44,7 +44,6 @@ public class MasterCreditFragment extends Fragment {
         try {
             return TimeUnit.DAYS.convert(format.parse(newDate).getTime() - format.parse(oldDate).getTime(), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -60,7 +59,6 @@ public class MasterCreditFragment extends Fragment {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         final Context context;
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
-
 
         // java adresses
         View view = inflater.inflate(R.layout.fragment_credit_master, container, false);

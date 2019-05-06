@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -67,6 +69,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -79,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
     SharedPreferences settings;
     String account, toggleNotification, userid, password, theme, alert;
     CoordinatorLayout coordinatorLayout;
+    String[] arrayData;
     private int pos = 0;
     private myDbAdapter helper;
     private ActionBarDrawerToggle toggle;
@@ -88,7 +95,21 @@ public class HomeActivity extends AppCompatActivity {
     private boolean backPressedToExitOnce = false;
     private AccountHeader headerResult = null;
     private Drawer result = null;
-    String[] arrayData;
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    } // Author: silentnuke
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,8 +174,9 @@ public class HomeActivity extends AppCompatActivity {
                     break;
                 }
             }
-        }catch (Exception e){
-            Log.e(getString(R.string.app_name) + " " + this.getClass().getSimpleName(), String.valueOf(e));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            helper.reset();
+            finish();
         }
         Bundle extras = getIntent().getExtras();
         assert extras != null;
@@ -225,8 +247,11 @@ public class HomeActivity extends AppCompatActivity {
 
         for (int z = 0; z < prova.length; z++) {
 
+
             if (prova2[z].equals(account)) {
                 IProfile profile = new ProfileDrawerItem().withNameShown(true).withName(prova[z]).withEmail(prova1[z]).withIcon(R.drawable.ic_account_circle).withIdentifier(z);
+
+
                 headerResult.addProfile(profile, pos);
             }
         }
@@ -241,13 +266,18 @@ public class HomeActivity extends AppCompatActivity {
 
 
         if (isOnline()) {
-            String site_url = getString(R.string.site_url) + getString(R.string.login);
-            String url = site_url + "?userid=" + userid + "&password=" + password.replaceAll("\\s+", "") + "&token=" + token;
-            getObject(url, toolbar, savedInstanceState);
-            settings = getSharedPreferences("sharedPreferences", 0);
-            editor = settings.edit();
-            editor.putString("token", token);
-            editor.apply();
+            try {
+                String site_url = getString(R.string.site_url) + getString(R.string.login);
+                String url = site_url + "?userid=" + userid + "&password=" + password.replaceAll("\\s+", "") + "&token=" + token;
+                getObject(url, toolbar, savedInstanceState);
+                settings = getSharedPreferences("sharedPreferences", 0);
+                editor = settings.edit();
+                editor.putString("token", token);
+                editor.apply();
+            } catch (Exception ignored) {
+                //startActivity(new Intent(this, LoginActivity.class));
+
+            }
 
         } else {
             String jsonLogin = PreferenceManager.
@@ -284,7 +314,7 @@ public class HomeActivity extends AppCompatActivity {
                                 AlertDialog dialog = new AlertDialog.Builder(this)
                                         .setTitle(R.string.warning)
                                         .setMessage(Html.fromHtml(string_response))
-
+                                        .setCancelable(false)
                                         .setPositiveButton(R.string.read, (dialog1, which) -> dialog1.dismiss())
                                         .setNegativeButton(R.string.show, (dialog12, which) -> {
                                             editor.putString("alert", "1");
@@ -351,7 +381,9 @@ public class HomeActivity extends AppCompatActivity {
 
                                     }
                                 });
-                                dialog.show();
+                                if (!this.isFinishing())
+                                    dialog.show();
+
 
                             } catch (JSONException e) {
                                 new DialogError(this, String.valueOf(e)).alertbox();
@@ -376,7 +408,7 @@ public class HomeActivity extends AppCompatActivity {
                     AlertDialog dialog = new AlertDialog.Builder(this)
                             .setTitle(R.string.warning)
                             .setMessage(Html.fromHtml(string_response))
-
+                            .setCancelable(false)
                             .setPositiveButton(R.string.read, (dialog1, which) -> dialog1.dismiss())
                             .setNegativeButton(R.string.show, (dialog12, which) -> {
                                 editor.putString("alert", "1");
@@ -443,7 +475,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         }
                     });
-                    dialog.show();
+                    if (!this.isFinishing())
+                        dialog.show();
 
                 } catch (JSONException e) {
                     new DialogError(this, String.valueOf(e)).alertbox();
@@ -690,6 +723,8 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     } catch (JSONException error) {
                         Log.e(getString(R.string.app_name) + " " + this.getClass().getSimpleName(), String.valueOf(error));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        finish();
                     }
 
                 },
@@ -714,7 +749,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
 
     private void getOfflineObject(JSONObject jsonRaw, Toolbar toolbar, Bundle savedInstanceState) {
 
@@ -797,7 +831,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
 
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

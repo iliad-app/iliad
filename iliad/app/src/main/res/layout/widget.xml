@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/loading"
         android:textColor="@android:color/black"
         android:textSize="20dp" />
@@ -26,31 +26,38 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
-            <TextView
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingTop="5dp"
-                android:text="BETA"
-                android:textColor="@android:color/black"
-                android:textSize="10sp"
-                tools:ignore="HardcodedText,SmallSp" />
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/row_info_img"
-                android:layout_height="@dimen/row_info_img"
-                android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher_round" />
+                <ImageView
+                    android:layout_width="@dimen/row_info_img"
+                    android:layout_height="@dimen/row_info_img"
+                    android:layout_gravity="center"
+                    android:paddingRight="5dp"
+                    android:src="@mipmap/ic_launcher_round" />
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="@dimen/row_info_img"
+                    android:layout_height="@dimen/row_info_img"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@android:drawable/stat_notify_sync" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/credit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:paddingTop="5dp"
                 android:text="100€"
                 android:textColor="@android:color/black"
@@ -61,7 +68,6 @@
                 android:id="@+id/user_numtell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="3290000000"
                 android:textColor="@android:color/black"
                 android:textSize="10sp"
@@ -71,7 +77,7 @@
                 android:id="@+id/update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:text="3290000000"
                 android:textColor="@android:color/black"
                 android:textSize="10sp"
                 tools:ignore="HardcodedText,SpUsage" />
@@ -207,12 +213,12 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent">
 
                             <ProgressBar
-
                                 android:id="@+id/progressbar"
                                 style="@android:style/Widget.ProgressBar.Horizontal"
                                 android:layout_width="match_parent"
@@ -234,6 +240,7 @@
                                 android:textColor="@android:color/black"
                                 android:textSize="10sp"
                                 tools:ignore="SmallSp" />
+
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -244,32 +251,8 @@
 
             </LinearLayout>
 
+
         </LinearLayout>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="10dp"
-            android:text="Esegui l'accesso"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
     </LinearLayout>
 
 

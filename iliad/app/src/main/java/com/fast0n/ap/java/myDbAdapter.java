@@ -97,6 +97,13 @@ public class myDbAdapter {
         return buffer.toString();
     }
 
+
+    public void reset() {
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        String clearDBQuery = "DELETE FROM " + myDbHelper.TABLE_NAME;
+        db.execSQL(clearDBQuery);
+    }
+
     public void delete(String uname) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
         String[] whereArgs = {uname};

@@ -31,6 +31,8 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSettings.MyViewHolder> {
 
     private final Context context;
@@ -125,7 +127,7 @@ public class CustomAdapterSettings extends RecyclerView.Adapter<CustomAdapterSet
                     break;
 
                 case 3:
-                    final Runnable runnable = () -> context.startActivity(new Intent(context.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    final Runnable runnable = () -> context.startActivity(new Intent(context.getApplicationContext(), LoginActivity.class).addFlags(FLAG_ACTIVITY_NEW_TASK));
 
                     if (holder.toggle.isChecked()) {
                         holder.editor.putString("toggleTheme", "1");
