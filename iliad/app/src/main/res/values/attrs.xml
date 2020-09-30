@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ds">
+        <attr name="color_background" format="color" />
+        <attr name="color_text" format="color" />
+        <attr name="color_desc" format="color" />
+        <attr name="color_toolbar" format="color" />
+        <attr name="color_object" format="color" />
+
+
+    </declare-styleable>
+</resources>

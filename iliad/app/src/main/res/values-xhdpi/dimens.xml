@@ -1,0 +1,20 @@
+<resources>
+
+
+    <dimen name="row_credit_img">40dp</dimen>
+    <dimen name="row_credit_animation">45dp</dimen>
+    <dimen name="row_credit_padding">16dp</dimen>
+    <dimen name="rv_credit_height">100dp</dimen>
+    <dimen name="ll_master_height">150dp</dimen>
+    <dimen name="tv_master_size">25dp</dimen>
+    <dimen name="tv1_master_size">12sp</dimen>
+
+    <dimen name="row_info_padding">12dp</dimen>
+    <dimen name="row_info_img">30dp</dimen>
+
+    <dimen name="cardview_sim_padding">140dp</dimen>
+    <dimen name="cardview_credit_roaming_marginTop">115dp</dimen>
+    <dimen name="constaintlayout_credit_marginTop">8dp</dimen>
+
+
+</resources>
